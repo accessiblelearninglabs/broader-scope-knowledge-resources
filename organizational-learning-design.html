@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Understanding Organizational Learning Design — Knowledge Resource</title>
+  <link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f6f7;
+      --surface-alt: #eaecee;
+      --ink: #303e44;
+      --ink-mid: #4f6068;
+      --ink-light: #7a9098;
+      --accent: #475f6a;
+      --accent-light: #e4eaed;
+      --accent-mid: #7a9aa8;
+      --border: #d5dde1;
+      --border-strong: #b5c5cc;
+      --radius: 10px;
+      --radius-sm: 6px;
+      --font: 'Asap', system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font); background: var(--bg); color: var(--ink); min-height: 100vh; font-size: 15px; line-height: 1.65; }
+    .skip-link { position: absolute; top: -100px; left: 1rem; background: var(--accent); color: #fff; padding: 0.5rem 1rem; border-radius: var(--radius-sm); text-decoration: none; font-size: 0.85rem; z-index: 999; transition: top 0.2s; }
+    .skip-link:focus { top: 1rem; }
+    header { background: var(--bg); border-bottom: 1px solid var(--border); padding: 0 2rem; }
+    .header-inner { max-width: 960px; margin: 0 auto; padding: 2rem 0 1.75rem; }
+    .site-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+    header h1 { font-size: 1.85rem; font-weight: 700; line-height: 1.2; color: var(--ink); max-width: 680px; }
+    .header-sub { font-size: 0.9rem; color: var(--ink-mid); margin-top: 0.5rem; max-width: 600px; line-height: 1.6; }
+    .info-banner { background: var(--accent-light); border-left: 3px solid var(--accent); margin-top: 1.25rem; padding: 0.65rem 1rem; font-size: 0.83rem; color: var(--ink-mid); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; display: flex; align-items: flex-start; gap: 0.5rem; }
+    .tab-nav { background: var(--bg); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; }
+    .tab-nav-inner { max-width: 960px; margin: 0 auto; padding: 0 2rem; display: flex; overflow-x: auto; scrollbar-width: none; }
+    .tab-nav-inner::-webkit-scrollbar { display: none; }
+    .tab-btn { background: none; border: none; border-bottom: 2px solid transparent; padding: 0.85rem 1rem; font-family: var(--font); font-size: 0.82rem; font-weight: 500; color: var(--ink-light); cursor: pointer; white-space: nowrap; transition: color 0.15s, border-color 0.15s; margin-bottom: -1px; }
+    .tab-btn:hover { color: var(--ink); }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+    main { max-width: 960px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeIn 0.2s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+    .panel-title { font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-bottom: 0.35rem; }
+    .panel-lead { font-size: 0.9rem; color: var(--ink-mid); max-width: 700px; margin-bottom: 2rem; line-height: 1.65; }
+    .foundations-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(275px, 1fr)); gap: 1rem; margin-bottom: 1.75rem; }
+    .foundation-card { background: var(--bg); border: 1px solid var(--border); border-top: 3px solid var(--accent); border-radius: var(--radius); padding: 1.25rem 1.35rem; }
+    .foundation-card.v2 { border-top-color: #5e8090; }
+    .foundation-card.v3 { border-top-color: #3d5c67; }
+    .foundation-card.v4 { border-top-color: #6a8a96; }
+    .foundation-icon { font-size: 1.4rem; margin-bottom: 0.6rem; display: block; }
+    .foundation-card h3 { font-size: 0.95rem; font-weight: 600; color: var(--ink); margin-bottom: 0.45rem; }
+    .foundation-card p { font-size: 0.84rem; color: var(--ink-mid); line-height: 1.65; }
+    .callout { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.1rem 1.25rem; margin: 1.5rem 0; font-size: 0.86rem; color: var(--ink-mid); line-height: 1.65; }
+    .callout strong { color: var(--ink); }
+    .callout.note { border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; background: var(--accent-light); }
+    .callout .label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 0.4rem; }
+    .prose h3 { font-size: 1rem; font-weight: 600; margin: 1.75rem 0 0.45rem; color: var(--ink); }
+    .prose p { font-size: 0.875rem; color: var(--ink-mid); line-height: 1.7; margin-bottom: 0.7rem; }
+    .prose p strong { color: var(--ink); }
+    .section-divider { height: 1px; background: var(--border); margin: 2rem 0; }
+    .stages-list { margin: 1.5rem 0; }
+    .stage-item { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 0.45rem; overflow: hidden; }
+    .stage-trigger { width: 100%; background: none; border: none; display: flex; align-items: center; gap: 0.9rem; padding: 0.95rem 1.15rem; cursor: pointer; text-align: left; font-family: var(--font); transition: background 0.15s; }
+    .stage-trigger:hover, .stage-trigger[aria-expanded="true"] { background: var(--surface); }
+    .stage-num { background: var(--accent); color: #fff; font-size: 0.68rem; font-weight: 700; border-radius: 999px; width: 1.65rem; height: 1.65rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .stage-meta { flex: 1; }
+    .stage-title { font-size: 0.88rem; font-weight: 600; color: var(--ink); display: block; }
+    .stage-subtitle { font-size: 0.77rem; color: var(--ink-light); margin-top: 0.1rem; }
+    .stage-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+    .stage-tag { font-size: 0.67rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 999px; background: var(--accent-light); color: var(--accent); }
+    .stage-tag.alt { background: var(--surface-alt); color: var(--ink-mid); }
+    .stage-chevron { font-size: 0.72rem; color: var(--ink-light); transition: transform 0.2s; flex-shrink: 0; }
+    .stage-trigger[aria-expanded="true"] .stage-chevron { transform: rotate(180deg); }
+    .stage-body { display: none; padding: 0 1.15rem 1.15rem 3.55rem; }
+    .stage-body.open { display: block; }
+    .stage-body p { font-size: 0.86rem; color: var(--ink-mid); line-height: 1.7; margin-bottom: 0.65rem; }
+    .stage-produces { background: var(--surface); border-radius: var(--radius-sm); padding: 0.85rem 1rem; margin-top: 0.6rem; }
+    .stage-produces-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 0.45rem; }
+    .stage-produces ul { padding-left: 1.1rem; margin: 0; }
+    .stage-produces li { font-size: 0.82rem; color: var(--ink-mid); margin-bottom: 0.25rem; line-height: 1.5; }
+    .stage-note { font-size: 0.8rem; font-style: italic; color: var(--ink-light); margin-top: 0.65rem; padding-top: 0.65rem; border-top: 1px solid var(--border); }
+    .decisions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(265px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+    .decision-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.15rem 1.25rem; }
+    .decision-icon { font-size: 1.3rem; margin-bottom: 0.5rem; display: block; }
+    .decision-card h3 { font-size: 0.9rem; font-weight: 600; color: var(--ink); margin-bottom: 0.2rem; }
+    .decision-card .decision-q { font-size: 0.78rem; font-style: italic; color: var(--accent); margin-bottom: 0.55rem; display: block; }
+    .decision-card p { font-size: 0.83rem; color: var(--ink-mid); line-height: 1.6; }
+    .impact-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+    .impact-col-header { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); padding-bottom: 0.6rem; border-bottom: 2px solid var(--border); margin-bottom: 1rem; }
+    .impact-col-header span { display: block; font-size: 1rem; font-weight: 700; letter-spacing: 0; text-transform: none; color: var(--ink); margin-top: 0.2rem; }
+    .impact-item { display: flex; gap: 0.7rem; margin-bottom: 0.85rem; align-items: flex-start; }
+    .impact-check { width: 1.35rem; height: 1.35rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700; flex-shrink: 0; margin-top: 0.05rem; background: var(--accent-light); color: var(--accent); }
+    .impact-check.arrow { background: var(--surface-alt); color: var(--ink-mid); }
+    .impact-item-text h4 { font-size: 0.875rem; font-weight: 600; color: var(--ink); margin-bottom: 0.2rem; }
+    .impact-item-text p { font-size: 0.82rem; color: var(--ink-mid); line-height: 1.6; }
+    .competency-item { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.05rem 1.25rem; margin-bottom: 0.55rem; display: flex; gap: 0.9rem; align-items: flex-start; }
+    .comp-accent { width: 3px; border-radius: 999px; background: var(--accent); align-self: stretch; flex-shrink: 0; min-height: 1.5rem; }
+    .comp-accent.v2 { background: #5e8090; }
+    .comp-accent.v3 { background: #3d5c67; }
+    .comp-accent.v4 { background: #6a8a96; }
+    .comp-content h3 { font-size: 0.88rem; font-weight: 600; color: var(--ink); margin-bottom: 0.25rem; }
+    .comp-content p { font-size: 0.84rem; color: var(--ink-mid); line-height: 1.65; }
+    .reflection-q { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.15rem 1.25rem; margin-bottom: 0.65rem; }
+    .reflection-q-num { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 0.3rem; }
+    .reflection-q-label { font-size: 0.875rem; font-weight: 500; color: var(--ink); margin-bottom: 0.7rem; display: block; }
+    .options-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 0.4rem; }
+    .option-btn { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 0.55rem 0.8rem; font-family: var(--font); font-size: 0.8rem; color: var(--ink-mid); cursor: pointer; text-align: left; line-height: 1.45; transition: all 0.15s; }
+    .option-btn:hover { border-color: var(--accent-mid); color: var(--ink); }
+    .option-btn.selected { background: var(--accent-light); border-color: var(--accent); color: var(--accent); font-weight: 500; }
+    .reflection-actions { display: flex; gap: 0.65rem; margin-top: 1rem; flex-wrap: wrap; }
+    .btn-primary { background: var(--accent); color: #fff; border: none; border-radius: var(--radius-sm); padding: 0.6rem 1.25rem; font-family: var(--font); font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+    .btn-primary:hover { background: #3a4f58; }
+    .btn-secondary { background: none; color: var(--ink-mid); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.6rem 1.25rem; font-family: var(--font); font-size: 0.85rem; cursor: pointer; transition: all 0.15s; }
+    .btn-secondary:hover { border-color: var(--ink-light); color: var(--ink); }
+    .error-msg { font-size: 0.81rem; color: #8a3a10; margin-top: 0.4rem; display: none; }
+    .reflection-result { display: none; background: var(--accent-light); border: 1px solid var(--border-strong); border-radius: var(--radius); padding: 1.4rem; margin-top: 1rem; }
+    .reflection-result.visible { display: block; animation: fadeIn 0.3s ease; }
+    .result-title { font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: 0.65rem; }
+    .result-body { font-size: 0.875rem; color: var(--ink-mid); line-height: 1.7; }
+    .result-points { margin: 0.75rem 0 0; padding-left: 1.2rem; }
+    .result-points li { font-size: 0.865rem; color: var(--ink-mid); margin-bottom: 0.4rem; line-height: 1.55; }
+    .citation-group { margin-bottom: 1.75rem; }
+    .citation-group-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 0.65rem; padding-bottom: 0.35rem; border-bottom: 1px solid var(--border); }
+    .citation-entry { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.8rem 1rem; margin-bottom: 0.45rem; }
+    .citation-entry .cite-label { font-size: 0.67rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.2rem; display: block; }
+    .citation-entry p { font-size: 0.82rem; color: var(--ink-mid); line-height: 1.55; }
+    .citation-entry a { color: var(--accent); text-decoration: none; font-size: 0.79rem; display: block; margin-top: 0.2rem; word-break: break-all; }
+    .citation-entry a:hover { text-decoration: underline; }
+    footer { border-top: 1px solid var(--border); background: var(--surface); padding: 1.5rem 2rem; text-align: center; font-size: 0.78rem; color: var(--ink-light); line-height: 1.65; }
+    @media (max-width: 640px) {
+      main { padding: 1.5rem 1rem 4rem; }
+      header { padding: 0 1rem; }
+      .tab-nav-inner { padding: 0 1rem; }
+      header h1 { font-size: 1.45rem; }
+      .foundations-grid, .decisions-grid { grid-template-columns: 1fr; }
+      .impact-cols { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header>
+  <div class="header-inner">
+    <div class="site-label">Learning Experience Design — Knowledge Resource</div>
+    <h1>Understanding Organizational Learning Design</h1>
+    <p class="header-sub">A guide to the knowledge foundations, design process, key decisions, and professional practice that characterise effective organizational learning design.</p>
+    <div class="info-banner">
+      <span>ℹ️</span>
+      <span>This resource is for learning designers, organizational leaders, and those involved in capability-building. Use the tabs to explore at whatever depth is useful.</span>
+    </div>
+  </div>
+</header>
+
+<nav class="tab-nav" aria-label="Resource sections">
+  <div class="tab-nav-inner">
+    <button class="tab-btn active" data-tab="foundations">Foundations</button>
+    <button class="tab-btn" data-tab="process">Design Process</button>
+    <button class="tab-btn" data-tab="decisions">Key Decisions</button>
+    <button class="tab-btn" data-tab="competencies">Competencies</button>
+    <button class="tab-btn" data-tab="impact">Outcomes</button>
+    <button class="tab-btn" data-tab="reflection">Reflection Tool</button>
+    <button class="tab-btn" data-tab="citations">Citations</button>
+  </div>
+</nav>
+
+<main id="main-content">
+
+  <!-- FOUNDATIONS -->
+  <section class="tab-panel active" id="tab-foundations" role="tabpanel">
+    <h2 class="panel-title">Six Knowledge Foundations</h2>
+    <p class="panel-lead">Effective organizational learning design draws on interconnected bodies of knowledge. The strongest design work holds all of these in view simultaneously — producing solutions that a content-focused approach cannot.</p>
+
+    <div class="foundations-grid">
+      <div class="foundation-card">
+        <span class="foundation-icon">🧠</span>
+        <h3>Adult Learning Theory</h3>
+        <p>Adults learn most effectively when they understand why something is relevant, can draw on prior experience, and exercise some autonomy over their learning path. Malcolm Knowles' andragogy — built on self-direction, problem-centering, and intrinsic motivation — remains the core theoretical reference for organizational learning design.</p>
+      </div>
+      <div class="foundation-card v2">
+        <span class="foundation-icon">⚙️</span>
+        <h3>Cognitive Load Theory</h3>
+        <p>Working memory is limited. Effective design manages three types of cognitive load: intrinsic (the inherent complexity of content), extraneous (friction created by poor design choices), and germane (the effort devoted to building lasting schemas). The goal is to minimize extraneous load while promoting deep schema formation.</p>
+      </div>
+      <div class="foundation-card v3">
+        <span class="foundation-icon">🔄</span>
+        <h3>Organizational Development & Change</h3>
+        <p>Learning does not occur in isolation. Effective design accounts for how organizations change, where resistance originates, and how capability-building fits within broader transformation efforts. Models such as ADKAR, Kotter's 8-Step framework, and Lewin's change stages provide the structural language for this work.</p>
+      </div>
+      <div class="foundation-card v4">
+        <span class="foundation-icon">🌐</span>
+        <h3>Systems Thinking</h3>
+        <p>Learning is embedded in organizational systems — culture, incentives, leadership behavior, and job design. Peter Senge's Five Disciplines framework, along with causal loop analysis, equips designers to diagnose root causes rather than address surface symptoms. This is what distinguishes strategic learning design from content production.</p>
+      </div>
+      <div class="foundation-card">
+        <span class="foundation-icon">🌍</span>
+        <h3>Cultural Responsiveness</h3>
+        <p>Cultural backgrounds shape how people interpret, engage with, and transfer learning. Rigorous design acknowledges that systemic barriers — including unconscious bias, resource inequity, and misaligned organizational structures — affect participation and transfer. Culturally responsive design is a design requirement, not an add-on.</p>
+      </div>
+      <div class="foundation-card v2">
+        <span class="foundation-icon">♿</span>
+        <h3>Equity, Access & WCAG</h3>
+        <p>Accessible design anticipates learner variability from the outset. The Web Content Accessibility Guidelines (WCAG), organized around four principles — Perceivable, Operable, Understandable, and Robust — provide the technical baseline for digital learning. Automated tools detect roughly 30–40% of real barriers; human judgment remains essential.</p>
+      </div>
+    </div>
+
+    <div class="callout note">
+      <span class="label">A Practical Hierarchy</span>
+      Use instructional design models to structure the process. Use adult learning theory to shape learner experience. Use systems thinking to situate learning within the organizational context. Use cultural responsiveness and WCAG to ensure no learner is excluded. Rigorous practice holds all of these in view simultaneously.
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="prose">
+      <h3>Strategic Design vs. Content Production</h3>
+      <p>Learning design is an analytical and design discipline, not primarily a content development function. The most consequential work happens before any content is created: diagnosing whether a performance gap is actually a learning problem, identifying whose participation is structurally constrained, and mapping the organizational conditions that will either support or undermine transfer.</p>
+      <p><strong>Learning transfer research</strong> — including the work of Calhoun Wick, Emma Weber, and the Transfer of Training literature — consistently shows that post-training manager support, practice opportunity, and organizational climate are stronger predictors of behavior change than the learning experience itself. Effective design addresses both.</p>
+      <h3>A Collaborative, Context-Specific Approach</h3>
+      <p>Each organization brings a distinct culture, history, and set of constraints. Effective learning design is developed collaboratively — with organizational leaders, subject matter experts, and learners — rather than applied as a generic template. Working closely with those who hold the knowledge means asking the right diagnostic questions, building shared understanding of the problem, and translating that understanding into experiences that develop real capability rather than familiarity.</p>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="tab-panel" id="tab-process" role="tabpanel">
+    <h2 class="panel-title">How a Rigorous Design Process Works</h2>
+    <p class="panel-lead">Effective organizational learning design is structured, iterative, and context-sensitive. The stages below represent a comprehensive approach; in practice, scope and depth are calibrated to each organization's capacity and constraints. Understanding the full process clarifies what is gained or lost when particular stages are abbreviated.</p>
+
+    <div class="stages-list">
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false">
+          <div class="stage-num">1</div>
+          <div class="stage-meta">
+            <span class="stage-title">Intake & Scoping</span>
+            <span class="stage-subtitle">Understanding the context before designing for it</span>
+          </div>
+          <div class="stage-tags"><span class="stage-tag">Foundational</span><span class="stage-tag alt">Collaborative</span></div>
+          <span class="stage-chevron">▼</span>
+        </button>
+        <div class="stage-body">
+          <p>Before any design begins, it is essential to understand the organizational context, the learner population, and the performance gap being addressed. This includes clarifying whether learning is the right intervention, what success looks like across different stakeholder groups, and where the organizational constraints lie.</p>
+          <p>Intake conversations establish the conditions for productive collaboration — decision-making authority, review processes, timelines, and the SME's time commitment. Assumptions surfaced here prevent scope creep later.</p>
+          <div class="stage-produces">
+            <div class="stage-produces-label">This stage produces</div>
+            <ul>
+              <li>Documented scope, constraints, and stakeholder expectations</li>
+              <li>Preliminary determination of whether learning is the right intervention</li>
+              <li>Shared understanding of roles, timelines, and review process</li>
+            </ul>
+          </div>
+          <div class="stage-note">Projects that skip rigorous scoping frequently encounter misaligned expectations and remediation work late in the cycle — at significantly higher cost than early clarification.</div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false">
+          <div class="stage-num">2</div>
+          <div class="stage-meta">
+            <span class="stage-title">Needs Analysis</span>
+            <span class="stage-subtitle">Diagnosing what the organization actually needs</span>
+          </div>
+          <div class="stage-tags"><span class="stage-tag">Analytical</span><span class="stage-tag alt">Evidence-based</span></div>
+          <span class="stage-chevron">▼</span>
+        </button>
+        <div class="stage-body">
+          <p>Needs analysis diagnoses the gap between current and desired performance — through interviews, observation, document review, and data analysis. It distinguishes learning problems (a knowledge or skill deficit) from performance problems rooted in motivation, environment, or process, each of which requires a different response.</p>
+          <p>This stage also maps the conditions that will support or impede transfer: manager behavior, practice opportunity, incentive alignment, and cultural climate. Analysis that overlooks these factors produces recommendations that look sound on paper but fail in practice.</p>
+          <div class="stage-produces">
+            <div class="stage-produces-label">This stage produces</div>
+            <ul>
+              <li>Clear articulation of the performance gap and its root causes</li>
+              <li>Confirmation (or not) that a learning intervention is appropriate</li>
+              <li>Analysis of organizational conditions affecting transfer</li>
+              <li>Prioritized learning needs to inform program design</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false">
+          <div class="stage-num">3</div>
+          <div class="stage-meta">
+            <span class="stage-title">Learning Outcomes & Alignment</span>
+            <span class="stage-subtitle">Defining what learners will be able to do</span>
+          </div>
+          <div class="stage-tags"><span class="stage-tag">Design</span><span class="stage-tag alt">Foundational</span></div>
+          <span class="stage-chevron">▼</span>
+        </button>
+        <div class="stage-body">
+          <p>Measurable learning outcomes describe the observable performances that demonstrate learning has occurred. Well-constructed outcomes use the ABCD formula — Audience, Behavior, Condition, Degree — and align with the appropriate level of Bloom's Taxonomy, from foundational recall through analysis, synthesis, and application.</p>
+          <p>Constructive alignment ensures that outcomes, assessments, and activities are coherently connected: learners practice what they are assessed on, and assessments measure what the program claims to develop. Misalignment here is a common source of ineffective training.</p>
+          <div class="stage-produces">
+            <div class="stage-produces-label">This stage produces</div>
+            <ul>
+              <li>Clearly worded, measurable outcomes at the appropriate Bloom's level</li>
+              <li>Alignment map connecting outcomes to assessments and key activities</li>
+              <li>Documented agreement with stakeholders on what success looks like</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false">
+          <div class="stage-num">4</div>
+          <div class="stage-meta">
+            <span class="stage-title">Design & Storyboarding</span>
+            <span class="stage-subtitle">Translating outcomes into a coherent learning architecture</span>
+          </div>
+          <div class="stage-tags"><span class="stage-tag">Design</span><span class="stage-tag alt">Iterative</span></div>
+          <span class="stage-chevron">▼</span>
+        </button>
+        <div class="stage-body">
+          <p>The design phase translates outcomes into a learning architecture: sequencing, modality selection, content chunking, and interaction design. Decisions here are shaped by cognitive load theory — scaffolding complexity, reducing extraneous load, and promoting germane load through meaningful practice and reflection.</p>
+          <p>Storyboarding brings the design to life before development begins, allowing stakeholders to review structure and approach without the cost of full development. In agile contexts this takes the form of rapid prototypes in iterative sprint cycles. Instructional models such as ADDIE, backward design (UbD), SAM, and Gagné's Nine Events provide the structural language for sequencing decisions.</p>
+          <div class="stage-produces">
+            <div class="stage-produces-label">This stage produces</div>
+            <ul>
+              <li>Learning path or module sequence with rationale</li>
+              <li>Storyboard or prototype for stakeholder review</li>
+              <li>Modality and media decisions grounded in context and constraints</li>
+              <li>Assessment design aligned to outcomes</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false">
+          <div class="stage-num">5</div>
+          <div class="stage-meta">
+            <span class="stage-title">Content Development</span>
+            <span class="stage-subtitle">Building accessible, well-crafted learning materials</span>
+          </div>
+          <div class="stage-tags"><span class="stage-tag">Development</span><span class="stage-tag alt">Accessible</span></div>
+          <span class="stage-chevron">▼</span>
+        </button>
+        <div class="stage-body">
+          <p>Content development encompasses writing, multimedia production, LMS course-building, and facilitation materials. Writing for learning is concise, active, and organized around the learner's task rather than the subject's structure.</p>
+          <p>Accessibility is built in, not retrofitted. WCAG compliance, UDL principles, and inclusive design are applied throughout — including alternative text, caption quality, keyboard navigability, color contrast, and flexibility of format and pacing.</p>
+          <div class="stage-produces">
+            <div class="stage-produces-label">This stage produces</div>
+            <ul>
+              <li>Fully developed eLearning modules, facilitator guides, or blended materials</li>
+              <li>Accessible media (captions, alt text, contrast-compliant visuals)</li>
+              <li>LMS-ready course package with navigation and assessment logic</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false">
+          <div class="stage-num">6</div>
+          <div class="stage-meta">
+            <span class="stage-title">Beta Testing & Quality Assurance</span>
+            <span class="stage-subtitle">Validating the experience before it reaches learners</span>
+          </div>
+          <div class="stage-tags"><span class="stage-tag">Quality</span><span class="stage-tag alt">Evidence-based</span></div>
+          <span class="stage-chevron">▼</span>
+        </button>
+        <div class="stage-body">
+          <p>Beta testing engages representative learners in structured evaluation before launch — identifying comprehension gaps, navigation friction, and misaligned expectations that stakeholder review cannot surface. QA reviews technical function, accessibility compliance, and content accuracy.</p>
+          <p>Frameworks such as Quality Matters (QM) and OSCQR provide structured rubrics for evaluating online learning quality. Findings are documented and triaged by severity, and changes are tracked through a formal revision log.</p>
+          <div class="stage-produces">
+            <div class="stage-produces-label">This stage produces</div>
+            <ul>
+              <li>Beta testing report with participant feedback and prioritized revisions</li>
+              <li>QA audit report with accessibility and technical findings</li>
+              <li>Revision log documenting changes made prior to launch</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false">
+          <div class="stage-num">7</div>
+          <div class="stage-meta">
+            <span class="stage-title">Evaluation & Impact Measurement</span>
+            <span class="stage-subtitle">Assessing whether learning is actually working</span>
+          </div>
+          <div class="stage-tags"><span class="stage-tag">Evaluation</span><span class="stage-tag alt">Data-informed</span></div>
+          <span class="stage-chevron">▼</span>
+        </button>
+        <div class="stage-body">
+          <p>Evaluation is designed into the program from the start. Kirkpatrick's Four Levels provide the framework: Reaction (did learners find it useful?), Learning (did knowledge or skill change?), Behavior (did performance change on the job?), and Results (did organizational outcomes shift?). Levels 3 and 4 require data beyond the LMS — manager observation and business performance metrics.</p>
+          <p>A sustainment plan addresses how the program is maintained, updated, and embedded into ongoing organizational practice rather than treated as a one-time event.</p>
+          <div class="stage-produces">
+            <div class="stage-produces-label">This stage produces</div>
+            <ul>
+              <li>Evaluation plan spanning all four Kirkpatrick levels</li>
+              <li>Post-program impact report with data-informed findings</li>
+              <li>Sustainment plan for ongoing relevance and continuous improvement</li>
+            </ul>
+          </div>
+          <div class="stage-note">Most organizational training is evaluated only at Level 1. Designing for Levels 3 and 4 requires organizational buy-in, pre-established measurement infrastructure, and a willingness to connect learning data to business outcomes.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- KEY DECISIONS -->
+  <section class="tab-panel" id="tab-decisions" role="tabpanel">
+    <h2 class="panel-title">What Shapes a Learning Design Project</h2>
+    <p class="panel-lead">No two projects are identical. Decisions about scope, approach, learner involvement, and measurement determine what kind of program is appropriate — and what it will produce. These dimensions also shape how the design process is structured collaboratively with the organization.</p>
+
+    <div class="decisions-grid">
+      <div class="decision-card">
+        <span class="decision-icon">🎯</span>
+        <h3>Intervention Type</h3>
+        <span class="decision-q">Is learning actually the right solution?</span>
+        <p>Not all performance gaps are learning problems. Motivation deficits, process failures, and environmental constraints call for different interventions. Needs analysis determines whether a training solution is warranted — and prevents the most common failure mode in organizational learning: building programs for problems learning cannot solve.</p>
+      </div>
+      <div class="decision-card">
+        <span class="decision-icon">📐</span>
+        <h3>Design Model</h3>
+        <span class="decision-q">How iterative does the process need to be?</span>
+        <p>ADDIE provides sequential rigor suited to stable, well-defined content. SAM prioritizes rapid prototyping and iterative feedback — better suited to agile environments and evolving subject matter. Backward design anchors the process in desired outcomes from the start. Most projects draw on elements of each.</p>
+      </div>
+      <div class="decision-card">
+        <span class="decision-icon">🖥️</span>
+        <h3>Modality & Blend</h3>
+        <span class="decision-q">What combination of formats serves this learner population?</span>
+        <p>eLearning, live facilitation, coaching, job aids, and social learning serve different needs. Modality decisions should follow the analysis — not precede it — and account for learner access, schedule constraints, and what the evidence suggests about transfer for this type of skill.</p>
+      </div>
+      <div class="decision-card">
+        <span class="decision-icon">👥</span>
+        <h3>Learner Involvement</h3>
+        <span class="decision-q">Are learners part of the design process?</span>
+        <p>Learner involvement in needs analysis, prototype review, and beta testing consistently improves program relevance and reduces post-launch revision cycles. Co-design is particularly valuable when designing for communities whose experience may not be well-represented among the design team or SMEs.</p>
+      </div>
+      <div class="decision-card">
+        <span class="decision-icon">⏱</span>
+        <h3>Timeline & Iteration</h3>
+        <span class="decision-q">How much time exists for rigorous design?</span>
+        <p>Compressed timelines require explicit decisions about which stages are abbreviated and what is lost as a result. When time is genuinely constrained, the highest-value investment is usually in needs analysis and outcome clarity — because errors at those stages are the most expensive to correct later.</p>
+      </div>
+      <div class="decision-card">
+        <span class="decision-icon">📊</span>
+        <h3>Evaluation Depth</h3>
+        <span class="decision-q">What will success look like — and how will it be measured?</span>
+        <p>Evaluating at Levels 3 and 4 requires measurement infrastructure established before the program launches. Organizations that define success metrics early design differently — and are better positioned to demonstrate program value to leadership on evidence rather than advocacy.</p>
+      </div>
+    </div>
+
+    <div class="callout note">
+      <span class="label">On Rapid vs. Comprehensive Approaches</span>
+      Rapid design approaches are valuable when constraints are real and acknowledged. The risk is treating abbreviated processes as equivalent to rigorous ones. A well-scoped, explicitly constrained project produces better outcomes than an under-resourced project that does not acknowledge its own limitations.
+    </div>
+  </section>
+
+  <!-- COMPETENCIES -->
+  <section class="tab-panel" id="tab-competencies" role="tabpanel">
+    <h2 class="panel-title">Core Competencies in Organizational Learning Design</h2>
+    <p class="panel-lead">The following competencies form the professional foundation of organizational learning design work — spanning analysis, design, delivery, and evaluation across a range of organizational contexts.</p>
+
+    <div style="margin: 1.5rem 0;">
+      <div class="competency-item">
+        <div class="comp-accent"></div>
+        <div class="comp-content">
+          <h3>Instructional & Learning Design</h3>
+          <p>The ability to analyze performance gaps, identify learning objectives, and select appropriate modalities and sequencing — grounded in models like ADDIE, SAM, and backward design. This includes knowing when learning is, and is not, the right intervention.</p>
+        </div>
+      </div>
+      <div class="competency-item">
+        <div class="comp-accent v2"></div>
+        <div class="comp-content">
+          <h3>Needs Analysis & Stakeholder Consultation</h3>
+          <p>Diagnosing what an organization actually needs — through interviews, observation, and data review — and translating findings into a learning strategy. This requires navigating competing priorities across organizational levels without losing analytical clarity.</p>
+        </div>
+      </div>
+      <div class="competency-item">
+        <div class="comp-accent v3"></div>
+        <div class="comp-content">
+          <h3>Curriculum & Program Architecture</h3>
+          <p>Structuring learning at the system level: sequencing, scaffolding, blending modalities, and designing for transfer into real practice. Program architecture considers not just the individual learning experience but the broader organizational ecosystem in which it sits.</p>
+        </div>
+      </div>
+      <div class="competency-item">
+        <div class="comp-accent v4"></div>
+        <div class="comp-content">
+          <h3>Facilitation</h3>
+          <p>Designing and leading synchronous learning experiences — in-person or virtual — in ways that build shared understanding, psychological safety, and genuine skill development. Effective facilitation is structured sense-making, not information transfer.</p>
+        </div>
+      </div>
+      <div class="competency-item">
+        <div class="comp-accent"></div>
+        <div class="comp-content">
+          <h3>Assessment Design</h3>
+          <p>Constructing assessments that measure intended learning outcomes rather than proxy performances. This includes formative and summative approaches, authentic assessment design, rubric construction, AI-aware academic integrity considerations, and equity analysis — ensuring assessment format does not inadvertently exclude capable learners.</p>
+        </div>
+      </div>
+      <div class="competency-item">
+        <div class="comp-accent v2"></div>
+        <div class="comp-content">
+          <h3>Evaluation & Measurement</h3>
+          <p>Assessing whether learning is working — at the reaction, learning, behavior, and results levels. This includes designing evaluation into programs from the start, interpreting learning analytics, and connecting learning data to organizational performance metrics.</p>
+        </div>
+      </div>
+      <div class="competency-item">
+        <div class="comp-accent v3"></div>
+        <div class="comp-content">
+          <h3>Project & Stakeholder Management</h3>
+          <p>Managing timelines, subject matter experts, vendors, and organizational complexity across collaborative, cross-functional processes. This includes scope management, structured feedback protocols, and the ability to maintain design integrity under organizational pressure.</p>
+        </div>
+      </div>
+      <div class="competency-item">
+        <div class="comp-accent v4"></div>
+        <div class="comp-content">
+          <h3>Accessible & Inclusive Design</h3>
+          <p>Designing for the full range of learners — including WCAG compliance, UDL application, cultural responsiveness, and awareness of how systemic barriers affect participation and transfer. Accessibility is a design practice, not a compliance checklist.</p>
+        </div>
+      </div>
+      <div class="competency-item">
+        <div class="comp-accent"></div>
+        <div class="comp-content">
+          <h3>Subject Matter Proximity</h3>
+          <p>Not expertise in every domain, but the sustained ability to work alongside subject matter experts — asking diagnostic questions, surfacing tacit knowledge, managing review cycles productively, and translating specialized content into experiences that build real capability. This collaboration is structured and respectful of the SME's time and expertise.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPACT -->
+  <section class="tab-panel" id="tab-impact" role="tabpanel">
+    <h2 class="panel-title">What Well-Designed Learning Produces</h2>
+    <p class="panel-lead">Rigorous organizational learning design creates change at two horizons. The shorter-term outcomes are tangible and measurable. The longer-term shift affects how an organization builds and sustains capability over time.</p>
+
+    <div class="impact-cols">
+      <div>
+        <div class="impact-col-header">Shorter Term<span>What becomes visible and actionable</span></div>
+        <div class="impact-item">
+          <div class="impact-check">✓</div>
+          <div class="impact-item-text">
+            <h4>Performance gaps are named and prioritised</h4>
+            <p>A clear picture of what is limiting performance, organized by root cause — not just what content to create.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-check">✓</div>
+          <div class="impact-item-text">
+            <h4>Learners acquire transferable skills</h4>
+            <p>When outcomes are specific, assessments are aligned, and practice is structured around real tasks, transfer to the job is substantially more likely than with knowledge-transmission approaches.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-check">✓</div>
+          <div class="impact-item-text">
+            <h4>Stakeholders share a design language</h4>
+            <p>A structured process builds shared understanding of what learning can and cannot accomplish — reducing misaligned expectations in future projects.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-check">✓</div>
+          <div class="impact-item-text">
+            <h4>Design team knowledge grows</h4>
+            <p>Practitioners who engage with rigorous design processes develop professional judgment that improves the quality of subsequent work.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="impact-col-header">Longer Term<span>What becomes embedded in practice</span></div>
+        <div class="impact-item">
+          <div class="impact-check arrow">→</div>
+          <div class="impact-item-text">
+            <h4>Learning becomes a strategic function</h4>
+            <p>Organizations that invest in rigorous design develop the institutional capacity to connect learning investment to organizational outcomes — on evidence rather than advocacy.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-check arrow">→</div>
+          <div class="impact-item-text">
+            <h4>Accessibility and inclusion are designed in</h4>
+            <p>Rather than retrofitted, equitable design is incorporated from the start — benefiting all learners and reducing the cost of remediation over time.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-check arrow">→</div>
+          <div class="impact-item-text">
+            <h4>A culture of continuous improvement develops</h4>
+            <p>Evaluation infrastructure and sustainment plans shift learning from discrete events to an ongoing organizational practice that responds to changing needs.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-check arrow">→</div>
+          <div class="impact-item-text">
+            <h4>Change initiatives are better supported</h4>
+            <p>When learning design is integrated into organizational development — rather than treated as separate — capability-building becomes an instrument of transformation rather than a compliance activity.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="callout note">
+      <span class="label">On Evidence and Transfer</span>
+      Learning transfer research consistently shows that post-training conditions — manager reinforcement, practice opportunity, and organizational climate — are stronger predictors of behavior change than the learning experience itself. Effective design addresses both.
+    </div>
+  </section>
+
+  <!-- REFLECTION -->
+  <section class="tab-panel" id="tab-reflection" role="tabpanel">
+    <h2 class="panel-title">Where Is Your Organization in This Work?</h2>
+    <p class="panel-lead">This reflection is intended to surface useful questions about your organization's current approach to learning design. There are no right or wrong answers — choose the response that most honestly reflects your situation.</p>
+
+    <div id="reflection-form">
+      <div class="reflection-q">
+        <span class="reflection-q-num">Question 1 of 4</span>
+        <span class="reflection-q-label">How does your organization currently approach the design of learning programs?</span>
+        <div class="options-grid" data-q="q1">
+          <button class="option-btn" data-val="1">We commission content when a need is raised, without formal needs analysis.</button>
+          <button class="option-btn" data-val="2">We conduct some analysis, but design decisions are often driven by format preference rather than findings.</button>
+          <button class="option-btn" data-val="3">We follow a structured process, though evaluation is limited to learner reactions.</button>
+          <button class="option-btn" data-val="4">Design is evidence-based, evaluation spans multiple Kirkpatrick levels, and findings inform iteration.</button>
+        </div>
+      </div>
+      <div class="reflection-q">
+        <span class="reflection-q-num">Question 2 of 4</span>
+        <span class="reflection-q-label">How is accessibility currently addressed in your learning materials?</span>
+        <div class="options-grid" data-q="q2">
+          <button class="option-btn" data-val="1">Accessibility is not formally considered in our design or review process.</button>
+          <button class="option-btn" data-val="2">We address accessibility when issues are reported, but it is not built into design from the start.</button>
+          <button class="option-btn" data-val="3">We apply WCAG criteria to digital content, though application is inconsistent across modalities.</button>
+          <button class="option-btn" data-val="4">Accessible and inclusive design is integrated from the outset, across all content types and formats.</button>
+        </div>
+      </div>
+      <div class="reflection-q">
+        <span class="reflection-q-num">Question 3 of 4</span>
+        <span class="reflection-q-label">To what extent do your learning programs address the conditions for transfer — not just the learning experience itself?</span>
+        <div class="options-grid" data-q="q3">
+          <button class="option-btn" data-val="1">Transfer is not something we currently design for explicitly.</button>
+          <button class="option-btn" data-val="2">We encourage managers to support learning, but this is informal rather than designed.</button>
+          <button class="option-btn" data-val="3">Some programs include follow-up resources, though manager involvement is variable.</button>
+          <button class="option-btn" data-val="4">Programs include explicit transfer strategies: manager briefs, practice structures, and post-learning check-ins.</button>
+        </div>
+      </div>
+      <div class="reflection-q">
+        <span class="reflection-q-num">Question 4 of 4</span>
+        <span class="reflection-q-label">How is learning connected to organizational strategy and performance measurement in your context?</span>
+        <div class="options-grid" data-q="q4">
+          <button class="option-btn" data-val="1">Learning is managed separately from organizational strategy.</button>
+          <button class="option-btn" data-val="2">There is general alignment, but no formal mechanism to connect learning investment to business outcomes.</button>
+          <button class="option-btn" data-val="3">We report on completion and some behavior-level outcomes, but organizational impact is not routinely measured.</button>
+          <button class="option-btn" data-val="4">Learning strategy is explicitly connected to organizational goals, with defined metrics at the results level.</button>
+        </div>
+      </div>
+      <div class="reflection-actions">
+        <button class="btn-primary" onclick="showReflection()">See reflection</button>
+        <button class="btn-secondary" onclick="resetReflection()">Start again</button>
+      </div>
+      <div class="error-msg" id="reflection-error">Please answer all four questions to see your reflection.</div>
+    </div>
+
+    <div class="reflection-result" id="reflection-result">
+      <div class="result-title" id="result-title"></div>
+      <div class="result-body" id="result-body"></div>
+      <ul class="result-points" id="result-points"></ul>
+    </div>
+  </section>
+
+  <!-- CITATIONS -->
+  <section class="tab-panel" id="tab-citations" role="tabpanel">
+    <h2 class="panel-title">Academic & Professional Citations</h2>
+    <p class="panel-lead">The knowledge claims, frameworks, and evidence in this resource draw on established scholarship and professional practice. Sources are grouped by the area of the resource they primarily support.</p>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Adult Learning Theory</div>
+      <div class="citation-entry">
+        <span class="cite-label">Foundational theory</span>
+        <p><strong>Knowles, M. S.</strong> The Adult Learner: A Neglected Species. Gulf Publishing, 1973. Foundational source for andragogy, self-direction, and adult motivation.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Extended framework</span>
+        <p><strong>Knowles, M. S., Holton, E. F., & Swanson, R. A.</strong> The Adult Learner: The Definitive Classic in Adult Education and Human Resource Development. 8th ed. Routledge, 2015.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Cognitive Load Theory</div>
+      <div class="citation-entry">
+        <span class="cite-label">Foundational theory</span>
+        <p><strong>Sweller, J.</strong> "Cognitive Load Theory, Learning Difficulty, and Instructional Design." Learning and Instruction, 4(4), 293–312, 1994. Source for intrinsic, extraneous, and germane load distinctions.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Multimedia learning</span>
+        <p><strong>Mayer, R. E.</strong> Multimedia Learning. 2nd ed. Cambridge University Press, 2009. Principles for reducing extraneous load in multimedia instructional design.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Organizational Development & Change Management</div>
+      <div class="citation-entry">
+        <span class="cite-label">Change leadership</span>
+        <p><strong>Kotter, J. P.</strong> Leading Change. Harvard Business Review Press, 1996. Source for the 8-Step change model.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Individual change management</span>
+        <p><strong>Hiatt, J. M.</strong> ADKAR: A Model for Change in Business, Government and Our Community. Prosci Learning Center Publications, 2006.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Organizational learning</span>
+        <p><strong>Argyris, C., & Schön, D. A.</strong> Organizational Learning II: Theory, Method, and Practice. Addison-Wesley, 1996.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Systems Thinking</div>
+      <div class="citation-entry">
+        <span class="cite-label">Foundational framework</span>
+        <p><strong>Senge, P. M.</strong> The Fifth Discipline: The Art and Practice of the Learning Organization. Doubleday, 1990. Source for the Five Disciplines framework and systems thinking in organizational learning.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Accessibility & WCAG</div>
+      <div class="citation-entry">
+        <span class="cite-label">Primary technical standard</span>
+        <p><strong>World Wide Web Consortium (W3C).</strong> Web Content Accessibility Guidelines (WCAG) 2.1. W3C Recommendation, June 2018.</p>
+        <a href="https://www.w3.org/TR/WCAG21/" target="_blank" rel="noopener">w3.org/TR/WCAG21/</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Universal Design for Learning</span>
+        <p><strong>CAST.</strong> Universal Design for Learning Guidelines, Version 2.2. CAST, 2018.</p>
+        <a href="https://udlguidelines.cast.org/" target="_blank" rel="noopener">udlguidelines.cast.org</a>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Cultural Responsiveness</div>
+      <div class="citation-entry">
+        <span class="cite-label">Cultural frames of reference</span>
+        <p><strong>Spring, J.</strong> The Intersection of Cultures: Multicultural Education in the United States. McGraw-Hill, 1995.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Equity-minded practice</span>
+        <p><strong>Gay, G.</strong> Culturally Responsive Teaching: Theory, Research, and Practice. 3rd ed. Teachers College Press, 2018.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Instructional Design</div>
+      <div class="citation-entry">
+        <span class="cite-label">Backward design</span>
+        <p><strong>Wiggins, G., & McTighe, J.</strong> Understanding by Design. 2nd ed. ASCD, 2005. Source for backward design and constructive alignment in curriculum development.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Successive approximation</span>
+        <p><strong>Allen, M. W.</strong> Leaving ADDIE for SAM: An Agile Model for Developing the Best Learning Experiences. ATD Press, 2012.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Learning Transfer & Evaluation</div>
+      <div class="citation-entry">
+        <span class="cite-label">Transfer of training</span>
+        <p><strong>Wick, C., Pollock, R., & Jefferson, A.</strong> The Six Disciplines of Breakthrough Learning: How to Turn Training and Development into Business Results. Wiley, 2010.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Four-level evaluation framework</span>
+        <p><strong>Kirkpatrick, D. L., & Kirkpatrick, J. D.</strong> Evaluating Training Programs: The Four Levels. 3rd ed. Berrett-Koehler, 2006.</p>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  Organizational Learning Design — Knowledge Resource
+</footer>
+
+<script>
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + target).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+
+  document.querySelectorAll('.stage-trigger').forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const expanded = trigger.getAttribute('aria-expanded') === 'true';
+      trigger.setAttribute('aria-expanded', String(!expanded));
+      trigger.nextElementSibling.classList.toggle('open', !expanded);
+    });
+  });
+
+  document.querySelectorAll('.options-grid').forEach(grid => {
+    grid.querySelectorAll('.option-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        grid.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+      });
+    });
+  });
+
+  function showReflection() {
+    const qs = ['q1','q2','q3','q4'];
+    const answers = {};
+    let allAnswered = true;
+    qs.forEach(q => {
+      const sel = document.querySelector('.options-grid[data-q="' + q + '"] .option-btn.selected');
+      if (!sel) allAnswered = false;
+      else answers[q] = parseInt(sel.dataset.val);
+    });
+    const errEl = document.getElementById('reflection-error');
+    if (!allAnswered) { errEl.style.display = 'block'; return; }
+    errEl.style.display = 'none';
+
+    const avg = (answers.q1 + answers.q2 + answers.q3 + answers.q4) / 4;
+    let title, body, points;
+
+    if (avg <= 1.5) {
+      title = "Early Stage: Building the Foundation";
+      body = "Your organization is at the beginning of formalizing its approach to learning design. The most productive investment at this stage is in establishing basic process infrastructure — before expanding the volume of programs.";
+      points = [
+        "Introduce a lightweight needs analysis step before any program development begins.",
+        "Establish minimum accessibility standards for all new learning content.",
+        "Connect at least one learning initiative to a measurable business outcome this year.",
+        "Identify a person or team with defined accountability for learning quality."
+      ];
+    } else if (avg <= 2.5) {
+      title = "Developing Practice: Strengthening Rigour";
+      body = "Your organization has established some learning design infrastructure but there are meaningful gaps in evaluation depth, accessibility, and transfer design. The work at this stage is about moving from ad hoc rigour to consistent practice.";
+      points = [
+        "Audit existing programs for accessibility compliance and prioritise remediation.",
+        "Build evaluation into program design from the start — not after launch.",
+        "Introduce manager-facing resources to actively support learning transfer.",
+        "Establish a shared design process that all learning initiatives follow, regardless of scale."
+      ];
+    } else if (avg <= 3.5) {
+      title = "Established Practice: Deepening Impact";
+      body = "Your organization has solid learning design infrastructure. The opportunity is to move from competent execution to strategic impact — connecting learning investment to organizational outcomes more deliberately.";
+      points = [
+        "Build Level 3 and 4 evaluation into at least one high-stakes program this cycle.",
+        "Integrate cultural responsiveness review into the design process for all programs.",
+        "Develop a transfer strategy template that design teams use consistently across projects.",
+        "Identify systemic barriers — in culture, incentives, or structure — that learning alone cannot address."
+      ];
+    } else {
+      title = "Strategic Practice: Leading the Field";
+      body = "Your organization demonstrates mature, evidence-based learning design practice. The work at this stage is about maintaining rigour under organizational pressure, sharing knowledge across the field, and continuing to connect learning design to the structural conditions that determine whether learning actually transfers.";
+      points = [
+        "Document and share what is working — internally and with the broader professional community.",
+        "Review whether evaluation findings are actually influencing organizational decisions.",
+        "Examine whether inclusive design practices extend to procurement and vendor selection.",
+        "Continue to distinguish between what learning can accomplish and what requires structural change."
+      ];
+    }
+
+    document.getElementById('result-title').textContent = title;
+    document.getElementById('result-body').textContent = body;
+    const ul = document.getElementById('result-points');
+    ul.innerHTML = '';
+    points.forEach(p => { const li = document.createElement('li'); li.textContent = p; ul.appendChild(li); });
+
+    const result = document.getElementById('reflection-result');
+    result.classList.add('visible');
+    result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function resetReflection() {
+    document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+    const result = document.getElementById('reflection-result');
+    result.classList.remove('visible');
+    document.getElementById('reflection-error').style.display = 'none';
+  }
+</script>
+</body>
+</html>
