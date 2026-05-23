@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning Evaluation Framework Design — Knowledge Resource (Accessible linear version)</title>
+<style>
+:root {
+  --ink: #303e44;
+  --ink-mid: #475f6a;
+  --ink-muted: #6a8390;
+  --ink-faint: #9ab3bc;
+  --surface: #f7f9fa;
+  --surface-warm: #edf2f4;
+  --surface-card: #ffffff;
+  --border: rgba(71,95,106,0.18);
+  --border-mid: rgba(71,95,106,0.30);
+  --accent: #475f6a;
+  --accent-light: #dce8ec;
+  --accent-dark: #303e44;
+  --warn-bg: #fdf3f0;
+  --warn-border: #d9917a;
+  --warn-text: #7a3a27;
+}
+
+/* Reset */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Base */
+body {
+  font-family: ASAP, 'Segoe UI', system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--ink);
+  background: var(--surface);
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+}
+
+/* Skip links — visible on focus */
+.skip-links {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+.skip-links a {
+  display: inline-block;
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  background: var(--accent-dark);
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 0 0 6px 0;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.skip-links a:focus {
+  left: 0;
+  position: static;
+}
+
+/* Links */
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+a:focus {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Site header */
+header {
+  border-bottom: 1px solid var(--border-mid);
+  padding: 1rem 0;
+  margin-bottom: 2.5rem;
+}
+.site-label {
+  font-size: 13px;
+  color: var(--ink-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Page title area */
+.page-title { margin-bottom: 2rem; }
+.page-title h1 {
+  font-size: clamp(1.6rem, 4vw, 2.1rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ink);
+  margin-bottom: 0.65rem;
+}
+.page-subtitle {
+  font-size: 16px;
+  color: var(--ink-mid);
+  max-width: 600px;
+  margin-bottom: 1.1rem;
+}
+.version-note {
+  background: var(--surface-warm);
+  border-left: 4px solid var(--accent);
+  padding: 0.75rem 1rem;
+  font-size: 15px;
+  color: var(--ink-mid);
+  border-radius: 0 5px 5px 0;
+  margin-bottom: 0.5rem;
+}
+.version-note strong { color: var(--ink); }
+
+/* Table of contents */
+#toc {
+  background: var(--surface-card);
+  border: 1px solid var(--border-mid);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 3rem;
+}
+#toc h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+}
+#toc ol {
+  padding-left: 1.3rem;
+  color: var(--ink-mid);
+  font-size: 15px;
+}
+#toc li { margin-bottom: 0.3rem; }
+#toc li > ol { margin-top: 0.2rem; padding-left: 1.2rem; }
+#toc a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+#toc a:hover { text-decoration: none; }
+
+/* Section wrappers */
+.section {
+  margin-bottom: 3.5rem;
+  padding-top: 1rem;
+}
+.section-label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+  background: var(--surface-warm);
+  border: 1px solid var(--border);
+  padding: 3px 9px;
+  border-radius: 3px;
+  margin-bottom: 0.65rem;
+}
+
+/* Headings */
+h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.25;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border);
+}
+h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: 1.75rem;
+  margin-bottom: 0.4rem;
+}
+h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 1.1rem;
+  margin-bottom: 0.4rem;
+}
+p { color: var(--ink-mid); margin-bottom: 0.9rem; }
+p:last-child { margin-bottom: 0; }
+
+/* Callout / aside */
+.callout {
+  background: var(--surface-warm);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  padding: 0.9rem 1.1rem;
+  margin: 1.5rem 0;
+  font-size: 15px;
+  color: var(--ink-mid);
+  line-height: 1.65;
+}
+.callout strong { color: var(--ink); }
+
+/* Highlighted box */
+.highlight-box {
+  border: 1px solid var(--border-mid);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 1.5rem 0;
+}
+.highlight-box-head {
+  background: var(--surface-warm);
+  padding: 0.6rem 1rem;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border);
+}
+.highlight-box-body {
+  background: var(--surface-card);
+  padding: 1rem 1.1rem;
+  font-size: 15px;
+  color: var(--ink-mid);
+  line-height: 1.7;
+}
+.highlight-box-body p { font-size: 15px; }
+
+/* Consideration items (formerly accordion stages) */
+.consideration {
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  background: var(--surface-card);
+}
+.consideration-header {
+  background: var(--surface-warm);
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid var(--border);
+}
+.consideration-number {
+  display: inline-block;
+  background: var(--accent-light);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 24px;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+.consideration-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  vertical-align: middle;
+}
+.consideration-subtitle {
+  font-size: 13px;
+  color: var(--ink-muted);
+  margin-top: 3px;
+  padding-left: 2rem;
+}
+.consideration-body { padding: 1rem 1.1rem; }
+.consideration-body p { font-size: 15px; margin-bottom: 0.75rem; }
+.consideration-note {
+  font-size: 14px;
+  color: var(--ink-muted);
+  font-style: italic;
+  border-left: 2px solid var(--border-mid);
+  padding-left: 0.75rem;
+  margin-top: 1rem;
+}
+.questions-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.75rem 1rem;
+}
+.questions-list li {
+  font-size: 14px;
+  color: var(--ink-mid);
+  padding: 4px 0;
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  border-bottom: 1px solid var(--border);
+}
+.questions-list li:last-child { border-bottom: none; }
+.questions-list li::before {
+  content: '\2192';
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.questions-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-muted);
+  margin-bottom: 0.35rem;
+  display: block;
+}
+
+/* Key questions grid — linear as definition list */
+.key-questions dl { margin: 0; }
+.key-questions dt {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: 1.5rem;
+  margin-bottom: 0.2rem;
+}
+.key-questions .q-sub {
+  font-size: 13px;
+  color: var(--ink-muted);
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+.key-questions dd {
+  margin-left: 0;
+  padding-left: 1rem;
+  border-left: 3px solid var(--accent-light);
+}
+.key-questions dd ul {
+  list-style: disc;
+  padding-left: 1.1rem;
+  color: var(--ink-mid);
+  font-size: 15px;
+}
+.key-questions dd ul li { margin-bottom: 0.2rem; }
+
+/* Outcomes lists */
+.outcomes-group { margin-bottom: 2rem; }
+.outcomes-group h3 {
+  font-size: 1rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.4rem;
+  margin-bottom: 1rem;
+}
+.outcome-item {
+  display: flex;
+  gap: 0.85rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+.outcome-item:last-child { border-bottom: none; }
+.outcome-marker {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  flex-shrink: 0;
+  margin-top: 3px;
+  font-weight: 600;
+}
+.outcome-marker.short { background: var(--accent-light); color: var(--accent); }
+.outcome-marker.long { background: #d0e4eb; color: #2e5a68; }
+.outcome-item h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  text-transform: none;
+  letter-spacing: 0;
+  margin: 0 0 3px 0;
+}
+.outcome-item p { font-size: 14px; line-height: 1.6; }
+
+/* Framework lineage table */
+.lineage-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin: 1rem 0 1.5rem;
+  border: 1px solid var(--border-mid);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.lineage-table caption {
+  text-align: left;
+  font-size: 13px;
+  color: var(--ink-muted);
+  padding: 0.5rem 0;
+  margin-bottom: 0.25rem;
+  caption-side: top;
+}
+.lineage-table th {
+  text-align: left;
+  background: var(--surface-warm);
+  padding: 0.6rem 0.85rem;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--border-mid);
+}
+.lineage-table td {
+  padding: 0.7rem 0.85rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink-mid);
+  vertical-align: top;
+}
+.lineage-table tr:last-child td { border-bottom: none; }
+.lineage-table tr:nth-child(even) td { background: var(--surface); }
+.model-name { font-weight: 600; color: var(--ink); display: block; }
+.model-type { font-size: 12px; color: var(--ink-faint); }
+
+/* Reflection form */
+.reflection-intro {
+  font-size: 15px;
+  color: var(--ink-mid);
+  margin-bottom: 1.5rem;
+  max-width: 560px;
+}
+fieldset {
+  border: 1px solid var(--border-mid);
+  border-radius: 7px;
+  padding: 1rem 1.1rem;
+  margin-bottom: 1.25rem;
+  background: var(--surface-card);
+}
+legend {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  padding: 0 0.4rem;
+  line-height: 1.4;
+}
+.radio-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.5rem 0.4rem;
+  border-radius: 5px;
+  margin-top: 0.3rem;
+  cursor: pointer;
+  font-size: 15px;
+  color: var(--ink-mid);
+  line-height: 1.5;
+}
+.radio-option:hover { background: var(--surface-warm); }
+.radio-option input[type="radio"] {
+  flex-shrink: 0;
+  margin-top: 3px;
+  accent-color: var(--accent);
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+.radio-option input[type="radio"]:focus {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+.form-actions { margin-top: 1.25rem; display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.7rem 1.75rem;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn-primary:hover { opacity: 0.88; }
+.btn-primary:focus {
+  outline: 3px solid var(--accent-dark);
+  outline-offset: 3px;
+}
+.btn-secondary {
+  background: none;
+  border: 1px solid var(--border-mid);
+  color: var(--ink-mid);
+  padding: 0.6rem 1.25rem;
+  border-radius: 5px;
+  font-size: 15px;
+  font-family: inherit;
+  cursor: pointer;
+}
+.btn-secondary:focus {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+.validation-msg {
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-border);
+  border-radius: 5px;
+  padding: 0.6rem 0.9rem;
+  font-size: 14px;
+  color: var(--warn-text);
+  margin-bottom: 1rem;
+}
+.reflection-result {
+  margin-top: 1.75rem;
+  background: var(--surface-card);
+  border: 1px solid var(--border-mid);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.result-head {
+  background: var(--surface-warm);
+  padding: 0.85rem 1.25rem;
+  font-weight: 600;
+  font-size: 15px;
+  border-bottom: 1px solid var(--border);
+}
+.result-body { padding: 1.1rem 1.25rem; }
+.result-body > p { font-size: 15px; line-height: 1.7; margin-bottom: 1rem; }
+.result-qs-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-muted);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+.result-qs {
+  list-style: none;
+  padding: 0;
+}
+.result-qs li {
+  font-size: 15px;
+  color: var(--ink-mid);
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+.result-qs li:last-child { border-bottom: none; }
+.result-qs li::before { content: '\2192'; color: var(--accent); flex-shrink: 0; }
+
+/* Citations */
+.citations-group { margin-bottom: 1.75rem; }
+.citations-group h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.65rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.35rem;
+}
+.citation {
+  font-size: 14px;
+  color: var(--ink-mid);
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.65;
+}
+.citation:last-child { border-bottom: none; }
+.cite-type {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-bottom: 3px;
+  background: var(--surface-warm);
+  color: var(--ink-muted);
+  border: 1px solid var(--border);
+}
+.citation strong { font-weight: 600; color: var(--ink); }
+.citation a { color: var(--accent); }
+
+/* Back to top */
+.back-to-top {
+  display: inline-block;
+  margin-top: 2rem;
+  font-size: 14px;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Footer */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 1.25rem 0;
+  font-size: 13px;
+  color: var(--ink-faint);
+  margin-top: 2rem;
+}
+
+/* Dividers between sections */
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2.5rem 0 0;
+}
+
+/* Print */
+@media print {
+  body { font-size: 12pt; color: #000; background: #fff; }
+  .skip-links, .back-to-top { display: none; }
+  a { color: #000; text-decoration: underline; }
+  .highlight-box, .consideration { border: 1px solid #ccc; }
+}
+</style>
+</head>
+<body>
+
+<div class="skip-links">
+  <a href="#main-content">Skip to main content</a>
+  <a href="#toc">Skip to contents</a>
+</div>
+
+<header role="banner">
+  <span class="site-label">Knowledge Resource</span>
+</header>
+
+<main id="main-content">
+
+  <div class="page-title">
+    <h1>Learning Evaluation Framework Design</h1>
+    <p class="page-subtitle">An exploration of the knowledge, considerations, and outcomes that characterise workplace learning evaluation &mdash; shaped by each organisation's learners, context, and culture.</p>
+    <div class="version-note">
+      <strong>Screen reader and keyboard-optimised version.</strong> All content is presented in reading order with no tabs, accordions, or JavaScript interaction required. A <a href="learning-evaluation-framework-knowledge-resource.html">tabbed interactive version</a> is also available.
+    </div>
+  </div>
+
+  <nav id="toc" aria-label="Table of contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#foundations">Knowledge foundations</a>
+        <ol>
+          <li><a href="#eval-theory">Evaluation theory and models</a></li>
+          <li><a href="#measurement">Measurement theory and psychometrics</a></li>
+          <li><a href="#research-methods">Research methods</a></li>
+          <li><a href="#adult-learning">Adult learning and transfer research</a></li>
+          <li><a href="#data-literacy">Data literacy and organisational context</a></li>
+          <li><a href="#expertise">Expertise versus checklist compliance</a></li>
+          <li><a href="#equity">Equity and decolonising data</a></li>
+        </ol>
+      </li>
+      <li><a href="#considerations">Design considerations</a>
+        <ol>
+          <li><a href="#c1">Purpose and scope</a></li>
+          <li><a href="#c2">Evaluation levels and method selection</a></li>
+          <li><a href="#c3">Data collection design</a></li>
+          <li><a href="#c4">Analysis and interpretation</a></li>
+          <li><a href="#c5">Reporting and communication</a></li>
+          <li><a href="#c6">Continuous improvement and integration</a></li>
+        </ol>
+      </li>
+      <li><a href="#key-questions">Key questions in framework design</a></li>
+      <li><a href="#outcomes">What well-designed evaluation enables</a>
+        <ol>
+          <li><a href="#shorter-term">What becomes visible</a></li>
+          <li><a href="#longer-term">What becomes embedded</a></li>
+          <li><a href="#outcome-levels">Why distinctions between outcome levels matter</a></li>
+        </ol>
+      </li>
+      <li><a href="#lineage">Evaluation framework lineage</a></li>
+      <li><a href="#reflection">Reflection on current practice</a></li>
+      <li><a href="#citations">Citations</a></li>
+    </ol>
+  </nav>
+
+  <!-- SECTION 1: FOUNDATIONS -->
+  <hr class="section-divider">
+  <section class="section" id="foundations" aria-labelledby="foundations-heading">
+    <span class="section-label" aria-hidden="true">Section 1</span>
+    <h2 id="foundations-heading">Knowledge foundations</h2>
+    <p>Five interconnected bodies of knowledge inform evaluation framework design. Together, they support evaluations that go well beyond what any single model or checklist can offer.</p>
+
+    <h3 id="eval-theory">1. Evaluation theory and models</h3>
+    <p>Kirkpatrick, Phillips ROI, Brinkerhoff's Success Case Method, and CIPP each reflect the context in which they were developed. Understanding this lineage helps practitioners recognise the assumptions embedded in any model &mdash; and consider how well those assumptions fit their own setting.</p>
+
+    <h3 id="measurement">2. Measurement theory and psychometrics</h3>
+    <p>Validity, reliability, and the distinction between statistical and practical significance are the difference between data that is trustworthy and data that is simply abundant. These concepts inform how well evaluation instruments measure what they are intended to measure.</p>
+
+    <h3 id="research-methods">3. Research methods</h3>
+    <p>Quantitative and qualitative methods each answer different questions about what learning produces and why. The proportions depend on the evaluation questions, the learner community, and what each approach can realistically offer in the given setting.</p>
+
+    <h3 id="adult-learning">4. Adult learning and transfer research</h3>
+    <p>Grounding in how adults learn and transfer knowledge shapes what evaluation looks for. Research on transfer conditions &mdash; including support structures, practice opportunities, and organisational climate &mdash; is particularly relevant when evaluation extends beyond immediate outcomes.</p>
+
+    <h3 id="data-literacy">5. Data literacy and organisational context</h3>
+    <p>Statistical fluency supports honest interpretation and communication of findings. Equally important is understanding the organisational context &mdash; who holds the data, who has a stake in the findings, and which decisions are genuinely on the table all shape what evaluation is possible and appropriate.</p>
+
+    <div class="highlight-box" id="expertise">
+      <div class="highlight-box-head">Expertise versus checklist compliance</div>
+      <div class="highlight-box-body">
+        <p>Applying an established model mechanically is not the same as designing a framework. Considered design requires understanding which distinctions matter in a specific context, which levels of evaluation are genuinely answerable given real constraints, and what is gained or lost when particular elements are adapted or set aside. That judgement belongs to the people closest to the learners and the work.</p>
+      </div>
+    </div>
+
+    <div class="highlight-box" id="equity">
+      <div class="highlight-box-head">Equity and decolonising data</div>
+      <div class="highlight-box-body">
+        <p>Evaluation frameworks carry embedded assumptions about whose knowledge counts as evidence and who defines what success looks like. Scholarship in decolonising research methods &mdash; including work on Indigenous data governance, culturally responsive design, and participatory approaches &mdash; offers frameworks for examining and challenging these assumptions. Central to this work is the recognition that community members are holders of knowledge, not simply providers of data.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: DESIGN CONSIDERATIONS -->
+  <hr class="section-divider">
+  <section class="section" id="considerations" aria-labelledby="considerations-heading">
+    <span class="section-label" aria-hidden="true">Section 2</span>
+    <h2 id="considerations-heading">Design considerations</h2>
+    <p>Every evaluation framework is shaped by the organisation it serves &mdash; its learners, its culture, and its particular context. What follows describes considerations that practitioners commonly navigate. They are not a sequence or a prescription, but an orientation to the kinds of questions that thoughtful framework design tends to address.</p>
+
+    <div class="consideration" id="c1">
+      <div class="consideration-header">
+        <span class="consideration-number" aria-hidden="true">1</span>
+        <span class="consideration-title">Purpose and scope</span>
+        <div class="consideration-subtitle">What the framework is for, and what it covers</div>
+      </div>
+      <div class="consideration-body">
+        <p>A framework designed to demonstrate regulatory accountability looks quite different from one oriented toward program improvement, strategic workforce decisions, or building evaluation capacity. These purposes can coexist, but they generate different priorities &mdash; and clarity about which matters most shapes every subsequent design choice.</p>
+        <p>Scope decisions &mdash; which programs, which levels, which learner communities &mdash; carry real consequences for what a framework can and cannot address. Making these choices explicitly, rather than defaulting to what is easiest to measure, is itself a meaningful act of design.</p>
+        <span class="questions-label">Questions this consideration addresses</span>
+        <ul class="questions-list">
+          <li>Why is evaluation being undertaken, and for whom?</li>
+          <li>Which programs or interventions are in scope &mdash; and which are not?</li>
+          <li>Whose decisions will the findings inform?</li>
+          <li>What resources and timelines are realistic?</li>
+        </ul>
+        <p class="consideration-note">Frameworks without clarity on purpose risk producing findings that no one quite knows how to use.</p>
+      </div>
+    </div>
+
+    <div class="consideration" id="c2">
+      <div class="consideration-header">
+        <span class="consideration-number" aria-hidden="true">2</span>
+        <span class="consideration-title">Evaluation levels and method selection</span>
+        <div class="consideration-subtitle">What gets measured, and how</div>
+      </div>
+      <div class="consideration-body">
+        <p>Established models offer different ways of organising evaluation levels. No structure fits every context. The levels a framework includes &mdash; and the methods used within each &mdash; reflect the programs being evaluated, the data available, and what the organisation can credibly claim to measure.</p>
+        <p>Method selection involves the same contextual judgement. Surveys, assessments, observations, interviews, and focus groups each suit different questions and different communities. The choice between more and less resource-intensive approaches involves real tradeoffs &mdash; frameworks that make those tradeoffs visible make it easier to revisit them when circumstances change.</p>
+        <span class="questions-label">Questions this consideration addresses</span>
+        <ul class="questions-list">
+          <li>Which distinctions between outcome types matter in this context?</li>
+          <li>What methods are appropriate for the learner community and program type?</li>
+          <li>What evidence quality is needed to support the decisions being made?</li>
+          <li>What is actually measurable given available data and access?</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="consideration" id="c3">
+      <div class="consideration-header">
+        <span class="consideration-number" aria-hidden="true">3</span>
+        <span class="consideration-title">Data collection design</span>
+        <div class="consideration-subtitle">How information is gathered, and from whom</div>
+      </div>
+      <div class="consideration-body">
+        <p>Data collection spans the learning lifecycle and involves learners, managers, and sometimes wider communities. The design of instruments and processes reflects both technical choices &mdash; what to ask, how, and when &mdash; and relational ones: who is being asked to share something of themselves, under what conditions, and with what understanding of how that information will be used and protected.</p>
+        <p>When learners understand why evaluation is happening and trust that their input matters, the resulting data tends to be more honest and more useful. Instruments that do not attend to these relational dimensions &mdash; or that are not culturally appropriate for the communities involved &mdash; risk producing data that reflects the instrument, not the learner.</p>
+        <span class="questions-label">Questions this consideration addresses</span>
+        <ul class="questions-list">
+          <li>Who are the appropriate sources of data for each evaluation question?</li>
+          <li>How will participants understand the purpose and use of evaluation data?</li>
+          <li>Are instruments culturally appropriate and free of unexamined assumptions?</li>
+          <li>What are the ethical obligations to people providing data?</li>
+        </ul>
+        <p class="consideration-note">Combining quantitative and qualitative approaches tends to produce more complete understanding than either alone &mdash; particularly when the question is not only whether outcomes occurred, but what enabled or constrained them.</p>
+      </div>
+    </div>
+
+    <div class="consideration" id="c4">
+      <div class="consideration-header">
+        <span class="consideration-number" aria-hidden="true">4</span>
+        <span class="consideration-title">Analysis and interpretation</span>
+        <div class="consideration-subtitle">Making sense of findings in context</div>
+      </div>
+      <div class="consideration-body">
+        <p>Analysis methods are chosen in relation to the data type and the evaluation question. The more consequential work is interpretation: situating findings in context, distinguishing statistical from practical significance, and being clear about what the data does and does not support.</p>
+        <p>A shift in scores might reflect the instrument, the curriculum, the delivery, the learning environment, or the particular community of learners. Identifying the most plausible explanation requires judgement grounded in the specific setting. This is where knowledge of measurement, adult learning, and organisational context matters most &mdash; and where respect for the complexity of people's experiences is essential.</p>
+        <span class="questions-label">Questions this consideration addresses</span>
+        <ul class="questions-list">
+          <li>What analysis approach is appropriate for each data type and question?</li>
+          <li>What do the findings actually support as a conclusion &mdash; and what do they not?</li>
+          <li>What alternative explanations for observed patterns exist?</li>
+          <li>How do quantitative and qualitative findings relate to each other?</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="consideration" id="c5">
+      <div class="consideration-header">
+        <span class="consideration-number" aria-hidden="true">5</span>
+        <span class="consideration-title">Reporting and communication</span>
+        <div class="consideration-subtitle">Translating evidence into something different audiences can use</div>
+      </div>
+      <div class="consideration-body">
+        <p>Findings serve different audiences with different needs. Those designing programs need insight into what is and is not working. Leadership needs strategic framing and clarity on what systemic questions the findings raise. A single report that tries to serve all audiences at once tends to serve none of them well.</p>
+        <p>Findings that are specific, contextualised, and honest about their limitations tend to be more trusted and more used. Connecting findings to decisions &mdash; rather than simply presenting data &mdash; makes it more likely that evaluation leads somewhere.</p>
+        <span class="questions-label">Questions this consideration addresses</span>
+        <ul class="questions-list">
+          <li>Who needs to receive findings, and what will they do with them?</li>
+          <li>What format and level of detail serves each audience?</li>
+          <li>What decisions do the findings bear on, and how directly?</li>
+          <li>How are limitations and uncertainties communicated honestly?</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="consideration" id="c6">
+      <div class="consideration-header">
+        <span class="consideration-number" aria-hidden="true">6</span>
+        <span class="consideration-title">Continuous improvement and integration</span>
+        <div class="consideration-subtitle">How evaluation findings feed back into program and framework design</div>
+      </div>
+      <div class="consideration-body">
+        <p>Evaluation that does not inform anything is documentation. The value of evaluation lies in its integration &mdash; findings shaping program design, surfacing transfer barriers, or prompting more fundamental questions about what is being offered to learners and why. Frameworks that build in explicit connections between evaluation and design decisions tend to improve both over time.</p>
+        <p>Each organisation finds its own approach to this integration, shaped by its culture and governance. Brinkerhoff's Success Case Method offers one documented approach: identifying learners who achieved meaningful outcomes, understanding what conditions supported them, and sharing that understanding across the organisation in ways that honour their experience.</p>
+        <span class="questions-label">Questions this consideration addresses</span>
+        <ul class="questions-list">
+          <li>How do evaluation findings reach the people who design and deliver programs?</li>
+          <li>What mechanisms exist for findings to inform decisions about program changes?</li>
+          <li>How is the framework itself reviewed and adapted as the organisation learns?</li>
+          <li>How is evaluation knowledge built and retained across the L&amp;D team?</li>
+        </ul>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- SECTION 3: KEY QUESTIONS -->
+  <hr class="section-divider">
+  <section class="section key-questions" id="key-questions" aria-labelledby="key-questions-heading">
+    <span class="section-label" aria-hidden="true">Section 3</span>
+    <h2 id="key-questions-heading">Key questions in framework design</h2>
+    <p>Every evaluation framework reflects choices about scope, depth, timing, and whose perspectives are included. These choices are not universal &mdash; they are made in relation to each organisation's learners, programs, culture, and the decisions the framework is meant to serve.</p>
+
+    <dl>
+      <dt>What is evaluation for?</dt>
+      <span class="q-sub">Purpose shapes every other design decision</span>
+      <dd>
+        <ul>
+          <li>Demonstrating accountability to regulators or funders</li>
+          <li>Improving program quality through ongoing evidence</li>
+          <li>Supporting strategic workforce and capability decisions</li>
+          <li>Building evaluation capacity within the L&amp;D function</li>
+        </ul>
+      </dd>
+
+      <dt>What is in scope?</dt>
+      <span class="q-sub">Coverage reflects organisational priorities</span>
+      <dd>
+        <ul>
+          <li>Specific programs or program types</li>
+          <li>Particular learner communities</li>
+          <li>Certain outcome levels (immediate, behavioural, organisational)</li>
+          <li>Specific phases of the learning lifecycle</li>
+        </ul>
+      </dd>
+
+      <dt>How much evidence is enough?</dt>
+      <span class="q-sub">Evidence quality involves explicit tradeoffs</span>
+      <dd>
+        <ul>
+          <li>What decisions will this evidence support?</li>
+          <li>What confidence level is sufficient?</li>
+          <li>What resources does more rigorous evidence require?</li>
+          <li>What is lost when less rigorous approaches are used?</li>
+        </ul>
+      </dd>
+
+      <dt>When does evaluation happen?</dt>
+      <span class="q-sub">Timing determines what questions are answerable</span>
+      <dd>
+        <ul>
+          <li>Before development &mdash; informing design choices</li>
+          <li>During delivery &mdash; monitoring engagement and learning</li>
+          <li>Immediately after &mdash; assessing immediate outcomes</li>
+          <li>Over time &mdash; tracking transfer and performance change</li>
+        </ul>
+      </dd>
+
+      <dt>Whose perspectives are included?</dt>
+      <span class="q-sub">Inclusion is a design choice, not a default</span>
+      <dd>
+        <ul>
+          <li>Learners &mdash; as data sources, participants, or co-designers</li>
+          <li>Managers and supervisors</li>
+          <li>Subject matter experts and facilitators</li>
+          <li>Community members affected by the learning</li>
+        </ul>
+      </dd>
+
+      <dt>Who uses the findings?</dt>
+      <span class="q-sub">Use determines what reporting needs to look like</span>
+      <dd>
+        <ul>
+          <li>Instructional designers making program decisions</li>
+          <li>L&amp;D and HR leadership overseeing programs</li>
+          <li>Executives and boards making investment decisions</li>
+          <li>Learners and communities whose outcomes are being evaluated</li>
+        </ul>
+      </dd>
+    </dl>
+
+    <div class="highlight-box" style="margin-top: 2rem;">
+      <div class="highlight-box-head">On standardised frameworks and contextual fit</div>
+      <div class="highlight-box-body">
+        <p>Established models offer useful vocabulary and structure. They were also developed in particular organisational and cultural contexts, and carry those contexts' assumptions. Organisations that adapt models thoughtfully &mdash; making explicit what they are keeping, changing, and setting aside, and why &mdash; tend to produce evaluation that is more relevant to their own learners and more credible to the communities they serve.</p>
+        <p>There is no universally correct number of evaluation levels, no single best method, and no template that carries unchanged from one context to another. The value of engaging with the field lies in developing the judgement to design something that genuinely fits &mdash; the learners, the work, and the organisation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: OUTCOMES -->
+  <hr class="section-divider">
+  <section class="section" id="outcomes" aria-labelledby="outcomes-heading">
+    <span class="section-label" aria-hidden="true">Section 4</span>
+    <h2 id="outcomes-heading">What well-designed evaluation enables</h2>
+    <p>Contextually appropriate evaluation tends to produce change at two horizons &mdash; some visible relatively quickly, others that take hold over time as evaluation becomes part of how an organisation understands and supports its learners.</p>
+
+    <div class="outcomes-group" id="shorter-term">
+      <h3>What becomes visible</h3>
+
+      <div class="outcome-item">
+        <div class="outcome-marker short" aria-hidden="true">&#10003;</div>
+        <div>
+          <h4>Evidence replaces assumption</h4>
+          <p>Evaluation surfaces what learners are experiencing, knowing, and able to do &mdash; offering a more grounded picture than assumption or inference alone.</p>
+        </div>
+      </div>
+      <div class="outcome-item">
+        <div class="outcome-marker short" aria-hidden="true">&#10003;</div>
+        <div>
+          <h4>Investment is directed purposefully</h4>
+          <p>Understanding which programs produce which outcomes for which learners makes it possible to direct resources where they are most needed.</p>
+        </div>
+      </div>
+      <div class="outcome-item">
+        <div class="outcome-marker short" aria-hidden="true">&#10003;</div>
+        <div>
+          <h4>Transfer barriers become visible</h4>
+          <p>Evaluation beyond immediate outcomes often reveals that learning occurred but did not carry into practice &mdash; pointing toward environmental, relational, or structural factors that programs alone cannot resolve.</p>
+        </div>
+      </div>
+      <div class="outcome-item">
+        <div class="outcome-marker short" aria-hidden="true">&#10003;</div>
+        <div>
+          <h4>Evaluation competence grows</h4>
+          <p>Practitioners who engage seriously with evaluation develop expertise in measurement, analysis, and evidence communication &mdash; capacities that strengthen their broader professional practice.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="outcomes-group" id="longer-term">
+      <h3>What becomes embedded</h3>
+
+      <div class="outcome-item">
+        <div class="outcome-marker long" aria-hidden="true">&#8594;</div>
+        <div>
+          <h4>Evaluation is part of design, not after it</h4>
+          <p>Where evaluation is woven into program design from the beginning, learning from evidence becomes continuous. Programs tend to improve more quickly, and the cycle of design-deliver-evaluate becomes genuinely iterative.</p>
+        </div>
+      </div>
+      <div class="outcome-item">
+        <div class="outcome-marker long" aria-hidden="true">&#8594;</div>
+        <div>
+          <h4>L&amp;D earns strategic credibility</h4>
+          <p>Organisations able to speak credibly about learning impact &mdash; with evidence grounded in their own context &mdash; are better positioned to advocate for their learners in decisions about investment, policy, and workplace conditions.</p>
+        </div>
+      </div>
+      <div class="outcome-item">
+        <div class="outcome-marker long" aria-hidden="true">&#8594;</div>
+        <div>
+          <h4>Equity gaps become visible and addressable</h4>
+          <p>Frameworks that disaggregate findings and centre diverse perspectives surface inequities that aggregate data tends to obscure &mdash; making it possible to address them with the specificity and care they deserve.</p>
+        </div>
+      </div>
+      <div class="outcome-item">
+        <div class="outcome-marker long" aria-hidden="true">&#8594;</div>
+        <div>
+          <h4>Organisational learning compounds</h4>
+          <p>Careful documentation of what supports learning &mdash; for whom, and under what conditions &mdash; builds knowledge that accumulates across programs and cycles, informing future design with hard-won understanding.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-box" id="outcome-levels">
+      <div class="highlight-box-head">Why distinctions between outcome levels matter</div>
+      <div class="highlight-box-body">
+        <p>Models that compress meaningfully different outcomes into a single category can obscure where a program is succeeding and where it is not. Finer distinctions &mdash; between, for example, knowledge acquired, competence demonstrated under realistic conditions, and behaviour applied in practice &mdash; make it possible to locate a gap more precisely and respond more thoughtfully.</p>
+        <p>A learner may report a positive experience without having acquired the intended knowledge. Acquired knowledge does not guarantee the ability to apply it under realistic conditions. Demonstrated competence in a controlled assessment does not guarantee that learning carries into everyday work. Each gap is meaningful, and each points toward a different kind of response. Evaluation that can distinguish between them is better placed to serve learners and organisations well.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: LINEAGE -->
+  <hr class="section-divider">
+  <section class="section" id="lineage" aria-labelledby="lineage-heading">
+    <span class="section-label" aria-hidden="true">Section 5</span>
+    <h2 id="lineage-heading">Evaluation framework lineage</h2>
+    <p>Workplace learning evaluation frameworks have developed over seven decades. Each model built on &mdash; and sometimes pushed back against &mdash; what came before. Understanding this lineage helps practitioners read the assumptions embedded in any model they work with.</p>
+
+    <table class="lineage-table">
+      <caption>Published evaluation frameworks: contribution, structure, and limitations</caption>
+      <thead>
+        <tr>
+          <th scope="col">Model</th>
+          <th scope="col">Core contribution</th>
+          <th scope="col">Structure</th>
+          <th scope="col">Limitations</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="model-name">Kirkpatrick (1959)</span><span class="model-type">The foundational model</span></td>
+          <td>Established a four-level structure &mdash; reaction, learning, behaviour, results &mdash; and a shared vocabulary that has shaped the field ever since.</td>
+          <td>4 levels</td>
+          <td>Conflates outcomes that may be meaningfully distinct. Does not address transfer conditions, financial return, or broader social impact. Causality between levels is assumed rather than demonstrated.</td>
+        </tr>
+        <tr>
+          <td><span class="model-name">Phillips ROI (1990s)</span><span class="model-type">Financial accountability</span></td>
+          <td>Added a fifth level expressing return on investment in monetary terms, making the financial case for L&amp;D investment explicit.</td>
+          <td>5 levels</td>
+          <td>Resource-intensive. Requires attribution assumptions that are often difficult to substantiate. Most appropriate where isolating the financial impact of a specific program is genuinely feasible.</td>
+        </tr>
+        <tr>
+          <td><span class="model-name">Kaufman's Five Levels</span><span class="model-type">Societal accountability</span></td>
+          <td>Extended the framework to include societal and community impact, arguing that organisations exist in and affect broader social contexts.</td>
+          <td>5 levels including society</td>
+          <td>Societal impact is difficult to attribute to specific programs with confidence. Few organisations have the data infrastructure to evaluate at this level reliably.</td>
+        </tr>
+        <tr>
+          <td><span class="model-name">Brinkerhoff's Success Case Method</span><span class="model-type">Narrative evidence</span></td>
+          <td>Shifted attention from average outcomes to individual experience &mdash; using structured interviews to understand what conditions enabled notable success or contributed to limited impact.</td>
+          <td>6 stages</td>
+          <td>Does not offer population-level data. Particularly valuable alongside quantitative methods when understanding enabling conditions matters as much as measuring outcomes.</td>
+        </tr>
+        <tr>
+          <td><span class="model-name">CIPP Model (Stufflebeam)</span><span class="model-type">Comprehensive program evaluation</span></td>
+          <td>Evaluated Context, Input, Process, and Product &mdash; attending to the conditions that shape outcomes, not only the outcomes themselves.</td>
+          <td>4 types</td>
+          <td>Resource-intensive. Developed for educational program evaluation; less commonly adapted to workplace L&amp;D settings.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <strong>On choosing models:</strong> No published model is universally appropriate. Each was developed in a particular context and carries the assumptions of that context. Understanding the lineage supports more informed decisions about what to carry forward, what to adapt, and what to set aside &mdash; in service of learners and the communities they belong to.
+    </div>
+
+    <div class="highlight-box">
+      <div class="highlight-box-head">Kraiger's three-dimensional framework</div>
+      <div class="highlight-box-body">
+        <p>Kraiger, Ford, and Salas (1993) proposed a taxonomy of learning outcomes across three dimensions: cognitive (knowledge and understanding), skill-based (procedural competence), and affective (attitudes, motivation, confidence). Each dimension requires different measurement approaches and responds to different conditions in the learning environment. Affective outcomes are frequently underemphasised in published frameworks, despite evidence that shifts in learner confidence and motivation can be stronger predictors of on-the-job transfer than knowledge gains alone.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6: REFLECTION -->
+  <hr class="section-divider">
+  <section class="section" id="reflection" aria-labelledby="reflection-heading">
+    <span class="section-label" aria-hidden="true">Section 6</span>
+    <h2 id="reflection-heading">Reflection on current practice</h2>
+
+    <p class="reflection-intro">This reflection surfaces questions about evaluation practice. There are no right or wrong answers &mdash; choose the response that most honestly reflects the current situation. Takes approximately two minutes.</p>
+
+    <form id="reflectionForm" novalidate>
+      <div class="validation-msg" id="validationMsg" role="alert" aria-live="assertive" style="display:none;">Please answer all four questions to continue.</div>
+
+      <fieldset>
+        <legend>1. How does your organisation currently approach learning evaluation?</legend>
+        <label class="radio-option">
+          <input type="radio" name="q1" value="0">
+          We do not conduct formal evaluation of learning programs
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q1" value="1">
+          We collect end-of-course feedback for most programs
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q1" value="2">
+          We conduct multi-level evaluation for some programs using surveys and follow-up methods
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q1" value="3">
+          Evaluation is integrated into the instructional design process and covers multiple levels systematically
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>2. How does the L&amp;D team currently relate to data and evidence?</legend>
+        <label class="radio-option">
+          <input type="radio" name="q2" value="0">
+          We rely primarily on participant feedback and completion rates
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q2" value="1">
+          We track some metrics but do not analyse or act on them systematically
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q2" value="2">
+          We analyse evaluation data and use it to inform program improvements
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q2" value="3">
+          We use mixed-methods evidence to drive design decisions and communicate impact to leadership
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>3. To what extent do learners and other stakeholders inform evaluation design?</legend>
+        <label class="radio-option">
+          <input type="radio" name="q3" value="0">
+          Instruments are designed internally without input from learners or managers
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q3" value="1">
+          We gather informal feedback when issues are raised
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q3" value="2">
+          We conduct structured follow-up with learners and managers at key intervals
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q3" value="3">
+          Learners, managers, and stakeholders help shape evaluation questions, instruments, and interpretation
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>4. Where does evaluation responsibility currently sit?</legend>
+        <label class="radio-option">
+          <input type="radio" name="q4" value="0">
+          It is unclear or handled informally by whoever delivers training
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q4" value="1">
+          One or two people manage it alongside other responsibilities
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q4" value="2">
+          A small team has defined evaluation roles with some integration into L&amp;D workflows
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q4" value="3">
+          Evaluation is embedded in governance, program design, and shared across the L&amp;D team
+        </label>
+      </fieldset>
+
+      <div class="form-actions">
+        <button type="button" class="btn-primary" id="seeReflectionBtn">See reflection</button>
+        <button type="button" class="btn-secondary" id="resetBtn" style="display:none;">Start again</button>
+      </div>
+    </form>
+
+    <div class="reflection-result" id="reflectionResult" aria-live="polite" style="display:none;">
+      <div class="result-head" id="resultHead" tabindex="-1"></div>
+      <div class="result-body">
+        <p id="resultText"></p>
+        <span class="result-qs-label">Questions worth sitting with</span>
+        <ul class="result-qs" id="resultQuestions"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 7: CITATIONS -->
+  <hr class="section-divider">
+  <section class="section" id="citations" aria-labelledby="citations-heading">
+    <span class="section-label" aria-hidden="true">Section 7</span>
+    <h2 id="citations-heading">Citations</h2>
+    <p>Sources informing the knowledge claims and frameworks discussed in this resource, grouped by area.</p>
+
+    <div class="citations-group">
+      <h3>Evaluation theory and models</h3>
+      <div class="citation">
+        <span class="cite-type">Primary model</span><br>
+        <strong>Kirkpatrick, D.L. &amp; Kirkpatrick, J.D.</strong> Evaluating Training Programs: The Four Levels. Berrett-Koehler, 1994 (revised 2006).
+      </div>
+      <div class="citation">
+        <span class="cite-type">ROI methodology</span><br>
+        <strong>Phillips, J.J.</strong> Return on Investment in Training and Performance Improvement Programs. Gulf Publishing, 1997.
+      </div>
+      <div class="citation">
+        <span class="cite-type">Success case method</span><br>
+        <strong>Brinkerhoff, R.O.</strong> The Success Case Method. Berrett-Koehler, 2003.
+      </div>
+      <div class="citation">
+        <span class="cite-type">CIPP model</span><br>
+        <strong>Stufflebeam, D.L. &amp; Shinkfield, A.J.</strong> Systematic Evaluation. Springer, 1985.
+      </div>
+    </div>
+
+    <div class="citations-group">
+      <h3>Measurement theory and psychometrics</h3>
+      <div class="citation">
+        <span class="cite-type">Three-dimensional framework</span><br>
+        <strong>Kraiger, K., Ford, J.K., &amp; Salas, E.</strong> &ldquo;Application of cognitive, skill-based, and affective theories of learning outcomes to new methods of training evaluation.&rdquo; <em>Journal of Applied Psychology</em>, 78(2), 311&ndash;328, 1993.
+      </div>
+      <div class="citation">
+        <span class="cite-type">Scale development</span><br>
+        <strong>DeVellis, R.F.</strong> Scale Development: Theory and Applications. SAGE Publications, 2016.
+      </div>
+    </div>
+
+    <div class="citations-group">
+      <h3>Research methods</h3>
+      <div class="citation">
+        <span class="cite-type">Mixed methods</span><br>
+        <strong>Creswell, J.W. &amp; Plano Clark, V.L.</strong> Designing and Conducting Mixed Methods Research. SAGE Publications, 2017.
+      </div>
+      <div class="citation">
+        <span class="cite-type">Qualitative methods</span><br>
+        <strong>Patton, M.Q.</strong> Qualitative Research and Evaluation Methods. SAGE Publications, 2014.
+      </div>
+    </div>
+
+    <div class="citations-group">
+      <h3>Adult learning and transfer</h3>
+      <div class="citation">
+        <span class="cite-type">Transfer conditions</span><br>
+        <strong>Baldwin, T.T. &amp; Ford, J.K.</strong> &ldquo;Transfer of training: A review and directions for future research.&rdquo; <em>Personnel Psychology</em>, 41(1), 63&ndash;105, 1988.
+      </div>
+      <div class="citation">
+        <span class="cite-type">Adult learning</span><br>
+        <strong>Merriam, S.B., Caffarella, R.S., &amp; Baumgartner, L.M.</strong> Learning in Adulthood: A Comprehensive Guide. Jossey-Bass, 2007.
+      </div>
+    </div>
+
+    <div class="citations-group">
+      <h3>Equity and decolonising data</h3>
+      <div class="citation">
+        <span class="cite-type">Decolonising research methods</span><br>
+        <strong>Quinless, J.M.</strong> <em>Decolonizing Data: Unsettling Conversations about Social Research Methods.</em> University of Toronto Press, 2022. ISBN&nbsp;9781487523336. <a href="https://utppublishing.com/doi/book/10.3138/9781487523336">utppublishing.com</a>
+      </div>
+      <div class="citation">
+        <span class="cite-type">Equitable data practice</span><br>
+        <strong>Zheng, L.</strong> FAIR Framework for equitable data practice. <a href="https://www.lilyzheng.co/fair-framework">lilyzheng.co/fair-framework</a>
+      </div>
+      <div class="citation">
+        <span class="cite-type">Indigenous data governance</span><br>
+        First Nations Information Governance Centre. OCAP Principles (Ownership, Control, Access, Possession). <a href="https://fnigc.ca/ocap-training/">fnigc.ca</a>
+      </div>
+    </div>
+
+    <p style="font-size:13px; color: var(--ink-faint); margin-top: 1.5rem;">This resource draws on scholarship in evaluation theory, psychometrics, research methods, adult learning, and decolonising data. It does not constitute professional or legal advice.</p>
+  </section>
+
+  <a class="back-to-top" href="#toc">&#8593; Back to contents</a>
+
+</main>
+
+<footer role="contentinfo">
+  Knowledge Resource &middot; Workplace Learning Evaluation Framework Design &middot; Each organisation's framework is its own.
+</footer>
+
+<script>
+(function () {
+  var profiles = [
+    {
+      range: [0, 1],
+      head: 'Early stage: establishing the conditions',
+      text: 'Most organisations at this stage find that the most valuable immediate investment is in building the internal case for evaluation - clarifying what decisions better evidence would support, and identifying where basic data collection practices can take root. There is no universal starting point; the right entry depends on the organisation, its programs, and its culture.',
+      questions: [
+        'What decisions would better evaluation evidence help your organisation make?',
+        'Which programs carry the highest stakes if they are not working as intended?',
+        'What data infrastructure already exists, and what does it make possible?',
+        'Who in the organisation has the most to gain from credible evidence about learning impact?'
+      ]
+    },
+    {
+      range: [2, 3],
+      head: 'Developing stage: extending the practice',
+      text: 'Organisations at this stage have evaluation practices in place but often find significant variation in quality, depth, and use across programs. The questions that tend to be most productive concern how existing evaluation efforts connect to actual decisions - and where the current approach may be producing data that no one is quite sure how to use.',
+      questions: [
+        'How consistently are evaluation findings feeding back into program design decisions?',
+        'Are there learner communities or outcome types that current evaluation approaches are not reaching?',
+        'Where is evaluation depth matched to program stakes - and where is it not?',
+        'What transfer barriers are findings identifying, and how is the organisation responding to them?'
+      ]
+    },
+    {
+      range: [4, 5],
+      head: 'Advancing stage: deepening and broadening',
+      text: 'Organisations at this stage have meaningful evaluation infrastructure and a culture that values evidence. The questions that tend to be most productive concern the depth and equity of existing practices - whether evaluation is reaching the outcome levels that matter most, and whether diverse perspectives are genuinely shaping the framework rather than being consulted as an afterthought.',
+      questions: [
+        'Is evaluation reaching the outcome levels that the decisions being made actually require?',
+        'Are diverse stakeholder perspectives genuinely shaping evaluation design, or is consultation happening after the design is set?',
+        'How is knowledge from evaluation building over time, and who has access to it?',
+        'What would it take for evaluation to be understood as a driver of program quality rather than a reporting obligation?'
+      ]
+    },
+    {
+      range: [6, 12],
+      head: 'Mature stage: sustaining and evolving',
+      text: 'Organisations at this stage have evaluation embedded across multiple levels and a team that engages with it as core professional practice. The most productive questions at this stage often concern how the framework itself is evolving - whether it continues to fit the organisation as its programs, learners, and culture change, and whether equity considerations are embedded throughout rather than addressed as an add-on.',
+      questions: [
+        'How is the framework being reviewed and adapted as the organisation changes?',
+        'Are equity and cultural responsiveness embedded in evaluation design, or periodically visited?',
+        'What evaluation competencies are most in need of development across the team?',
+        'What has the organisation learned about evaluation itself - and how is that knowledge being used?'
+      ]
+    }
+  ];
+
+  function getProfile(total) {
+    for (var i = 0; i < profiles.length; i++) {
+      if (total >= profiles[i].range[0] && total <= profiles[i].range[1]) return profiles[i];
+    }
+    return profiles[profiles.length - 1];
+  }
+
+  document.getElementById('seeReflectionBtn').addEventListener('click', function () {
+    var names = ['q1', 'q2', 'q3', 'q4'];
+    var answers = names.map(function (n) {
+      var el = document.querySelector('input[name="' + n + '"]:checked');
+      return el ? parseInt(el.value, 10) : null;
+    });
+
+    var missing = answers.some(function (a) { return a === null; });
+    var msg = document.getElementById('validationMsg');
+    if (missing) {
+      msg.style.display = 'block';
+      msg.focus();
+      return;
+    }
+    msg.style.display = 'none';
+
+    var total = answers.reduce(function (s, v) { return s + v; }, 0);
+    var p = getProfile(total);
+
+    document.getElementById('resultHead').textContent = p.head;
+    document.getElementById('resultText').textContent = p.text;
+
+    var ul = document.getElementById('resultQuestions');
+    ul.innerHTML = '';
+    p.questions.forEach(function (q) {
+      var li = document.createElement('li');
+      li.textContent = q;
+      ul.appendChild(li);
+    });
+
+    var result = document.getElementById('reflectionResult');
+    result.style.display = 'block';
+    document.getElementById('resultHead').focus();
+
+    document.getElementById('seeReflectionBtn').style.display = 'none';
+    document.getElementById('resetBtn').style.display = 'inline-block';
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', function () {
+    document.querySelectorAll('input[type="radio"]').forEach(function (r) { r.checked = false; });
+    document.getElementById('reflectionResult').style.display = 'none';
+    document.getElementById('validationMsg').style.display = 'none';
+    document.getElementById('seeReflectionBtn').style.display = 'inline-block';
+    document.getElementById('resetBtn').style.display = 'none';
+    document.getElementById('reflectionForm').querySelector('input[type="radio"]').focus();
+  });
+}());
+</script>
+
+</body>
+</html>
