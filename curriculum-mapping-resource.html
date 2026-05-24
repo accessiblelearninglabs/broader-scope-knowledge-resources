@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Understanding Curriculum Mapping Design — Knowledge Resource</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #ffffff;
+    --bg-secondary: #f5f6f6;
+    --bg-tertiary: #eef0f1;
+    --text: #303e44;
+    --text-secondary: #556870;
+    --text-tertiary: #7a9099;
+    --accent: #475f6a;
+    --accent-light: #e8edf0;
+    --accent-mid: #6b8a97;
+    --border: rgba(48,62,68,0.12);
+    --border-med: rgba(48,62,68,0.22);
+    --tag-bg: #dde6ea;
+    --tag-text: #2a4850;
+    --radius: 8px;
+    --radius-lg: 12px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Asap', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+  a:hover { color: var(--text); }
+
+  .skip-link {
+    position: absolute;
+    top: -100px;
+    left: 1rem;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    font-weight: 500;
+    z-index: 1000;
+    transition: top 0.2s;
+  }
+  .skip-link:focus { top: 1rem; }
+
+  /* HEADER */
+  .site-header {
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 100;
+  }
+  .site-header .inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .site-header .brand {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    text-decoration: none;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: 3rem 1.5rem 2.5rem;
+    text-align: center;
+  }
+  .hero h1 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--text);
+    max-width: 640px;
+    margin: 0 auto 1rem;
+  }
+  .hero .subtitle {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+    line-height: 1.65;
+  }
+  .info-banner {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    background: var(--accent-light);
+    border: 1px solid var(--border-med);
+    border-radius: var(--radius-lg);
+    padding: 0.85rem 1.25rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    max-width: 620px;
+    text-align: left;
+  }
+  .info-banner .icon { font-size: 1.1rem; margin-top: 0.1rem; flex-shrink: 0; }
+
+  /* TAB NAV */
+  .tab-nav-wrap {
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    position: sticky;
+    top: 56px;
+    z-index: 90;
+  }
+  .tab-nav {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    font-family: 'Asap', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: none;
+    border: none;
+    border-bottom: 2.5px solid transparent;
+    padding: 0.85rem 1.1rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.15s, border-color 0.15s;
+    margin-bottom: -1px;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--text); border-bottom-color: var(--accent); font-weight: 600; }
+
+  /* MAIN CONTENT */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* SECTION STRUCTURE */
+  .section-intro {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  h2.panel-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.6rem;
+    line-height: 1.25;
+  }
+
+  /* KNOWLEDGE CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  .k-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.4rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .k-card .card-icon {
+    font-size: 1.4rem;
+    margin-bottom: 0.25rem;
+    display: block;
+  }
+  .k-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .k-card p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* CALLOUT */
+  .callout {
+    background: var(--bg-secondary);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 1.1rem 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 0.93rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+  .callout strong { color: var(--text); }
+
+  /* COMPETENCY LIST */
+  .competency-list { list-style: none; display: flex; flex-direction: column; gap: 1.1rem; margin-bottom: 2rem; }
+  .competency-item {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.2rem 1.25rem;
+  }
+  .competency-item .comp-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    margin-bottom: 0.4rem;
+  }
+  .comp-num {
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+  .competency-item h3 {
+    font-size: 0.97rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .competency-item p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-left: 33px;
+  }
+
+  /* ACCORDION */
+  .accordion { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 2rem; }
+  .accordion-item { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+  .accordion-trigger {
+    width: 100%;
+    background: var(--bg);
+    border: none;
+    padding: 1.1rem 1.25rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-align: left;
+    font-family: 'Asap', sans-serif;
+    transition: background 0.15s;
+  }
+  .accordion-trigger:hover { background: var(--bg-secondary); }
+  .accordion-trigger[aria-expanded="true"] { background: var(--bg-secondary); }
+  .acc-num {
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .acc-title-wrap { flex: 1; }
+  .acc-stage { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); display: block; margin-bottom: 0.15rem; }
+  .acc-title { font-size: 0.97rem; font-weight: 600; color: var(--text); display: block; }
+  .acc-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.3rem; }
+  .tag {
+    font-size: 0.72rem;
+    font-weight: 500;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    padding: 0.2rem 0.55rem;
+    border-radius: 20px;
+  }
+  .acc-chevron {
+    color: var(--text-tertiary);
+    font-size: 1.1rem;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .accordion-trigger[aria-expanded="true"] .acc-chevron { transform: rotate(180deg); }
+  .accordion-body {
+    display: none;
+    padding: 0 1.25rem 1.25rem;
+    border-top: 1px solid var(--border);
+  }
+  .accordion-body.open { display: block; }
+  .accordion-body p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; margin-top: 1rem; }
+  .accordion-body p + p { margin-top: 0.75rem; }
+  .acc-produces { margin-top: 1rem; }
+  .acc-produces h4 { font-size: 0.82rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); margin-bottom: 0.6rem; }
+  .acc-produces ul { list-style: none; display: flex; flex-direction: column; gap: 0.35rem; }
+  .acc-produces li { font-size: 0.88rem; color: var(--text-secondary); display: flex; align-items: flex-start; gap: 0.5rem; }
+  .acc-produces li::before { content: "✓"; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: 0.05rem; }
+  .acc-note {
+    margin-top: 1rem;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+    font-size: 0.83rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  .acc-note strong { color: var(--text); font-weight: 600; }
+
+  /* DECISIONS GRID */
+  .decisions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .decision-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.2rem;
+  }
+  .decision-card .d-icon {
+    font-size: 1.3rem;
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+  .decision-card h3 { font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.3rem; }
+  .decision-card .d-q { font-size: 0.8rem; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.6rem; }
+  .decision-card ul { list-style: none; display: flex; flex-direction: column; gap: 0.25rem; }
+  .decision-card li { font-size: 0.85rem; color: var(--text-secondary); display: flex; align-items: flex-start; gap: 0.4rem; }
+  .decision-card li::before { content: "→"; color: var(--accent-mid); flex-shrink: 0; }
+
+  /* OUTCOMES */
+  .outcomes-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+  @media (max-width: 580px) { .outcomes-cols { grid-template-columns: 1fr; } }
+  .outcome-col { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.3rem 1.25rem; }
+  .outcome-col .col-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--accent);
+    margin-bottom: 0.7rem;
+    display: block;
+  }
+  .outcome-col h3 { font-size: 0.97rem; font-weight: 600; color: var(--text); margin-bottom: 0.75rem; }
+  .outcome-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .outcome-list li { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55; display: flex; align-items: flex-start; gap: 0.5rem; }
+  .outcome-list.short-term li::before { content: "✓"; color: #2a7d55; font-weight: 700; flex-shrink: 0; }
+  .outcome-list.long-term li::before { content: "→"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+
+  /* REFLECTION TOOL */
+  .reflection-form { display: flex; flex-direction: column; gap: 1.5rem; }
+  .q-block { border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; }
+  .q-block legend { font-size: 0.97rem; font-weight: 600; color: var(--text); margin-bottom: 0.85rem; display: block; }
+  .radio-opts { display: flex; flex-direction: column; gap: 0.5rem; }
+  .radio-opts label { display: flex; align-items: flex-start; gap: 0.7rem; font-size: 0.88rem; color: var(--text-secondary); cursor: pointer; line-height: 1.5; }
+  .radio-opts input[type="radio"] { margin-top: 0.2rem; flex-shrink: 0; accent-color: var(--accent); }
+  .reflect-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'Asap', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.85rem 1.75rem;
+    cursor: pointer;
+    transition: background 0.15s;
+    align-self: flex-start;
+  }
+  .reflect-btn:hover { background: var(--text); }
+  .reflection-output {
+    display: none;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-top: 1rem;
+  }
+  .reflection-output.visible { display: block; }
+  .reflection-output h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 0.75rem; }
+  .ref-questions { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+  .ref-questions li { font-size: 0.9rem; color: var(--text-secondary); display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.55; }
+  .ref-questions li::before { content: "·"; color: var(--accent); font-size: 1.3rem; line-height: 1; }
+  .reset-link { display: inline-block; margin-top: 1rem; font-size: 0.85rem; color: var(--accent); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+
+  /* PRINCIPLES TABLE ALTERNATIVE */
+  .principle-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 0.8rem;
+  }
+  .pr-label {
+    background: var(--bg-secondary);
+    padding: 1rem 1.1rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text);
+    border-right: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+  }
+  .pr-body {
+    padding: 0.9rem 1.1rem;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  @media (max-width: 540px) {
+    .principle-row { grid-template-columns: 1fr; }
+    .pr-label { border-right: none; border-bottom: 1px solid var(--border); }
+  }
+
+  /* CITATIONS */
+  .citations-group { margin-bottom: 2.5rem; }
+  .citations-group h3 {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-tertiary);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .cite-item { padding: 0.85rem 0; border-bottom: 1px solid var(--border); font-size: 0.88rem; color: var(--text-secondary); line-height: 1.65; }
+  .cite-item strong { color: var(--text); }
+  .cite-item .cite-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    padding: 0.15rem 0.5rem;
+    border-radius: 20px;
+    margin-bottom: 0.35rem;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--text-tertiary);
+    line-height: 1.7;
+  }
+
+  /* Divider */
+  .section-divider { height: 1px; background: var(--border); margin: 2rem 0; }
+
+  /* Distinction box */
+  .distinction-box {
+    background: var(--accent);
+    color: #fff;
+    border-radius: var(--radius-lg);
+    padding: 1.4rem 1.5rem;
+    margin: 1.5rem 0;
+    font-size: 0.93rem;
+    line-height: 1.7;
+  }
+  .distinction-box strong { font-weight: 700; opacity: 0.9; }
+
+  @media (max-width: 600px) {
+    .card-grid { grid-template-columns: 1fr; }
+    .decisions-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header class="site-header" role="banner">
+  <div class="inner">
+    <span class="brand">Curriculum Mapping Design — Knowledge Resource</span>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>Understanding Curriculum Mapping Design</h1>
+  <p class="subtitle">A guide to the knowledge foundations, core competencies, methodology, key decisions, and learner outcomes that characterise rigorous, equity-centered curriculum mapping.</p>
+  <div class="info-banner" role="note">
+    <span class="icon" aria-hidden="true">ℹ️</span>
+    <span>This resource is for learning designers, organisational leaders, and faculty navigating curriculum design in their own contexts. Use the tabs to explore at whatever depth is most useful to you.</span>
+  </div>
+</div>
+
+<nav class="tab-nav-wrap" aria-label="Resource sections">
+  <div class="tab-nav" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-foundations" id="tab-foundations">Foundations</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-competencies" id="tab-competencies">Competencies</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-methodology" id="tab-methodology">Methodology</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-decisions" id="tab-decisions">Key Decisions</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-impact" id="tab-impact">Learner Impact</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-reflection" id="tab-reflection">Reflection Tool</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-citations" id="tab-citations">Citations</button>
+  </div>
+</nav>
+
+<main id="main-content">
+
+  <!-- FOUNDATIONS -->
+  <section id="panel-foundations" class="tab-panel active" role="tabpanel" aria-labelledby="tab-foundations">
+    <h2 class="panel-title">Knowledge Foundations</h2>
+    <p class="section-intro">Effective curriculum mapping draws on several interconnected bodies of knowledge. Rigorous design holds all of them in view simultaneously — and produces work that surface-level template completion cannot.</p>
+
+    <div class="card-grid">
+      <div class="k-card">
+        <span class="card-icon" aria-hidden="true">⚖️</span>
+        <h3>Equity and Social Justice Frameworks</h3>
+        <p>Understanding how structural inequity — racism, ableism, colonialism, classism — shapes what is taught, how it is assessed, who is welcomed, and how success is defined. This is the ethical foundation, not a supplementary concern. Inclusive curriculum design requires examining the structure of the curriculum itself, not only adding accommodations or diverse examples.</p>
+      </div>
+      <div class="k-card">
+        <span class="card-icon" aria-hidden="true">🧠</span>
+        <h3>The Science of Learning and Instruction</h3>
+        <p>The cognitive and motivational mechanisms underlying effective learning — including cognitive load theory, retrieval practice, spaced practice, interleaving, feedback, and the conditions supporting transfer. This is what separates evidence-based design from intuition-based design. Without it, curricula routinely emphasise engagement over retention, content coverage over mastery, and activity over transfer.</p>
+      </div>
+      <div class="k-card">
+        <span class="card-icon" aria-hidden="true">🔄</span>
+        <h3>Adult Learning Theory</h3>
+        <p>The foundational principles of how adults learn — including self-direction, the role of prior experience, motivation, relevance, and problem-centered orientation. Adults are most engaged when learning connects directly to their work and lives, when they have some autonomy over their educational experience, and when prior knowledge is genuinely respected rather than bypassed.</p>
+      </div>
+      <div class="k-card">
+        <span class="card-icon" aria-hidden="true">🗺️</span>
+        <h3>Curriculum Theory</h3>
+        <p>The broader intellectual history of what curriculum is for — including the distinction between intended, enacted, and learned curriculum, the concept of the hidden curriculum, and the question of whose knowledge gets legitimised through curricular choices. A curriculum map may be well written, but what gets enacted can differ because of instructor judgment, institutional constraints, or learner realities. What gets learned may differ again.</p>
+      </div>
+      <div class="k-card">
+        <span class="card-icon" aria-hidden="true">♿</span>
+        <h3>Universal Design for Learning and Accessibility</h3>
+        <p>Not as a checklist of accommodations, but as a design framework grounded in variability — the understanding that learner variability is the norm, not the exception. The three UDL principles (multiple means of engagement, representation, and action and expression) need to be understood at the level of <em>why</em> they exist. Paired with a social model of disability: barriers are located in environments, not in individuals.</p>
+      </div>
+      <div class="k-card">
+        <span class="card-icon" aria-hidden="true">📐</span>
+        <h3>Assessment Theory</h3>
+        <p>The principles of validity, reliability, and fairness — particularly construct validity, which anchors UDL-informed assessment design. Understanding what an assessment is actually measuring, and what it may be inadvertently measuring instead, requires genuine grounding here. A common design failure is letting the format become the hidden target: learners scored on presentation style, memory load, or language mechanics rather than the intended construct.</p>
+      </div>
+      <div class="k-card">
+        <span class="card-icon" aria-hidden="true">🏛️</span>
+        <h3>Instructional Systems Design Models</h3>
+        <p>Familiarity with major ISD frameworks — ADDIE, backward design, Understanding by Design, and their critiques — as a base from which to work critically. The practitioner needs to know these models well enough to apply them and well enough to know where they fall short for equity and inclusion.</p>
+      </div>
+      <div class="k-card">
+        <span class="card-icon" aria-hidden="true">🌐</span>
+        <h3>Sociocultural Dimensions of Learning</h3>
+        <p>Learning is not a purely cognitive event. It is shaped by identity, belonging, power, and the social conditions of the learning environment. Stereotype threat, communities of practice, and the zone of proximal development are all relevant here — and they affect which learners thrive and which accumulate avoidable barriers.</p>
+      </div>
+      <div class="k-card">
+        <span class="card-icon" aria-hidden="true">🔧</span>
+        <h3>Organisational Learning and Change Theory</h3>
+        <p>Curriculum mapping almost always happens inside organisations. Practitioners need to understand how organisations learn, resist change, and develop capacity — including the conditions under which curriculum reform actually sticks versus produces a document that gets filed and forgotten. Change theory is not optional; it determines whether design work has lasting effect.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>How these relate:</strong> The foundational knowledge is what gives the competencies their <em>why</em>. A practitioner who can write outcomes but lacks grounding in assessment theory will write outcomes that sound appropriate but do not hold up to scrutiny. A practitioner who can identify barriers but lacks grounding in equity frameworks will identify the obvious ones and miss the structural ones.
+    </div>
+
+    <div class="section-divider"></div>
+
+    <h3 style="font-size:1.1rem; font-weight:600; margin-bottom:1rem;">What distinguishes expertise from checklist completion</h3>
+    <p style="font-size:0.93rem; color:var(--text-secondary); line-height:1.7; margin-bottom:1rem;">Templates and alignment tools can efficiently organise a curriculum's visible structure. They cannot assess whether the design actually produces intended learning for the range of learners it is meant to serve, whether outcomes embed unnecessary barriers in their language, whether assessment formats systematically disadvantage particular groups, or whether the hidden curriculum contradicts the stated one.</p>
+    <p style="font-size:0.93rem; color:var(--text-secondary); line-height:1.7;">The gap between "technically organised" and "genuinely serves learners" is where human expertise — grounded in the knowledge areas above — is irreplaceable.</p>
+  </section>
+
+  <!-- COMPETENCIES -->
+  <section id="panel-competencies" class="tab-panel" role="tabpanel" aria-labelledby="tab-competencies">
+    <h2 class="panel-title">Core Competencies</h2>
+    <p class="section-intro">These are the applied, demonstrable capacities a curriculum mapping practitioner needs to bring to the work. They are not equally weighted: barrier identification, assessment design, and stakeholder engagement tend to be where the most consequential decisions happen — and where the gap between technically competent and genuinely inclusive practice is widest.</p>
+
+    <ul class="competency-list">
+      <li class="competency-item">
+        <div class="comp-header">
+          <span class="comp-num">1</span>
+          <h3>Equity-Centered Needs Analysis</h3>
+        </div>
+        <p>The ability to investigate not just what learners need to know or do, but who the learners are, what conditions they are learning under, what barriers exist before instruction begins, and whose knowledge and experience the curriculum currently centres. This means going beyond task analysis into structural analysis — examining how power, access, and identity shape the learning environment before a single outcome is written.</p>
+      </li>
+      <li class="competency-item">
+        <div class="comp-header">
+          <span class="comp-num">2</span>
+          <h3>Learning Outcome Development</h3>
+        </div>
+        <p>Writing outcomes that describe genuine capability rather than content exposure — and doing so in ways that do not embed unnecessary barriers in the language itself. This includes distinguishing the construct being assessed from the method used to assess it. Outcomes written with observable verbs (analyse, apply, design, evaluate) and mapped to authentic performance tasks create a more trustworthy alignment chain than vague coverage descriptors.</p>
+      </li>
+      <li class="competency-item">
+        <div class="comp-header">
+          <span class="comp-num">3</span>
+          <h3>Alignment Mapping</h3>
+        </div>
+        <p>Building and maintaining coherent vertical and horizontal alignment — outcomes to assessments to instructional strategies, across levels and across the programme — while simultaneously checking that alignment at each node is accessible, not just logically connected. Vertical alignment ensures that earlier courses build genuine foundations for later ones. Horizontal alignment keeps parallel courses from sending contradictory signals about what competent performance looks like.</p>
+      </li>
+      <li class="competency-item">
+        <div class="comp-header">
+          <span class="comp-num">4</span>
+          <h3>Assessment Design</h3>
+        </div>
+        <p>Designing assessments that validly measure what they claim to measure, that offer multiple means of demonstrating competence where the means is not the construct, and that do not systematically disadvantage learners based on disability, language background, or cultural context. When the construct is "communicate a recommendation," written report, oral briefing, narrated slides, or recorded video may all be valid — if each preserves the same evidence requirements. Reliability comes from clear criteria and shared rubrics, not from forcing every learner into one rigid format.</p>
+      </li>
+      <li class="competency-item">
+        <div class="comp-header">
+          <span class="comp-num">5</span>
+          <h3>Instructional Strategy Selection</h3>
+        </div>
+        <p>Choosing strategies based on evidence about how people learn — not habit, content convention, or what is easiest to deliver — and sequencing them in ways that build genuine capability progressively. The inclusive dimension is knowing which strategies broaden access and which inadvertently narrow it. A strategy that depends on rapid whole-class verbal exchange may privilege fluent speakers; structured think-pair-share, captioned video, or choice in response mode can widen participation without reducing rigour.</p>
+      </li>
+      <li class="competency-item">
+        <div class="comp-header">
+          <span class="comp-num">6</span>
+          <h3>Barrier Identification and Removal</h3>
+        </div>
+        <p>The ability to read a curriculum design — outcomes, assessments, participation structures, sequencing, materials — and locate where barriers to access and learning are embedded, then make principled decisions about which barriers are necessary to the construct and which are removable without compromising rigour. This requires grounding in both disability studies and equity frameworks; without both, the practitioner will identify surface barriers and miss structural ones.</p>
+      </li>
+      <li class="competency-item">
+        <div class="comp-header">
+          <span class="comp-num">7</span>
+          <h3>Stakeholder Engagement and Co-Design Facilitation</h3>
+        </div>
+        <p>Working with subject matter experts, organisational leaders, and learners themselves in ways that produce better design decisions. This requires managing productive tensions: between expertise and lived experience, between organisational priorities and learner needs, between what is feasible and what is right. Effective facilitation keeps groups moving from opinion to evidence, ensures people with less formal authority are not crowded out, and makes decision criteria explicit so the process is fair even when not every opinion carries equal weight.</p>
+      </li>
+      <li class="competency-item">
+        <div class="comp-header">
+          <span class="comp-num">8</span>
+          <h3>Systemic Coherence Evaluation</h3>
+        </div>
+        <p>The ability to step back from individual components and assess whether the curriculum functions as a coherent system — not just whether each part is defensible in isolation, but whether the whole produces what it is intended to produce for the range of people it is meant to serve. A curriculum can look strong at the level of single courses and still fail systemically through disjointed sequencing, uneven supports, or repeated barriers that make progress unlikely for particular learner groups.</p>
+      </li>
+    </ul>
+
+    <div class="callout">
+      <strong>A practical hierarchy:</strong> Map outcomes first, then assessments, then instructional strategies, then materials. Outcomes define the target; assessments provide evidence; instructional strategies create practice and support; materials supply what is needed for success. If any link in this chain is weak, the whole chain becomes less trustworthy — and a well-written outcome is not aligned if the assessment measures something else.
+    </div>
+  </section>
+
+  <!-- METHODOLOGY -->
+  <section id="panel-methodology" class="tab-panel" role="tabpanel" aria-labelledby="tab-methodology">
+    <h2 class="panel-title">Methodology</h2>
+    <p class="section-intro">Effective curriculum mapping is structured, iterative, and multidimensional. The stages below represent a comprehensive approach; in practice, scope and depth vary with context, resources, and organisational need. Understanding the full methodology clarifies what is gained or lost when particular stages are abbreviated. Select any stage to explore it.</p>
+
+    <div class="accordion" role="list">
+
+      <div class="accordion-item" role="listitem">
+        <button class="accordion-trigger" aria-expanded="false" aria-controls="acc-body-1">
+          <span class="acc-num">1</span>
+          <span class="acc-title-wrap">
+            <span class="acc-stage">Stage 1</span>
+            <span class="acc-title">Equity-Centered Needs Analysis</span>
+            <span class="acc-tags"><span class="tag">Foundational</span><span class="tag">Collaborative</span></span>
+          </span>
+          <span class="acc-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="accordion-body" id="acc-body-1">
+          <p>Before any design begins, the curriculum must be understood in its full context. This means investigating who the learners are — their identities, prior experiences, conditions of learning, and the barriers they face before instruction starts. It also means examining whose knowledge the existing curriculum centres, and which learners have historically been underserved by it.</p>
+          <p>This stage draws on both qualitative and quantitative data: surveys, focus groups, performance data, and community insight. The intersectionality of identities within the learner population must be integrated from the outset — failing to consider how overlapping social categories affect individual experiences leads to an incomplete picture and, consequently, inadequate design.</p>
+          <div class="acc-produces">
+            <h4>What this stage produces</h4>
+            <ul>
+              <li>A structural analysis of the learner population, including known barriers and conditions of learning</li>
+              <li>Documentation of whose knowledge and experience the curriculum currently centres</li>
+              <li>A shared understanding among stakeholders of what "equitable" means in this specific context</li>
+              <li>Prioritised learner needs that will anchor outcome development and assessment design</li>
+            </ul>
+          </div>
+          <div class="acc-note"><strong>Note:</strong> Needs analysis conducted without genuine community and learner participation tends to reflect the assumptions of the most powerful voices in the room. That can produce designs that look coherent on paper but do not hold up in practice.</div>
+        </div>
+      </div>
+
+      <div class="accordion-item" role="listitem">
+        <button class="accordion-trigger" aria-expanded="false" aria-controls="acc-body-2">
+          <span class="acc-num">2</span>
+          <span class="acc-title-wrap">
+            <span class="acc-stage">Stage 2</span>
+            <span class="acc-title">Learning Outcome Development</span>
+            <span class="acc-tags"><span class="tag">Design</span><span class="tag">Precision-focused</span></span>
+          </span>
+          <span class="acc-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="accordion-body" id="acc-body-2">
+          <p>Outcomes state what learners should know, do, or demonstrate by the end of a course or programme. Strong outcomes are student-centred, measurable, and written with observable verbs — analyse, apply, design, evaluate — rather than vague terms like "understand" or "appreciate." In curriculum mapping, these outcomes become the anchor for deciding where each competency is introduced, practised, and assessed.</p>
+          <p>A useful development process begins with programme goals, stakeholder needs, and the actual work learners are preparing to do. Programme-level outcomes are then broken into course-level outcomes that fit specific learning experiences. Critically, the language of outcomes should not itself introduce unnecessary barriers — complex nominalisations, culturally specific assumptions, or language that presumes particular academic backgrounds can exclude learners before instruction begins.</p>
+          <div class="acc-produces">
+            <h4>What this stage produces</h4>
+            <ul>
+              <li>Programme-level outcomes mapped to authentic performance expectations</li>
+              <li>Course-level outcomes aligned to specific learning experiences</li>
+              <li>Distinction between the construct being assessed and the method used to assess it</li>
+              <li>A developmental sequence showing how outcomes progress from introduction to mastery</li>
+            </ul>
+          </div>
+          <div class="acc-note"><strong>Note:</strong> A healthy curriculum map shows outcomes introduced early, reinforced through meaningful practice, and assessed for mastery near the end of the programme. Learners should not be expected to demonstrate competence before they have had sufficient opportunity to develop it.</div>
+        </div>
+      </div>
+
+      <div class="accordion-item" role="listitem">
+        <button class="accordion-trigger" aria-expanded="false" aria-controls="acc-body-3">
+          <span class="acc-num">3</span>
+          <span class="acc-title-wrap">
+            <span class="acc-stage">Stage 3</span>
+            <span class="acc-title">Alignment Mapping</span>
+            <span class="acc-tags"><span class="tag">Systematic</span><span class="tag">Structural</span></span>
+          </span>
+          <span class="acc-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="accordion-body" id="acc-body-3">
+          <p>Alignment mapping makes the relationships among outcomes, assessments, instructional strategies, and materials visible and inspectable. It runs backward from learning goals rather than forward from content coverage. The point is not just to connect pieces logically, but to ensure that each piece produces evidence of the intended learning.</p>
+          <p>Vertical alignment means outcomes build across levels in a sequence that moves from simpler to more complex performance — introduce, reinforce, master — so that later courses can genuinely extend what earlier courses established. Horizontal alignment means that parallel courses do not accidentally duplicate each other or send contradictory signals about what competent performance looks like. Accessibility must be checked at every node in the alignment chain, not added afterward.</p>
+          <div class="acc-produces">
+            <h4>What this stage produces</h4>
+            <ul>
+              <li>A programme-level alignment matrix showing outcomes distributed across courses</li>
+              <li>Node-by-node verification: outcome, assessment, strategy, access, and sequence checks</li>
+              <li>Identification of gaps, unintended redundancy, and assessment tasks that demand skills before they have been developed</li>
+              <li>A living document designed for regular review as evidence accumulates</li>
+            </ul>
+          </div>
+          <div class="acc-note"><strong>Note:</strong> Alignment mapping is not a one-time planning task. It requires regular review using learner performance data, faculty feedback, and changes in standards or workplace expectations. The best programmes treat alignment as a living system.</div>
+        </div>
+      </div>
+
+      <div class="accordion-item" role="listitem">
+        <button class="accordion-trigger" aria-expanded="false" aria-controls="acc-body-4">
+          <span class="acc-num">4</span>
+          <span class="acc-title-wrap">
+            <span class="acc-stage">Stage 4</span>
+            <span class="acc-title">Assessment Design</span>
+            <span class="acc-tags"><span class="tag">High-stakes</span><span class="tag">Equity-critical</span></span>
+          </span>
+          <span class="acc-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="accordion-body" id="acc-body-4">
+          <p>Assessment design is where curriculum quality is won or lost. It determines whether a programme truly measures the intended competence, whether learners can demonstrate that competence through more than one valid pathway, and whether the assessment process is equitable for disabled learners, multilingual learners, and learners from different cultural backgrounds.</p>
+          <p>Validity is the degree to which an assessment actually measures the construct it claims to measure. A common failure is letting the format become the hidden target — learners scored on presentation polish, memory load, or decoding demands rather than the intended skill. Offering multiple means of demonstrating competence is strongest when designed around equivalent evidence: the goal is to let learners show the same outcome through different modes when the mode is not the construct, while keeping standards stable across options. Formative support — scaffolding before the high-stakes moment — is one of the most effective ways to ensure the assessment measures achievement rather than first exposure.</p>
+          <div class="acc-produces">
+            <h4>What this stage produces</h4>
+            <ul>
+              <li>Assessments with clear construct validity — measuring the intended outcome, not a proxy</li>
+              <li>Multiple demonstration modes where the mode is not the construct</li>
+              <li>Plain and precise instructions, consistent formatting, and transparent criteria</li>
+              <li>Formative practice opportunities aligned to the summative task</li>
+              <li>Rubrics that distinguish essential evidence from format preferences</li>
+            </ul>
+          </div>
+          <div class="acc-note"><strong>Note:</strong> Reliability and flexibility are not opposites when assessment is well designed. Reliability comes from clear criteria and shared rubrics — not from forcing every learner into one rigid format. The best designs standardise the criteria for evidence while allowing variation in how evidence is produced when the construct permits it.</div>
+        </div>
+      </div>
+
+      <div class="accordion-item" role="listitem">
+        <button class="accordion-trigger" aria-expanded="false" aria-controls="acc-body-5">
+          <span class="acc-num">5</span>
+          <span class="acc-title-wrap">
+            <span class="acc-stage">Stage 5</span>
+            <span class="acc-title">Instructional Strategy Selection</span>
+            <span class="acc-tags"><span class="tag">Evidence-based</span><span class="tag">Sequencing</span></span>
+          </span>
+          <span class="acc-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="accordion-body" id="acc-body-5">
+          <p>Instructional strategies are chosen because they support the kind of learning the outcome requires — not because they are familiar, easy to manage, or simply available. If the outcome requires performance, active strategies that give learners a chance to rehearse the target behaviour are more effective than passive exposure. If the outcome requires conceptual understanding, explanation, worked examples, and guided discussion may be appropriate, especially when paired with retrieval opportunities.</p>
+          <p>Progressive sequencing builds capability over time. Early stages work best with clear modelling, low-stakes practice, and explicit scaffolding. Later stages can shift toward collaboration, problem-solving, and more independent performance. A common failure is to default to lecture then attach a complex assessment, hoping learning will happen. Another is to use collaborative strategies without enough structure — which can privilege confident speakers and disadvantage learners who need processing time or alternative participation modes.</p>
+          <div class="acc-produces">
+            <h4>What this stage produces</h4>
+            <ul>
+              <li>A strategy sequence aligned to the learning demand of each outcome</li>
+              <li>Visibility into which strategies broaden access and which silently narrow it</li>
+              <li>Progressive scaffolding from modelled to guided to independent practice</li>
+              <li>Multiple entry points and participation modes built into the design</li>
+            </ul>
+          </div>
+          <div class="acc-note"><strong>Note:</strong> The best curriculum maps show not just what is taught, but how learning is scaffolded, how practice accumulates, and how inclusion is protected across the sequence.</div>
+        </div>
+      </div>
+
+      <div class="accordion-item" role="listitem">
+        <button class="accordion-trigger" aria-expanded="false" aria-controls="acc-body-6">
+          <span class="acc-num">6</span>
+          <span class="acc-title-wrap">
+            <span class="acc-stage">Stage 6</span>
+            <span class="acc-title">Stakeholder Engagement and Co-Design</span>
+            <span class="acc-tags"><span class="tag">Collaborative</span><span class="tag">Power-aware</span></span>
+          </span>
+          <span class="acc-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="accordion-body" id="acc-body-6">
+          <p>Curriculum designs are stronger when informed by multiple perspectives. Subject matter experts know what competence looks like. Organisational leaders know what must be sustained operationally. Learners know where friction, confusion, or exclusion will actually occur. When those perspectives are brought together well, the resulting map is more accurate, more usable, and more equitable. Without co-design, curriculum work often defaults to assumptions made by the most powerful voice in the room.</p>
+          <p>Effective facilitation creates conditions where everyone can contribute meaningfully — setting shared norms, clarifying decision points, separating ideas from roles, and ensuring people with less formal authority are not crowded out. Power differences are always present in co-design, even when everyone is invited equally. Making decision criteria explicit, using accessible language, and ensuring that dissent can be voiced without penalty are non-negotiable practices.</p>
+          <div class="acc-produces">
+            <h4>What this stage produces</h4>
+            <ul>
+              <li>Design decisions that are technically sound, organisationally workable, and accessible to learners</li>
+              <li>Documentation of what was decided, why, and what tradeoff it reflects</li>
+              <li>A curriculum map treated as a living artefact that can be revised after implementation feedback</li>
+              <li>Trust among stakeholders that their contributions meaningfully shaped the design</li>
+            </ul>
+          </div>
+          <div class="acc-note"><strong>Note:</strong> Token consultation — where stakeholders are asked for feedback after main decisions are already made — reduces trust and makes later implementation harder. Expert dominance and unstructured discussion are equally damaging. The real aim is not agreement: it is a curriculum that is both feasible and worthy of the learners it serves.</div>
+        </div>
+      </div>
+
+      <div class="accordion-item" role="listitem">
+        <button class="accordion-trigger" aria-expanded="false" aria-controls="acc-body-7">
+          <span class="acc-num">7</span>
+          <span class="acc-title-wrap">
+            <span class="acc-stage">Stage 7</span>
+            <span class="acc-title">Systemic Coherence Evaluation and Continuous Improvement</span>
+            <span class="acc-tags"><span class="tag">Systems-level</span><span class="tag">Iterative</span></span>
+          </span>
+          <span class="acc-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="accordion-body" id="acc-body-7">
+          <p>Systemic coherence evaluation asks whether the curriculum functions as a unified architecture — not just whether each component is defensible in isolation. This requires stepping back and asking how the curriculum behaves as a network of decisions: whether outcomes build logically, whether assessments measure what instruction actually prepares learners for, and whether the curriculum creates a stable, navigable path from entry to completion.</p>
+          <p>A curriculum is not coherent if it only works for some learners. If the design depends on hidden prior knowledge, one communication style, or a narrow cultural norm, the whole system is less functional even if individual components appear sound. Signs of weak systemic coherence include outcomes too numerous or vague to be meaningful, assessments that measure the same narrow skill while other important abilities are never assessed, courses that feel isolated from one another, and supports that exist in theory but are not embedded in the actual learning flow.</p>
+          <div class="acc-produces">
+            <h4>What this stage produces</h4>
+            <ul>
+              <li>A judgment of whether the curriculum produces intended learning for the full range of learners it serves</li>
+              <li>Identification of systemic weak points — not just component-level issues</li>
+              <li>Clear throughline from programme purpose to outcome to assessment to instruction to learner experience</li>
+              <li>A framework for ongoing review as learner performance data, faculty feedback, and contextual conditions evolve</li>
+            </ul>
+          </div>
+          <div class="acc-note"><strong>Note:</strong> Setting clear, measurable indicators aligned with equity goals is essential for tracking whether the curriculum is working. Indicators such as completion rates, assessment performance distributions, and learner-reported experience data all contribute. The curriculum map should be understood as a living document, not a completed deliverable.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- KEY DECISIONS -->
+  <section id="panel-decisions" class="tab-panel" role="tabpanel" aria-labelledby="tab-decisions">
+    <h2 class="panel-title">Key Decisions</h2>
+    <p class="section-intro">No two curriculum mapping engagements look the same. The decisions an organisation makes about scope, depth, timing, and involvement determine what kind of work is appropriate and what it will produce. Understanding these dimensions helps set realistic expectations — and make better use of the process.</p>
+
+    <div class="decisions-grid">
+      <div class="decision-card">
+        <span class="d-icon" aria-hidden="true">🎯</span>
+        <h3>Scope</h3>
+        <p class="d-q">What is actually being mapped?</p>
+        <ul>
+          <li>Single course or module</li>
+          <li>Full programme or credential</li>
+          <li>Institutional curriculum systems, policies, and practices</li>
+        </ul>
+      </div>
+      <div class="decision-card">
+        <span class="d-icon" aria-hidden="true">🔍</span>
+        <h3>Depth</h3>
+        <p class="d-q">How thorough does the work need to be?</p>
+        <ul>
+          <li>Rapid audit for initial prioritisation</li>
+          <li>Comprehensive review across all competency areas</li>
+          <li>Ongoing iterative review embedded in the design cycle</li>
+        </ul>
+      </div>
+      <div class="decision-card">
+        <span class="d-icon" aria-hidden="true">👥</span>
+        <h3>Learner involvement</h3>
+        <p class="d-q">Are learners part of the design process?</p>
+        <ul>
+          <li>Expert review only</li>
+          <li>Expert review with structured learner input</li>
+          <li>Co-design: learners shape outcomes, assessments, and redesign</li>
+        </ul>
+      </div>
+      <div class="decision-card">
+        <span class="d-icon" aria-hidden="true">⏱️</span>
+        <h3>Timing in the design cycle</h3>
+        <p class="d-q">When does mapping happen relative to development?</p>
+        <ul>
+          <li>Pre-development: informing design before content is built</li>
+          <li>Pre-launch: catching issues before a programme goes live</li>
+          <li>Post-launch: addressing existing curricula through remediation</li>
+        </ul>
+      </div>
+      <div class="decision-card">
+        <span class="d-icon" aria-hidden="true">📄</span>
+        <h3>Reporting and use of findings</h3>
+        <p class="d-q">Who needs to act on the work, and how?</p>
+        <ul>
+          <li>Technical documentation for designers and faculty</li>
+          <li>Strategic summary for leadership and governance</li>
+          <li>Capacity-building: sharing knowledge across the team</li>
+        </ul>
+      </div>
+      <div class="decision-card">
+        <span class="d-icon" aria-hidden="true">🏗️</span>
+        <h3>Focus area</h3>
+        <p class="d-q">Where is the work primarily directed?</p>
+        <ul>
+          <li>Outcomes and assessment equity</li>
+          <li>Instructional sequencing and learning design</li>
+          <li>Systems and governance: policy, procurement, workflows</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Rapid versus comprehensive approaches:</strong> Rapid reviews trade methodological depth for speed. They are useful for initial prioritisation, particularly when resources are constrained — provided findings are understood as a starting point rather than a complete picture. Comprehensive mapping produces more trustworthy findings but requires genuine time investment from stakeholders. Neither approach is inherently superior; the question is what the organisational context actually needs.
+    </div>
+
+    <div class="section-divider"></div>
+
+    <h3 style="font-size:1.1rem; font-weight:600; margin-bottom:1rem;">Core principles governing these decisions</h3>
+
+    <div class="principle-row"><div class="pr-label">Equity as foundation</div><div class="pr-body">Equity is not a supplementary concern addressed after design decisions are made. It is the lens through which every outcome, assessment, strategy, and participation structure is examined from the outset. If a design choice maintains existing power imbalances without being essential to the learning itself, it should be questioned.</div></div>
+
+    <div class="principle-row"><div class="pr-label">Construct first</div><div class="pr-body">At every decision point, the question is: what is this actually measuring, facilitating, or producing? Outcomes, assessments, and strategies that conflate the construct with the format — that measure a learner's ability to perform under constrained conditions rather than the intended capability — undermine the entire alignment chain.</div></div>
+
+    <div class="principle-row"><div class="pr-label">Collaboration over authority</div><div class="pr-body">Better curriculum decisions emerge from genuine stakeholder collaboration. The most consequential input often comes from learners with direct experience of the curriculum's barriers. Subject matter expertise and lived experience are both necessary; neither alone is sufficient.</div></div>
+
+    <div class="principle-row"><div class="pr-label">Evidence over assumption</div><div class="pr-body">Design decisions should be grounded in evidence about how people learn, what barriers exist, and whether the curriculum is producing intended outcomes. Intuition, convention, and administrative convenience are not adequate substitutes — and research consistently shows they produce curricula that work well for a narrow range of learners while disadvantaging others.</div></div>
+
+    <div class="principle-row"><div class="pr-label">Living system, not document</div><div class="pr-body">A curriculum map is not a deliverable to be filed. It is a living system that requires ongoing review as learner performance data accumulates, contexts change, and new evidence emerges. The maintenance cycle is not optional — it is what separates curriculum mapping from curriculum archaeology.</div></div>
+  </section>
+
+  <!-- LEARNER IMPACT -->
+  <section id="panel-impact" class="tab-panel" role="tabpanel" aria-labelledby="tab-impact">
+    <h2 class="panel-title">Learner Impact</h2>
+    <p class="section-intro">Rigorous, equity-centered curriculum mapping creates change at two horizons. The shorter-term outcomes are tangible and inspectable. The longer-term shift is cultural — and has a broader effect on how an organisation designs and delivers learning for everyone it serves.</p>
+
+    <div class="outcomes-cols">
+      <div class="outcome-col">
+        <span class="col-label">Shorter term</span>
+        <h3>What becomes visible and improvable</h3>
+        <ul class="outcome-list short-term">
+          <li>Gaps in the curriculum are identified and named — missing outcomes, under-developed sequences, and assessments that measure something other than the intended construct</li>
+          <li>Structural barriers are surfaced: outcomes that embed unnecessary language demands, assessments that disadvantage particular groups, and participation structures that reward a narrow range of expression</li>
+          <li>Learners who have been quietly underserved by the existing design become visible in the data, rather than attributed to individual deficit</li>
+          <li>Educators develop practical curriculum literacy through genuine engagement with the mapping process — not only those with formal curriculum roles</li>
+          <li>The alignment between what is stated in the programme and what is actually experienced by learners becomes inspectable and improvable</li>
+        </ul>
+      </div>
+      <div class="outcome-col">
+        <span class="col-label">Longer term</span>
+        <h3>What becomes embedded in practice</h3>
+        <ul class="outcome-list long-term">
+          <li>Equity-centered design becomes a habit rather than a retrofit — reducing remediation costs and improving learning outcomes for the full range of learners</li>
+          <li>Better structure, clearer language, flexible demonstration modes, and consistent expectations improve the experience for every learner, not only those the accommodations were designed for</li>
+          <li>Organisations develop the institutional literacy to require and evaluate equity and accessibility in procurement decisions, new programme development, and platform selection</li>
+          <li>The focus shifts from individual accommodation toward proactive inclusion — affecting faculty development, governance, and organisational identity</li>
+          <li>Learner trust and persistence improve when assessments are transparently designed, criteria are clear, and there is genuine formative support before high-stakes moments</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="distinction-box">
+      <strong>On evidence and outcomes:</strong> Research consistently demonstrates that equity-centered curriculum design supports retention, participation, and completion beyond compliance. Inclusive design — grounded in learning science, structured around authentic performance, and built with genuine learner input — produces better educational environments for all learners. This is not a tradeoff between rigour and inclusion; they are the same goal, pursued through the same means.
+    </div>
+
+    <div class="section-divider"></div>
+
+    <h3 style="font-size:1.1rem; font-weight:600; margin-bottom:1rem;">What changes — and what requires sustained attention</h3>
+    <p style="font-size:0.93rem; color:var(--text-secondary); line-height:1.7; margin-bottom:1rem;">Many inequities in curriculum are normalised. Designers often inherit structures they did not create, and those structures can feel like common sense because they have been repeated for so long. Genuine equity work often requires tradeoffs: it may challenge standardisation, expose institutional habits, or require more flexible and relational design than traditional curriculum models are set up to support.</p>
+    <p style="font-size:0.93rem; color:var(--text-secondary); line-height:1.7; margin-bottom:1rem;">This is why curriculum mapping must be understood as a systemic practice rather than a one-time deliverable. Barriers accumulate as programmes evolve, platforms change, and learner populations shift. Periodic review embedded in ongoing practice prevents the buildup of unaddressed issues and is more effective than any single comprehensive effort conducted in isolation.</p>
+    <p style="font-size:0.93rem; color:var(--text-secondary); line-height:1.7;">The central question — for both individual design decisions and the curriculum as a whole — is: <em>for whom does this work, and for whom does it create unnecessary difficulty?</em> Answering that question with honesty, and acting on the answer, is what distinguishes curriculum mapping as a rigorous professional practice from curriculum mapping as documentation.</p>
+  </section>
+
+  <!-- REFLECTION TOOL -->
+  <section id="panel-reflection" class="tab-panel" role="tabpanel" aria-labelledby="tab-reflection">
+    <h2 class="panel-title">Reflection Tool</h2>
+    <p class="section-intro">This reflection is designed to surface useful questions about your organisation's current curriculum mapping practice and help identify where focused attention may be most productive. There are no correct answers — choose the response that most honestly reflects your current situation. The reflection takes about two minutes.</p>
+
+    <form class="reflection-form" id="reflectionForm" novalidate>
+
+      <fieldset class="q-block">
+        <legend>1. How does your organisation currently approach curriculum design and mapping?</legend>
+        <div class="radio-opts">
+          <label><input type="radio" name="q1" value="a"> We do not currently have a structured curriculum mapping process</label>
+          <label><input type="radio" name="q1" value="b"> We map curriculum at the course level when new programmes are launched</label>
+          <label><input type="radio" name="q1" value="c"> We conduct periodic programme-level mapping using a mix of approaches</label>
+          <label><input type="radio" name="q1" value="d"> Curriculum mapping is integrated into our ongoing design and review cycle</label>
+        </div>
+      </fieldset>
+
+      <fieldset class="q-block">
+        <legend>2. To what extent does equity inform your curriculum design decisions?</legend>
+        <div class="radio-opts">
+          <label><input type="radio" name="q2" value="a"> Equity considerations are not yet formally part of our curriculum process</label>
+          <label><input type="radio" name="q2" value="b"> We are aware of equity as a concern but have not systematically integrated it into design</label>
+          <label><input type="radio" name="q2" value="c"> We review outcomes and assessments with equity in mind, though not yet systematically</label>
+          <label><input type="radio" name="q2" value="d"> Equity is a named design principle with specific practices embedded throughout our mapping process</label>
+        </div>
+      </fieldset>
+
+      <fieldset class="q-block">
+        <legend>3. To what extent do learners inform your curriculum design and review?</legend>
+        <div class="radio-opts">
+          <label><input type="radio" name="q3" value="a"> Learners are not currently involved in curriculum design or review</label>
+          <label><input type="radio" name="q3" value="b"> We gather learner feedback informally, mainly when issues are raised</label>
+          <label><input type="radio" name="q3" value="c"> We use structured learner feedback as part of our review process</label>
+          <label><input type="radio" name="q3" value="d"> Learners are involved in shaping outcomes, assessments, and design decisions</label>
+        </div>
+      </fieldset>
+
+      <fieldset class="q-block">
+        <legend>4. How would you describe the relationship between your curriculum map and practice?</legend>
+        <div class="radio-opts">
+          <label><input type="radio" name="q4" value="a"> Our curriculum documentation does not closely reflect what is actually taught and assessed</label>
+          <label><input type="radio" name="q4" value="b"> There is reasonable alignment in some areas but meaningful gaps in others</label>
+          <label><input type="radio" name="q4" value="c"> Our map reflects intended practice well; we are working to close gaps between intended and learned curriculum</label>
+          <label><input type="radio" name="q4" value="d"> The map is actively used to inspect, evaluate, and improve learner experience over time</label>
+        </div>
+      </fieldset>
+
+      <button type="button" class="reflect-btn" id="reflectBtn">See reflection</button>
+
+    </form>
+
+    <div class="reflection-output" id="reflectionOutput" aria-live="polite">
+      <h3 id="reflectionTitle">Questions worth sitting with</h3>
+      <ul class="ref-questions" id="reflectionQuestions"></ul>
+      <span class="reset-link" id="resetLink" role="button" tabindex="0">Start again</span>
+    </div>
+  </section>
+
+  <!-- CITATIONS -->
+  <section id="panel-citations" class="tab-panel" role="tabpanel" aria-labelledby="tab-citations">
+    <h2 class="panel-title">Knowledge Sources</h2>
+    <p class="section-intro">The following sources underpin the knowledge claims, frameworks, and evidence presented in this resource. Citations are grouped by the area of the resource they primarily support.</p>
+
+    <div class="citations-group">
+      <h3>Equity and Social Justice in Education</h3>
+      <div class="cite-item"><span class="cite-tag">Foundations · Competencies</span><strong>Darling-Hammond, L.</strong> "5 Ways to Implement Equity-Centered Leadership Practices." <em>Edutopia.</em> Cited for the argument that a narrow focus on achievement metrics hinders holistic well-being and the need for an equity mindset encompassing identity, power, and access.</div>
+      <div class="cite-item"><span class="cite-tag">Foundations · Methodology</span>Michigan Assessment Consortium. <strong>"Designing for Equity."</strong> <em>MAC White Paper.</em> Cited for the three-phase equity-focused needs assessment methodology and the role of intersectionality in data collection.</div>
+      <div class="cite-item"><span class="cite-tag">Foundations · Decisions</span>National Equity Project. <strong>"Leadership for Learner-Centered Education."</strong> Cited for the framework distinguishing equity from achievement alone and the need for structural analysis in needs assessment.</div>
+      <div class="cite-item"><span class="cite-tag">Foundations</span>The Center for Learner Equity. <strong>"Principles of Equitable Schools."</strong> Cited for the concept of "street data" — information reflecting learners' lived experiences — as essential to equity-centered decision-making.</div>
+    </div>
+
+    <div class="citations-group">
+      <h3>Curriculum Mapping and Alignment</h3>
+      <div class="cite-item"><span class="cite-tag">Methodology · Decisions</span>Structural Learning. <strong>"Curriculum Mapping."</strong> Cited for the alignment mapping framework, collaborative co-creation of curriculum maps, and the role of ongoing community conversations in equitable curriculum development.</div>
+      <div class="cite-item"><span class="cite-tag">Methodology</span>eLumen. <strong>"Mapping for Curricular and Assessment Efficacy."</strong> <em>White Paper.</em> Cited for measurable indicators, systemic coherence evaluation, and the relationship between curriculum mapping and programme outcomes.</div>
+      <div class="cite-item"><span class="cite-tag">Methodology · Competencies</span>University of New Haven Digital Learning. <strong>"Curriculum Mapping."</strong> Cited for alignment chain methodology: outcomes → assessments → instructional strategies → materials.</div>
+      <div class="cite-item"><span class="cite-tag">Methodology</span>ASCD. <strong>"High-Quality Curriculum Is a Transformation Tool for Equity."</strong> Cited for the argument that equity-centered curriculum — using backward design and prioritising cultural competence — is a high-leverage tool for closing opportunity gaps.</div>
+    </div>
+
+    <div class="citations-group">
+      <h3>Assessment Design and Theory</h3>
+      <div class="cite-item"><span class="cite-tag">Competencies · Methodology</span>RPA Journal. <strong>"Equity-centered Assessment Practices."</strong> Cited for assessment validity in equity-centered contexts, gap analysis tools, and measurable indicators for tracking progress.</div>
+      <div class="cite-item"><span class="cite-tag">Competencies</span>University of Toronto, Mississauga. <strong>"Assessment Design."</strong> Cited for construct validity, the distinction between the construct and the means of demonstration, and the principle of equivalent evidence across multiple demonstration modes.</div>
+      <div class="cite-item"><span class="cite-tag">Competencies</span>University of Oxford Centre for Teaching and Learning. <strong>"Assessment and Feedback."</strong> Cited for accessible assessment design: plain instructions, consistent formatting, and formative support before high-stakes moments.</div>
+    </div>
+
+    <div class="citations-group">
+      <h3>The Science of Learning and Instruction</h3>
+      <div class="cite-item"><span class="cite-tag">Foundations</span><strong>Sweller, J.</strong> Cognitive Load Theory. Cited throughout for the principles of intrinsic, extraneous, and germane cognitive load; the worked example effect; and the expertise reversal effect as they apply to curriculum sequencing.</div>
+      <div class="cite-item"><span class="cite-tag">Foundations</span><strong>Bjork, R. A.</strong> Desirable difficulties. Cited for retrieval practice, spaced practice, and interleaving as evidence-based conditions for durable learning and transfer.</div>
+      <div class="cite-item"><span class="cite-tag">Foundations</span><strong>Hattie, J.</strong> Feedback research. Cited for the conditions under which feedback is most effective: timely, specific, actionable, and task-focused.</div>
+      <div class="cite-item"><span class="cite-tag">Foundations</span><strong>Deci, E., & Ryan, R.</strong> Self-Determination Theory. Cited for the role of autonomy, competence, and relatedness in sustaining motivation and engagement in adult learning.</div>
+    </div>
+
+    <div class="citations-group">
+      <h3>Adult Learning Theory</h3>
+      <div class="cite-item"><span class="cite-tag">Foundations</span><strong>Knowles, M.</strong> Andragogy. Cited for the core principles of adult learning: self-direction, use of prior experience, problem-centered orientation, and internal motivation as drivers of engagement.</div>
+      <div class="cite-item"><span class="cite-tag">Foundations</span><strong>Mezirow, J.</strong> Transformative learning theory. Cited for the role of critical reflection and consciousness change in adult learning as a complement to Knowles's model.</div>
+    </div>
+
+    <div class="citations-group">
+      <h3>Universal Design for Learning and Accessibility</h3>
+      <div class="cite-item"><span class="cite-tag">Foundations · Competencies</span>CAST. <strong>Universal Design for Learning Guidelines.</strong> Cited for the three UDL principles — multiple means of engagement, representation, and action and expression — as a design framework grounded in learner variability.</div>
+      <div class="cite-item"><span class="cite-tag">Foundations</span><strong>Mace, R.</strong> Universal Design principles. Cited for the seven principles of universal design and the argument that proactive inclusive design produces better outcomes for all users, not only those with disabilities.</div>
+      <div class="cite-item"><span class="cite-tag">Foundations</span>W3C. <strong>"Web Content Accessibility Guidelines (WCAG) 2.2."</strong> 11 December 2024. <a href="https://www.w3.org/TR/WCAG22/" target="_blank" rel="noopener">w3.org/TR/WCAG22/</a></div>
+    </div>
+
+    <div class="citations-group">
+      <h3>Stakeholder Engagement and Organisational Change</h3>
+      <div class="cite-item"><span class="cite-tag">Competencies · Methodology</span>Educational Designer. <strong>"Designing for Equity at Scale."</strong> Cited for the role of intersectionality in data collection, the impact of timeline constraints on needs assessment quality, and the challenges of conducting equity-focused work at scale.</div>
+      <div class="cite-item"><span class="cite-tag">Competencies</span>NGLC. <strong>"Equity in Education: Transformative Resources and Tools."</strong> Cited for collaborative digital platforms in curriculum development and cultural competence as a professional development priority.</div>
+      <div class="cite-item"><span class="cite-tag">Competencies · Impact</span>National Summit on K-12 Competency-Based Education. <strong>"Introducing an Equity Framework for Competency Education."</strong> Cited for the tensions between standardisation and responsiveness, and the importance of continuous reflection in competency-based systems.</div>
+    </div>
+
+    <p style="font-size:0.82rem; color:var(--text-tertiary); margin-top:2rem; line-height:1.65;">This resource draws on scholarship from cognitive psychology, instructional design, curriculum theory, disability studies, adult education, and equity and social justice frameworks in education. It does not constitute legal or professional advice, and should be read alongside current institutional policies and relevant standards.</p>
+  </section>
+
+</main>
+
+<footer>
+  <p>Developed to support organisations and learning designers working toward rigorous, equitable curriculum mapping practice.<br>
+  This resource is informed by scholarship in curriculum theory, the science of learning, adult learning theory, equity and social justice frameworks, Universal Design for Learning, and instructional systems design.</p>
+</footer>
+
+<script>
+  const tabs = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+      panels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      document.getElementById(tab.getAttribute('aria-controls')).classList.add('active');
+    });
+  });
+
+  const triggers = document.querySelectorAll('.accordion-trigger');
+  triggers.forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const expanded = trigger.getAttribute('aria-expanded') === 'true';
+      trigger.setAttribute('aria-expanded', !expanded);
+      const body = document.getElementById(trigger.getAttribute('aria-controls'));
+      body.classList.toggle('open', !expanded);
+    });
+  });
+
+  const reflectionData = {
+    q1: {
+      a: "What would it take to create a shared understanding of what the curriculum is intended to produce — and for whom?",
+      b: "How might programme-level mapping reveal gaps or misalignments that course-level work cannot surface on its own?",
+      c: "What would it mean to treat the curriculum map as a living system rather than a periodic deliverable?",
+      d: "How is the ongoing review cycle informing concrete improvements to learner experience and outcomes?"
+    },
+    q2: {
+      a: "Which learners are currently navigating barriers in the curriculum that the design has not named or addressed?",
+      b: "Where in your existing outcomes and assessments might equity concerns be most consequential — and least visible?",
+      c: "What would it look like to build equity review into every stage of curriculum development, rather than applying it after the fact?",
+      d: "Are the equity practices embedded in your process producing measurable improvements in outcomes for learners who have historically been underserved?"
+    },
+    q3: {
+      a: "What would learners with direct experience of the curriculum's barriers be able to see that designers and faculty cannot?",
+      b: "How could structured learner input — rather than informal feedback — change the kinds of design decisions your team makes?",
+      c: "In what ways does learner feedback currently influence the curriculum, and in what ways does it not yet reach the design?",
+      d: "How are you ensuring that learner co-design is genuinely shaping decisions, rather than functioning as consultation after the fact?"
+    },
+    q4: {
+      a: "What would it take to understand the gap between what the curriculum states and what learners are actually experiencing?",
+      b: "Where are the gaps between intended, enacted, and learned curriculum most consequential for your learners?",
+      c: "What data would help you determine whether the learned curriculum matches the stated outcomes — particularly for learners who have been historically underserved?",
+      d: "What is the curriculum map revealing about where the system is working well, and where sustained attention is still needed?"
+    }
+  };
+
+  document.getElementById('reflectBtn').addEventListener('click', () => {
+    const form = document.getElementById('reflectionForm');
+    const questions = ['q1','q2','q3','q4'];
+    let allAnswered = true;
+    questions.forEach(q => {
+      if (!form.querySelector(`input[name="${q}"]:checked`)) allAnswered = false;
+    });
+    if (!allAnswered) {
+      alert('Please answer all four questions to see your reflection.');
+      return;
+    }
+    const output = document.getElementById('reflectionOutput');
+    const list = document.getElementById('reflectionQuestions');
+    list.innerHTML = '';
+    questions.forEach(q => {
+      const val = form.querySelector(`input[name="${q}"]:checked`).value;
+      const li = document.createElement('li');
+      li.textContent = reflectionData[q][val];
+      list.appendChild(li);
+    });
+    output.classList.add('visible');
+    output.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+
+  document.getElementById('resetLink').addEventListener('click', () => {
+    document.getElementById('reflectionForm').reset();
+    document.getElementById('reflectionOutput').classList.remove('visible');
+  });
+  document.getElementById('resetLink').addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); document.getElementById('resetLink').click(); }
+  });
+</script>
+</body>
+</html>
