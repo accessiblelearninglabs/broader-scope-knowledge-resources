@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Experiential Learning Infrastructure Design — Knowledge Resource</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --text: #303e44;
+    --accent: #475f6a;
+    --accent-light: #5a7885;
+    --accent-lighter: #e8eef1;
+    --accent-subtle: #f2f6f8;
+    --white: #ffffff;
+    --border: #d0dde3;
+    --border-light: #e4ecf0;
+    --success: #3a6b5a;
+    --success-bg: #eaf3ef;
+    --warn: #6b5a3a;
+    --warn-bg: #f3efe8;
+    --font: 'Asap', sans-serif;
+    --radius: 8px;
+    --radius-lg: 12px;
+    --shadow: 0 1px 4px rgba(48,62,68,0.08), 0 4px 16px rgba(48,62,68,0.05);
+    --shadow-lg: 0 4px 24px rgba(48,62,68,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    color: var(--text);
+    background: var(--white);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--accent); text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 3px; }
+  a:hover { text-decoration-color: var(--accent); }
+
+  /* Skip link */
+  .skip-link {
+    position: absolute; left: -9999px; top: auto;
+    font-family: var(--font); font-size: 14px;
+    background: var(--text); color: var(--white);
+    padding: 8px 16px; border-radius: 0 0 var(--radius) var(--radius);
+    z-index: 9999;
+  }
+  .skip-link:focus { left: 16px; }
+
+  /* Site header */
+  .site-header {
+    background: var(--white);
+    border-bottom: 1px solid var(--border-light);
+    padding: 14px 0;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .site-header-inner {
+    max-width: 860px; margin: 0 auto; padding: 0 24px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .site-wordmark {
+    font-size: 13px; font-weight: 600; color: var(--accent);
+    letter-spacing: 0.02em; text-transform: uppercase;
+    text-decoration: none;
+  }
+  .site-wordmark:hover { color: var(--text); text-decoration: none; }
+  .site-header-sep { color: var(--border); font-weight: 300; }
+  .site-header-label { font-size: 13px; color: var(--accent-light); }
+
+  /* Page hero */
+  .page-hero {
+    background: var(--accent-subtle);
+    border-bottom: 1px solid var(--border-light);
+    padding: 52px 24px 44px;
+  }
+  .page-hero-inner { max-width: 860px; margin: 0 auto; }
+  .page-hero h1 {
+    font-size: clamp(1.6rem, 3.5vw, 2.15rem);
+    font-weight: 700; line-height: 1.25;
+    color: var(--text); margin-bottom: 14px;
+    letter-spacing: -0.01em;
+  }
+  .page-hero-subtitle {
+    font-size: 1.05rem; color: var(--accent); max-width: 620px;
+    margin-bottom: 24px; line-height: 1.6;
+  }
+  .info-banner {
+    display: flex; gap: 12px; align-items: flex-start;
+    background: var(--white); border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius); padding: 14px 18px;
+    font-size: 0.9rem; color: var(--accent); max-width: 640px;
+  }
+  .info-banner-icon { flex-shrink: 0; font-size: 1rem; margin-top: 1px; }
+
+  /* Tabs */
+  .tabs-wrapper { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+  .tab-nav {
+    display: flex; gap: 0; overflow-x: auto; -webkit-overflow-scrolling: touch;
+    border-bottom: 2px solid var(--border-light);
+    margin-top: 36px; padding-bottom: 0;
+    scrollbar-width: none;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    font-family: var(--font); font-size: 0.88rem; font-weight: 600;
+    color: var(--accent-light); background: none; border: none;
+    padding: 11px 20px; cursor: pointer; white-space: nowrap;
+    position: relative; bottom: -2px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+    letter-spacing: 0.01em;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn[aria-selected="true"] {
+    color: var(--text); border-bottom-color: var(--accent);
+  }
+
+  .tab-panel { display: none; padding: 44px 0 72px; }
+  .tab-panel.active { display: block; }
+
+  /* Section headings */
+  .section-heading {
+    font-size: 1.35rem; font-weight: 700; color: var(--text);
+    margin-bottom: 8px; letter-spacing: -0.01em;
+  }
+  .section-intro {
+    font-size: 0.96rem; color: var(--accent); max-width: 640px;
+    margin-bottom: 32px; line-height: 1.65;
+  }
+
+  /* Foundation cards grid */
+  .foundations-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px; margin-bottom: 40px;
+  }
+  .foundation-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 24px 22px;
+    transition: box-shadow 0.15s, border-color 0.15s;
+  }
+  .foundation-card:hover { box-shadow: var(--shadow); border-color: var(--accent-light); }
+  .foundation-icon { font-size: 1.5rem; margin-bottom: 12px; }
+  .foundation-card h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .foundation-card p { font-size: 0.9rem; color: var(--accent); line-height: 1.6; }
+
+  /* Prose note box */
+  .note-box {
+    background: var(--accent-subtle); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px 22px;
+    font-size: 0.9rem; color: var(--text); line-height: 1.65;
+    margin: 24px 0;
+  }
+  .note-box strong { color: var(--text); }
+
+  /* Distinction callout */
+  .distinction-pair {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 28px 0;
+  }
+  @media (max-width: 580px) { .distinction-pair { grid-template-columns: 1fr; } }
+  .distinction-card {
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 20px; font-size: 0.9rem;
+  }
+  .distinction-card h4 { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+  .distinction-card p { color: var(--accent); line-height: 1.6; }
+  .distinction-card.primary { border-left: 3px solid var(--accent); }
+  .distinction-card.primary h4 { color: var(--accent); }
+  .distinction-card.secondary { border-left: 3px solid var(--border); }
+  .distinction-card.secondary h4 { color: var(--accent-light); }
+
+  /* Accordion stages */
+  .stages-list { display: flex; flex-direction: column; gap: 10px; margin-top: 28px; }
+  .stage-item {
+    border: 1px solid var(--border); border-radius: var(--radius);
+    overflow: hidden; transition: box-shadow 0.15s;
+  }
+  .stage-item.open { box-shadow: var(--shadow); }
+  .stage-btn {
+    width: 100%; text-align: left; background: none; border: none;
+    font-family: var(--font); cursor: pointer;
+    padding: 18px 20px; display: flex; align-items: center; gap: 14px;
+    transition: background 0.12s;
+  }
+  .stage-btn:hover { background: var(--accent-subtle); }
+  .stage-num {
+    flex-shrink: 0; width: 28px; height: 28px;
+    background: var(--accent-lighter); color: var(--accent);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; font-weight: 700;
+  }
+  .stage-item.open .stage-num { background: var(--accent); color: var(--white); }
+  .stage-title-group { flex: 1; }
+  .stage-title { font-size: 0.97rem; font-weight: 700; color: var(--text); display: block; }
+  .stage-sub { font-size: 0.82rem; color: var(--accent-light); margin-top: 2px; display: block; }
+  .stage-tags { margin-left: auto; display: flex; gap: 6px; flex-wrap: nowrap; }
+  .tag {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.03em;
+    padding: 3px 9px; border-radius: 20px; white-space: nowrap;
+    background: var(--accent-lighter); color: var(--accent);
+  }
+  .stage-chevron { margin-left: 8px; color: var(--accent-light); font-size: 0.9rem; transition: transform 0.2s; }
+  .stage-item.open .stage-chevron { transform: rotate(180deg); }
+
+  .stage-body {
+    display: none; padding: 0 20px 22px 62px;
+    border-top: 1px solid var(--border-light);
+  }
+  .stage-item.open .stage-body { display: block; padding-top: 18px; }
+  .stage-body p { font-size: 0.92rem; color: var(--text); line-height: 1.7; margin-bottom: 16px; }
+  .stage-body h4 { font-size: 0.83rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 10px; }
+  .stage-outputs {
+    background: var(--accent-subtle); border-radius: var(--radius);
+    padding: 14px 16px; list-style: none; margin-bottom: 14px;
+  }
+  .stage-outputs li {
+    font-size: 0.88rem; color: var(--text); padding: 5px 0;
+    border-bottom: 1px solid var(--border-light); display: flex; gap: 8px; align-items: flex-start;
+  }
+  .stage-outputs li:last-child { border-bottom: none; }
+  .stage-outputs li::before { content: "→"; color: var(--accent); flex-shrink: 0; margin-top: 1px; }
+  .stage-note {
+    font-size: 0.85rem; color: var(--accent); background: var(--white);
+    border: 1px solid var(--border); border-left: 3px solid var(--accent-light);
+    border-radius: var(--radius); padding: 12px 14px; margin-top: 12px;
+    line-height: 1.6;
+  }
+
+  /* Key decisions grid */
+  .decisions-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px; margin: 28px 0;
+  }
+  .decision-card {
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 20px 18px;
+  }
+  .decision-icon { font-size: 1.3rem; margin-bottom: 10px; }
+  .decision-card h3 { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .decision-tagline { font-size: 0.8rem; font-weight: 600; color: var(--accent-light); margin-bottom: 10px; font-style: italic; }
+  .decision-options { list-style: none; }
+  .decision-options li {
+    font-size: 0.86rem; color: var(--accent); padding: 4px 0;
+    border-bottom: 1px solid var(--border-light); display: flex; gap: 8px;
+  }
+  .decision-options li:last-child { border-bottom: none; }
+  .decision-options li::before { content: "·"; color: var(--accent-light); flex-shrink: 0; }
+
+  .approach-note {
+    background: var(--warn-bg); border: 1px solid #d6c9b2; border-radius: var(--radius);
+    padding: 16px 18px; font-size: 0.9rem; color: var(--warn); margin-top: 8px;
+  }
+  .approach-note strong { color: var(--warn); }
+
+  /* Outcomes: short/long term */
+  .outcomes-header { display: flex; gap: 12px; margin-bottom: 20px; }
+  .outcome-toggle {
+    font-family: var(--font); font-size: 0.85rem; font-weight: 600;
+    padding: 8px 18px; border-radius: 20px; border: 1px solid var(--border);
+    cursor: pointer; background: var(--white); color: var(--accent-light);
+    transition: all 0.15s;
+  }
+  .outcome-toggle.active {
+    background: var(--accent); color: var(--white); border-color: var(--accent);
+  }
+  .outcomes-panel { display: none; }
+  .outcomes-panel.active { display: block; }
+  .outcomes-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+  .outcome-item {
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 18px 20px; display: flex; gap: 14px; align-items: flex-start;
+  }
+  .outcome-check {
+    flex-shrink: 0; width: 24px; height: 24px;
+    background: var(--success-bg); color: var(--success);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; font-weight: 700;
+  }
+  .outcome-toggle-panel .outcome-check { background: var(--accent-lighter); color: var(--accent); }
+  .outcome-item h4 { font-size: 0.93rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .outcome-item p { font-size: 0.88rem; color: var(--accent); line-height: 1.6; }
+
+  /* Reflection tool */
+  .reflection-intro { font-size: 0.92rem; color: var(--accent); margin-bottom: 28px; line-height: 1.65; max-width: 580px; }
+  .reflection-form { max-width: 600px; }
+  .reflection-q {
+    margin-bottom: 24px;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 20px; background: var(--white);
+  }
+  .reflection-q legend {
+    font-size: 0.92rem; font-weight: 700; color: var(--text);
+    padding: 0 8px; margin-bottom: 4px;
+  }
+  .reflection-q .q-num {
+    font-size: 0.75rem; font-weight: 700; color: var(--accent-light);
+    text-transform: uppercase; letter-spacing: 0.05em;
+    display: block; margin-bottom: 8px;
+  }
+  .radio-option {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 8px 0; border-bottom: 1px solid var(--border-light);
+    cursor: pointer;
+  }
+  .radio-option:last-child { border-bottom: none; padding-bottom: 0; }
+  .radio-option input[type="radio"] { margin-top: 3px; accent-color: var(--accent); flex-shrink: 0; }
+  .radio-option span { font-size: 0.88rem; color: var(--accent); line-height: 1.5; }
+
+  .reflection-btn {
+    font-family: var(--font); font-size: 0.92rem; font-weight: 600;
+    background: var(--accent); color: var(--white);
+    border: none; border-radius: var(--radius); padding: 12px 28px;
+    cursor: pointer; transition: background 0.15s;
+    margin-bottom: 24px;
+  }
+  .reflection-btn:hover { background: var(--text); }
+  .reflection-btn-reset {
+    font-family: var(--font); font-size: 0.85rem; font-weight: 500;
+    background: none; color: var(--accent-light); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 10px 20px;
+    cursor: pointer; transition: all 0.15s; margin-left: 10px;
+  }
+  .reflection-btn-reset:hover { border-color: var(--accent); color: var(--accent); }
+
+  .reflection-result {
+    display: none;
+    background: var(--accent-subtle); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 28px 26px; margin-top: 8px;
+  }
+  .reflection-result h3 { font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .reflection-result .result-label {
+    display: inline-block; font-size: 0.78rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    background: var(--accent); color: var(--white);
+    padding: 4px 12px; border-radius: 20px; margin-bottom: 14px;
+  }
+  .reflection-result p { font-size: 0.92rem; color: var(--text); line-height: 1.7; margin-bottom: 10px; }
+  .reflection-prompts {
+    margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border);
+    list-style: none;
+  }
+  .reflection-prompts li {
+    font-size: 0.88rem; color: var(--accent); padding: 7px 0;
+    border-bottom: 1px solid var(--border-light); display: flex; gap: 10px;
+  }
+  .reflection-prompts li:last-child { border-bottom: none; }
+  .reflection-prompts li::before { content: "?"; font-weight: 700; color: var(--accent); flex-shrink: 0; }
+
+  /* Citations */
+  .citations-section h2 { font-size: 1.15rem; font-weight: 700; color: var(--text); margin: 28px 0 14px; }
+  .citations-section h2:first-child { margin-top: 0; }
+  .citations-section h3 {
+    font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--accent-light); margin-bottom: 12px; padding-bottom: 6px;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .citation-entry {
+    font-size: 0.88rem; color: var(--text); line-height: 1.65;
+    padding: 12px 0; border-bottom: 1px solid var(--border-light);
+  }
+  .citation-entry:last-child { border-bottom: none; }
+  .citation-entry strong { color: var(--text); }
+  .citation-group { margin-bottom: 32px; }
+
+  /* Footer */
+  .page-footer {
+    background: var(--accent-subtle); border-top: 1px solid var(--border-light);
+    padding: 28px 24px; margin-top: 0;
+  }
+  .page-footer-inner { max-width: 860px; margin: 0 auto; font-size: 0.84rem; color: var(--accent-light); line-height: 1.65; }
+  .page-footer-inner strong { color: var(--accent); }
+
+  /* Prose utility */
+  .prose p { font-size: 0.93rem; line-height: 1.75; color: var(--text); margin-bottom: 16px; }
+  .prose p:last-child { margin-bottom: 0; }
+  .prose h3 { font-size: 1.05rem; font-weight: 700; color: var(--text); margin: 28px 0 10px; }
+  .prose ul { list-style: none; margin: 12px 0 18px 0; }
+  .prose ul li {
+    font-size: 0.92rem; color: var(--text); padding: 6px 0;
+    border-bottom: 1px solid var(--border-light); display: flex; gap: 10px;
+  }
+  .prose ul li::before { content: "→"; color: var(--accent); flex-shrink: 0; }
+  .prose ul li:last-child { border-bottom: none; }
+
+  /* Divider */
+  .prose-divider { border: none; border-top: 1px solid var(--border-light); margin: 36px 0; }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .tab-btn { padding: 10px 14px; font-size: 0.82rem; }
+    .stage-tags { display: none; }
+    .page-hero { padding: 36px 18px 32px; }
+    .tabs-wrapper { padding: 0 16px; }
+  }
+
+  /* Animations */
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .tab-panel.active { animation: fadeIn 0.2s ease; }
+</style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header class="site-header" role="banner">
+  <div class="site-header-inner">
+    <span class="site-wordmark">Knowledge Resource</span>
+    <span class="site-header-sep" aria-hidden="true">—</span>
+    <span class="site-header-label">Experiential Learning Infrastructure Design</span>
+  </div>
+</header>
+
+<div class="page-hero" role="region" aria-label="Page introduction">
+  <div class="page-hero-inner">
+    <h1>Experiential Learning Infrastructure Design for Adult Learners</h1>
+    <p class="page-hero-subtitle">A guide to the knowledge foundations, design methodology, key decisions, and learner outcomes that characterise effective experiential learning infrastructure.</p>
+    <div class="info-banner" role="note">
+      <span class="info-banner-icon" aria-hidden="true">ℹ️</span>
+      <span>This resource is for learning designers, programme leads, and organisational leaders designing or evaluating experiential learning for adult learners. Use the tabs to explore at whatever depth is useful to you.</span>
+    </div>
+  </div>
+</div>
+
+<main id="main-content">
+<div class="tabs-wrapper">
+
+  <nav class="tab-nav" role="tablist" aria-label="Resource sections">
+    <button class="tab-btn" role="tab" aria-selected="true" aria-controls="tab-foundations" id="btn-foundations">Foundations</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-methodology" id="btn-methodology">Methodology</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-decisions" id="btn-decisions">Key Decisions</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-outcomes" id="btn-outcomes">Learner Impact</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-reflection" id="btn-reflection">Reflection Tool</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-citations" id="btn-citations">Citations</button>
+  </nav>
+
+  <!-- FOUNDATIONS TAB -->
+  <section class="tab-panel active" id="tab-foundations" role="tabpanel" aria-labelledby="btn-foundations">
+
+    <h2 class="section-heading">Six Knowledge Foundations</h2>
+    <p class="section-intro">Effective experiential learning infrastructure rests on six interconnected foundations. The most rigorous designs hold all six in view simultaneously — and produce learning experiences that activity-first approaches cannot.</p>
+
+    <div class="foundations-grid">
+      <article class="foundation-card">
+        <div class="foundation-icon" aria-hidden="true">🎯</div>
+        <h3>Intentional, Authentic Design</h3>
+        <p>Every experience must serve a clear learning goal and reflect a real work or life context. Authenticity motivates engagement and makes new knowledge feel relevant — not abstract. Activity alone is never sufficient justification for design.</p>
+      </article>
+      <article class="foundation-card">
+        <div class="foundation-icon" aria-hidden="true">🔁</div>
+        <h3>The Learning Cycle</h3>
+        <p>Kolb's experiential learning cycle — concrete experience, reflective observation, abstract conceptualisation, active experimentation — provides the structural logic of effective design. Learners deepen understanding with each iteration through the cycle.</p>
+      </article>
+      <article class="foundation-card">
+        <div class="foundation-icon" aria-hidden="true">💬</div>
+        <h3>Reflection</h3>
+        <p>Reflection is what converts experience into learning. It helps learners examine what happened, why it mattered, and what to do differently next time. Without structured reflection, experience accumulates without becoming learning.</p>
+      </article>
+      <article class="foundation-card">
+        <div class="foundation-icon" aria-hidden="true">🧠</div>
+        <h3>Adult Learning Theory (Andragogy)</h3>
+        <p>Adults bring prior experience, prefer self-direction, and learn best through problem-centred, immediately applicable content. Effective infrastructure respects and activates this — rather than treating adults as blank slates to be filled.</p>
+      </article>
+      <article class="foundation-card">
+        <div class="foundation-icon" aria-hidden="true">🔄</div>
+        <h3>Transfer and Application</h3>
+        <p>Learning must move beyond the session into practice. Infrastructure that explicitly supports transfer — through follow-up tasks, planning templates, peer check-ins, and job aids — produces durable skill development. Without this, learning remains event-dependent.</p>
+      </article>
+      <article class="foundation-card">
+        <div class="foundation-icon" aria-hidden="true">⚙️</div>
+        <h3>Systems Thinking</h3>
+        <p>Effective design is not a single well-crafted activity. It is a repeatable, supportable system: onboarding, facilitator guides, reflection tools, feedback loops, and measurement plans that allow the experience to function across cohorts and contexts.</p>
+      </article>
+    </div>
+
+    <div class="note-box">
+      <strong>A practical hierarchy:</strong> Use adult learning theory to design the experience. Use the learning cycle to structure it. Use reflection and transfer supports to make it durable. Use systems thinking to make it scalable. All four lenses together distinguish infrastructure from programming.
+    </div>
+
+    <hr class="prose-divider">
+
+    <h2 class="section-heading" style="margin-bottom: 8px;">What Distinguishes Infrastructure from Programming</h2>
+    <p class="section-intro">A one-time learning event — however well-facilitated — is not infrastructure. Infrastructure is what makes a learning experience reliable, repeatable, and improvable at scale.</p>
+
+    <div class="distinction-pair">
+      <div class="distinction-card primary">
+        <h4>Infrastructure</h4>
+        <p>Preparation materials, facilitator guides, reflection prompts, assessment tools, feedback loops, transfer supports, and measurement plans — designed as a system that can run reliably across cohorts and improve over time.</p>
+      </div>
+      <div class="distinction-card secondary">
+        <h4>Programming</h4>
+        <p>A well-designed activity or session that depends on the presence and skill of a particular facilitator and cannot easily be reproduced, evaluated, or improved without starting from scratch.</p>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>The distinction matters for organisations investing in adult learning: infrastructure produces compounding returns. Programming produces isolated events. Organisations that think in systems rather than sessions build learning cultures; those that think in sessions accumulate scheduling logistics.</p>
+      <p>For the 70:20:10 framework — which positions 70% of adult learning in experiential activities, 20% in social interaction, and 10% in formal education — infrastructure is the architecture that makes the 70% intentional rather than incidental.</p>
+    </div>
+
+    <hr class="prose-divider">
+
+    <h2 class="section-heading" style="margin-bottom: 8px;">The Core Competencies Required to Build This</h2>
+    <p class="section-intro">Designing effective experiential learning infrastructure requires a specific mix of knowledge and skill. The following represent the highest-priority competencies — foundational before technical tools become useful.</p>
+
+    <div class="prose">
+      <ul>
+        <li><strong>Adult learning theory</strong> — deep grounding in andragogy and the experiential learning cycle, so design choices match how adults actually learn</li>
+        <li><strong>Human-centred research</strong> — the ability to analyse learner needs, motivations, prior experience, and constraints before designing anything</li>
+        <li><strong>Learning experience design</strong> — writing clear outcomes, aligning activities and assessments, and mapping the full learner journey from preparation through transfer</li>
+        <li><strong>Facilitation design</strong> — structuring prompts, debriefs, coaching supports, and reflection tools that work without a particular person present</li>
+        <li><strong>Evaluation and iteration</strong> — using data, participant feedback, and learning analytics to improve experiences across cohorts</li>
+      </ul>
+
+      <h3>Supporting Competencies</h3>
+      <ul>
+        <li>Assessment and feedback design — formative, summative, and real-world performance checks</li>
+        <li>Inclusive and accessible design for diverse adult learners</li>
+        <li>Cross-functional stakeholder collaboration and project management</li>
+        <li>Technology and tooling — LMS platforms, authoring tools, digital collaboration environments</li>
+      </ul>
+    </div>
+
+  </section>
+
+  <!-- METHODOLOGY TAB -->
+  <section class="tab-panel" id="tab-methodology" role="tabpanel" aria-labelledby="btn-methodology">
+
+    <h2 class="section-heading">How Rigorous Experiential Learning Infrastructure Is Designed</h2>
+    <p class="section-intro">Effective infrastructure follows a structured, iterative process. The stages below represent a comprehensive approach; depth and scope vary with context, available resources, and organisational readiness. Understanding the full methodology clarifies what is gained — or lost — when particular stages are abbreviated.</p>
+
+    <div class="stages-list">
+
+      <div class="stage-item">
+        <button class="stage-btn" aria-expanded="false" onclick="toggleStage(this)">
+          <span class="stage-num" aria-hidden="true">1</span>
+          <span class="stage-title-group">
+            <span class="stage-title">Learner and Context Research</span>
+            <span class="stage-sub">Understanding who is learning and what they need before designing anything</span>
+          </span>
+          <span class="stage-tags"><span class="tag">Foundational</span><span class="tag">Collaborative</span></span>
+          <span class="stage-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="stage-body" role="region">
+          <p>Before any design begins, effective infrastructure development requires a thorough understanding of the learner population: their prior experience, current gaps, motivations, constraints, and the contexts in which they will apply new learning. This is not assumption-based — it is conducted through structured needs assessment using qualitative methods (interviews, focus groups, observation) alongside quantitative methods where available.</p>
+          <p>This stage also clarifies what the infrastructure must accomplish: the specific outcomes it targets, the workplace or community contexts into which learning must transfer, and what success looks like from the organisation's perspective and the learner's.</p>
+          <h4>What this stage produces</h4>
+          <ul class="stage-outputs">
+            <li>Documented learner profiles including prior knowledge, constraints, and motivations</li>
+            <li>Clear articulation of the gap between current and desired performance</li>
+            <li>Organisational context map: stakeholders, governance, and accountability structures</li>
+            <li>Shared definition of what successful transfer looks like</li>
+          </ul>
+          <div class="stage-note">Infrastructure that is not grounded in learner research frequently produces experiences that are well-structured but irrelevant — engaging on the day, but disconnected from the contexts learners actually inhabit.</div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-btn" aria-expanded="false" onclick="toggleStage(this)">
+          <span class="stage-num" aria-hidden="true">2</span>
+          <span class="stage-title-group">
+            <span class="stage-title">Outcome Mapping and Learning Cycle Design</span>
+            <span class="stage-sub">Defining what learners will be able to do — and how the cycle will support it</span>
+          </span>
+          <span class="stage-tags"><span class="tag">Structural</span><span class="tag">High-stakes</span></span>
+          <span class="stage-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="stage-body" role="region">
+          <p>Clear, measurable learning outcomes are the foundation of everything that follows — they determine which experiences to design, how to structure reflection, and what assessment will look like. Outcomes must describe observable performance in realistic contexts, not abstract knowledge acquisition.</p>
+          <p>With outcomes defined, the full experiential learning cycle is mapped: what preparatory experience or activation will learners need, what concrete experience will they engage with, how will reflection be structured, what conceptual framing will be offered, and how will application into real contexts be supported? This sequence transforms a session into a system.</p>
+          <h4>What this stage produces</h4>
+          <ul class="stage-outputs">
+            <li>Measurable learning outcomes aligned to real-world performance contexts</li>
+            <li>Full learning cycle blueprint: prepare → experience → reflect → conceptualise → apply</li>
+            <li>Activity and assessment alignment map — each element serves a specific outcome</li>
+            <li>Identification of gaps between current design and what the cycle requires</li>
+          </ul>
+          <div class="stage-note">A key decision at this stage is choosing the right experience type — case study, simulation, field-based project, scenario, peer learning task, or role play. The choice should be driven by what the outcome requires and what the context can support, not by what is easiest to facilitate.</div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-btn" aria-expanded="false" onclick="toggleStage(this)">
+          <span class="stage-num" aria-hidden="true">3</span>
+          <span class="stage-title-group">
+            <span class="stage-title">Facilitation and Reflection Infrastructure</span>
+            <span class="stage-sub">Building the supports that make the experience function without depending on any one person</span>
+          </span>
+          <span class="stage-tags"><span class="tag">Technical</span><span class="tag">Systematic</span></span>
+          <span class="stage-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="stage-body" role="region">
+          <p>Facilitation infrastructure is what separates a reproducible learning system from a facilitator-dependent event. This includes the materials, tools, and structures that allow the experience to run effectively regardless of who is facilitating — and that guide learners through productive reflection rather than leaving it to chance.</p>
+          <p>Effective reflection tools are structured without being prescriptive: they prompt learners to examine what happened, why it mattered, what they might do differently, and how they will apply insights in their own contexts. Debriefing guides, coaching prompts, and written reflection frameworks all serve this function differently and are selected based on context, group size, and format.</p>
+          <h4>What this stage produces</h4>
+          <ul class="stage-outputs">
+            <li>Facilitator guides with prompts, timing, contingency notes, and adaptation guidance</li>
+            <li>Structured reflection tools appropriate to the experience format and learner context</li>
+            <li>Debriefing frameworks linking experience to outcome and forward application</li>
+            <li>Coaching supports for one-to-one or small-group guidance contexts</li>
+            <li>Participant-facing job aids and preparation materials</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-btn" aria-expanded="false" onclick="toggleStage(this)">
+          <span class="stage-num" aria-hidden="true">4</span>
+          <span class="stage-title-group">
+            <span class="stage-title">Transfer and Application Design</span>
+            <span class="stage-sub">Making the final step explicit — so learning moves from the session into practice</span>
+          </span>
+          <span class="stage-tags"><span class="tag">High-impact</span><span class="tag">Often overlooked</span></span>
+          <span class="stage-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="stage-body" role="region">
+          <p>Transfer — the application of new learning in real contexts beyond the learning experience — is the primary purpose of experiential learning infrastructure. It is also the stage most frequently underinvested. Without deliberate transfer support, learners leave sessions with insight that fades before it can be applied.</p>
+          <p>Transfer infrastructure includes post-session planning tools (what the learner will try, when, and in what context), structures for accountability (peer partnerships, manager check-ins, follow-up cohort sessions), and supports that help learners adapt what they practised in the workshop to the messier conditions of real work or community contexts.</p>
+          <h4>What this stage produces</h4>
+          <ul class="stage-outputs">
+            <li>Structured application planning templates for use immediately post-session</li>
+            <li>Peer or cohort follow-up designs — check-ins, accountability pairs, or group reflections</li>
+            <li>Manager or supervisor briefing materials where workplace application is the goal</li>
+            <li>Clear connection from learning outcomes to observable on-the-job behaviour</li>
+          </ul>
+          <div class="stage-note">Research consistently shows that transfer is more strongly predicted by post-session support than by the quality of the session itself. Designing only the learning event and assuming transfer will follow is the single most common structural gap in adult learning programmes.</div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-btn" aria-expanded="false" onclick="toggleStage(this)">
+          <span class="stage-num" aria-hidden="true">5</span>
+          <span class="stage-title-group">
+            <span class="stage-title">Assessment, Feedback, and Inclusive Design</span>
+            <span class="stage-sub">Ensuring assessment measures the intended outcome — and that the experience works for all learners</span>
+          </span>
+          <span class="stage-tags"><span class="tag">Equity-centred</span><span class="tag">Evidence-based</span></span>
+          <span class="stage-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="stage-body" role="region">
+          <p>Assessment in experiential learning should measure whether learners can perform the intended outcome in realistic conditions — not whether they can reproduce information under test conditions unrelated to the learning goal. Effective assessment design asks: does this task reveal whether the learner can actually do what we designed the experience to develop?</p>
+          <p>Inclusive design ensures the infrastructure functions for learners with diverse backgrounds, schedules, languages, abilities, and levels of prior formal education. Adult learners are rarely a homogeneous group: infrastructure that assumes uniformity of starting point or context will systematically exclude those who most need access to high-quality learning.</p>
+          <h4>What this stage produces</h4>
+          <ul class="stage-outputs">
+            <li>Formative assessment tools aligned to each stage of the learning cycle</li>
+            <li>Summative assessments that require real-world application of the intended competency</li>
+            <li>Feedback design — how, when, and from whom learners receive useful feedback</li>
+            <li>Accessibility and flexibility review: format options, timing, language, and participation structures</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-btn" aria-expanded="false" onclick="toggleStage(this)">
+          <span class="stage-num" aria-hidden="true">6</span>
+          <span class="stage-title-group">
+            <span class="stage-title">Evaluation, Iteration, and Measurement Planning</span>
+            <span class="stage-sub">Using data and feedback to improve the infrastructure across cohorts over time</span>
+          </span>
+          <span class="stage-tags"><span class="tag">Continuous</span><span class="tag">Systems-level</span></span>
+          <span class="stage-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="stage-body" role="region">
+          <p>Evaluation is built into effective infrastructure — not appended to it. A measurement plan established at the design stage clarifies what data will be collected, at what points, by whom, and how findings will inform the next iteration. This prevents evaluation from becoming a retrospective exercise in justifying decisions already made.</p>
+          <p>Evaluation frameworks such as the Kirkpatrick model offer a useful structure: measuring learner reaction, knowledge and skill gain, behavioural change on the job, and organisational outcomes. Each level requires different measurement approaches and carries different evidential weight. Organisations that measure only Level 1 (participant satisfaction) have limited insight into whether the learning infrastructure is working.</p>
+          <h4>What this stage produces</h4>
+          <ul class="stage-outputs">
+            <li>Measurement plan specifying indicators, collection methods, timing, and ownership</li>
+            <li>Pre/post assessment tools designed to surface skill development, not just completion</li>
+            <li>Facilitator and participant feedback instruments with iteration prompts</li>
+            <li>Cycle-to-cycle improvement documentation — what changed, why, and what was learned</li>
+          </ul>
+          <div class="stage-note">Evaluation that is designed to produce only summative judgement ("did it work?") is less useful than evaluation designed to produce actionable insight ("what specifically should change, and in what direction?"). Infrastructure improves through iteration, not through conclusion.</div>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- KEY DECISIONS TAB -->
+  <section class="tab-panel" id="tab-decisions" role="tabpanel" aria-labelledby="btn-decisions">
+
+    <h2 class="section-heading">What Shapes an Experiential Learning Infrastructure Design</h2>
+    <p class="section-intro">No two designs are the same. The decisions an organisation makes about scope, experience type, learner involvement, and timing determine what the infrastructure can accomplish — and what it cannot. Understanding these dimensions supports more realistic planning and better use of design resources.</p>
+
+    <div class="decisions-grid">
+
+      <div class="decision-card">
+        <div class="decision-icon" aria-hidden="true">🎯</div>
+        <h3>Experience Type</h3>
+        <p class="decision-tagline">What form will the learning take?</p>
+        <ul class="decision-options">
+          <li>Scenario-based or case study learning</li>
+          <li>Simulation or role-play</li>
+          <li>Field-based or workplace project</li>
+          <li>Community-engaged or co-design</li>
+          <li>Peer learning and collaborative problem-solving</li>
+        </ul>
+      </div>
+
+      <div class="decision-card">
+        <div class="decision-icon" aria-hidden="true">📐</div>
+        <h3>Scope and Scale</h3>
+        <p class="decision-tagline">What is being designed?</p>
+        <ul class="decision-options">
+          <li>Single session or module</li>
+          <li>Full programme or learning pathway</li>
+          <li>Institutional infrastructure and templates</li>
+          <li>Cross-cohort scalable system</li>
+        </ul>
+      </div>
+
+      <div class="decision-card">
+        <div class="decision-icon" aria-hidden="true">👥</div>
+        <h3>Learner Involvement</h3>
+        <p class="decision-tagline">To what degree do learners shape the design?</p>
+        <ul class="decision-options">
+          <li>Needs analysis only (pre-design)</li>
+          <li>Pilot and iterative feedback</li>
+          <li>Co-design of experience and assessment</li>
+          <li>Learners as facilitators or mentors</li>
+        </ul>
+      </div>
+
+      <div class="decision-card">
+        <div class="decision-icon" aria-hidden="true">⏱</div>
+        <h3>Timing in the Development Cycle</h3>
+        <p class="decision-tagline">When does design work occur?</p>
+        <ul class="decision-options">
+          <li>Pre-development — informing decisions before building</li>
+          <li>Pre-launch — quality and alignment review</li>
+          <li>Post-launch — iteration on existing infrastructure</li>
+          <li>Continuous — embedded in an ongoing cycle</li>
+        </ul>
+      </div>
+
+      <div class="decision-card">
+        <div class="decision-icon" aria-hidden="true">📄</div>
+        <h3>Format and Delivery Mode</h3>
+        <p class="decision-tagline">How and where will learning occur?</p>
+        <ul class="decision-options">
+          <li>In-person, cohort-based</li>
+          <li>Hybrid — in-person and asynchronous</li>
+          <li>Fully online with synchronous elements</li>
+          <li>Self-paced with structured check-in points</li>
+          <li>On-the-job, embedded in work practice</li>
+        </ul>
+      </div>
+
+      <div class="decision-card">
+        <div class="decision-icon" aria-hidden="true">🏗</div>
+        <h3>Primary Design Focus</h3>
+        <p class="decision-tagline">Where is the primary design investment?</p>
+        <ul class="decision-options">
+          <li>Experience design — the activity itself</li>
+          <li>Facilitation infrastructure — guides and tools</li>
+          <li>Reflection and transfer systems</li>
+          <li>Assessment and measurement design</li>
+          <li>Governance and organisational embedding</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="approach-note">
+      <strong>On scoping realistically:</strong> Organisations frequently underestimate what infrastructure design requires and overestimate what a compressed timeline can produce. A rigorous design that takes longer produces compounding returns across cohorts. A rapid build that skips foundational stages typically requires rebuilding within one to two cycles.
+    </div>
+
+    <hr class="prose-divider">
+
+    <h2 class="section-heading" style="margin-bottom: 8px;">Distinctions Worth Making Explicit</h2>
+    <p class="section-intro">Several common misunderstandings shape how organisations approach experiential learning. The following distinctions help clarify what good design actually requires.</p>
+
+    <div class="distinction-pair">
+      <div class="distinction-card primary">
+        <h4>Experience-first Design</h4>
+        <p>Starts with a clear outcome and works backward to select the experience type that will most effectively develop it — in the real context learners inhabit.</p>
+      </div>
+      <div class="distinction-card secondary">
+        <h4>Activity-first Design</h4>
+        <p>Starts with an engaging activity and works forward to justify its value — often producing enjoyable sessions with unclear or unmeasured impact on performance.</p>
+      </div>
+    </div>
+
+    <div class="distinction-pair">
+      <div class="distinction-card primary">
+        <h4>Reflection as Structure</h4>
+        <p>Designed into the experience from the outset — with specific prompts, timing, and formats — so that it reliably produces learning, not just conversation.</p>
+      </div>
+      <div class="distinction-card secondary">
+        <h4>Reflection as Debrief</h4>
+        <p>Appended to the experience as an open conversation — valuable, but variable in depth and unable to consistently develop the reflective capacity that adult learning requires.</p>
+      </div>
+    </div>
+
+    <div class="distinction-pair">
+      <div class="distinction-card primary">
+        <h4>Transfer as Design Element</h4>
+        <p>Deliberately designed: post-session planning tools, accountability structures, manager briefings, and follow-up checkpoints are built into the infrastructure from the start.</p>
+      </div>
+      <div class="distinction-card secondary">
+        <h4>Transfer as Aspiration</h4>
+        <p>Assumed to occur organically when the learning experience is good enough — leaving application entirely to individual learner motivation and circumstance.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- OUTCOMES TAB -->
+  <section class="tab-panel" id="tab-outcomes" role="tabpanel" aria-labelledby="btn-outcomes">
+
+    <h2 class="section-heading">What Changes — and When</h2>
+    <p class="section-intro">Effective experiential learning infrastructure creates change at two horizons. Shorter-term outcomes are tangible and measurable. The longer-term shift affects how an organisation designs and delivers learning for everyone — and what kind of learning culture it becomes.</p>
+
+    <div class="outcomes-header">
+      <button class="outcome-toggle active" onclick="switchOutcome(this, 'short')" aria-pressed="true">Shorter Term</button>
+      <button class="outcome-toggle" onclick="switchOutcome(this, 'long')" aria-pressed="false">Longer Term</button>
+    </div>
+
+    <div class="outcomes-panel active" id="outcomes-short">
+      <h3 style="font-size:1rem; font-weight:700; color: var(--accent); margin-bottom:16px;">What becomes visible and actionable</h3>
+      <div class="outcomes-list">
+        <div class="outcome-item">
+          <div class="outcome-check" aria-hidden="true">✓</div>
+          <div>
+            <h4>Learners develop applicable skills, not just awareness</h4>
+            <p>Experiences designed around Kolb's cycle — with structured reflection and explicit transfer — produce skill development that persists beyond the session and surfaces in observable behaviour on the job or in community contexts.</p>
+          </div>
+        </div>
+        <div class="outcome-item">
+          <div class="outcome-check" aria-hidden="true">✓</div>
+          <div>
+            <h4>Prior knowledge is activated and respected</h4>
+            <p>Adult learners bring substantial experience that can either be leveraged or inadvertently dismissed. Infrastructure that activates prior knowledge produces faster uptake, deeper engagement, and greater retention — because new learning connects to something already real.</p>
+          </div>
+        </div>
+        <div class="outcome-item">
+          <div class="outcome-check" aria-hidden="true">✓</div>
+          <div>
+            <h4>Facilitators are equipped to guide, not perform</h4>
+            <p>Well-designed facilitation infrastructure shifts the facilitator's role from content delivery to experience guidance. Facilitator guides, reflection prompts, and debriefing tools allow the experience to function reliably — and free facilitators to focus on the learners in front of them.</p>
+          </div>
+        </div>
+        <div class="outcome-item">
+          <div class="outcome-check" aria-hidden="true">✓</div>
+          <div>
+            <h4>Assessment becomes evidence of competence, not compliance</h4>
+            <p>Assessment aligned to authentic performance contexts reveals whether learners can actually do what the experience was designed to develop — not whether they can describe it in writing under unrelated conditions.</p>
+          </div>
+        </div>
+        <div class="outcome-item">
+          <div class="outcome-check" aria-hidden="true">✓</div>
+          <div>
+            <h4>Data enables iteration, not just reporting</h4>
+            <p>Measurement plans built into the design produce actionable feedback between cohorts — clarifying what to keep, what to change, and where learner support is needed.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="outcomes-panel outcome-toggle-panel" id="outcomes-long">
+      <h3 style="font-size:1rem; font-weight:700; color: var(--accent); margin-bottom:16px;">What becomes embedded in practice</h3>
+      <div class="outcomes-list">
+        <div class="outcome-item">
+          <div class="outcome-check" aria-hidden="true">→</div>
+          <div>
+            <h4>Experiential learning becomes a design habit, not a special event</h4>
+            <p>Organisations that invest in infrastructure rather than programming gradually shift their design culture — incorporating reflection, transfer supports, and outcome alignment as default practice rather than premium add-ons.</p>
+          </div>
+        </div>
+        <div class="outcome-item">
+          <div class="outcome-check" aria-hidden="true">→</div>
+          <div>
+            <h4>All learners benefit — not only those the design was imagined for</h4>
+            <p>Infrastructure designed with clear outcomes, flexible formats, and inclusive practices produces better learning for every participant — including those whose backgrounds, constraints, and learning histories were not the assumed default.</p>
+          </div>
+        </div>
+        <div class="outcome-item">
+          <div class="outcome-check" aria-hidden="true">→</div>
+          <div>
+            <h4>Learning culture develops alongside learning infrastructure</h4>
+            <p>Repeated engagement with structured reflection, peer learning, and application planning gradually builds an organisation's collective capacity for learning — not just individual skill development episode by episode.</p>
+          </div>
+        </div>
+        <div class="outcome-item">
+          <div class="outcome-check" aria-hidden="true">→</div>
+          <div>
+            <h4>Governance and decision-making about learning improve</h4>
+            <p>Organisations with mature experiential learning infrastructure develop better institutional literacy for evaluating new programmes, setting realistic expectations for learning investment, and identifying where structural supports are missing.</p>
+          </div>
+        </div>
+        <div class="outcome-item">
+          <div class="outcome-check" aria-hidden="true">→</div>
+          <div>
+            <h4>The case for investment in adult learning becomes clearer</h4>
+            <p>When infrastructure includes measurement and iteration by design, organisations accumulate evidence of what learning investment actually produces — enabling more informed decisions about where to invest and what to change.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note-box">
+      <strong>On the evidence:</strong> The relationship between experiential learning quality and learner outcomes is well-established — but depends heavily on the presence of structured reflection, transfer supports, and outcome-aligned assessment. Experiences that include all three consistently outperform those that include one or two. Infrastructure is what makes the three work together reliably.
+    </div>
+
+  </section>
+
+  <!-- REFLECTION TOOL TAB -->
+  <section class="tab-panel" id="tab-reflection" role="tabpanel" aria-labelledby="btn-reflection">
+
+    <h2 class="section-heading">Where Is Your Organisation in This Work?</h2>
+    <p class="reflection-intro">This reflection is designed to surface useful questions about your organisation's current experiential learning practice and help identify where focused attention may be most productive. There are no right or wrong answers — choose the response that most honestly reflects your current situation. The reflection takes about two minutes.</p>
+
+    <div class="reflection-form" id="reflection-form">
+
+      <fieldset class="reflection-q">
+        <legend>
+          <span class="q-num">Question 1 of 4</span>
+          How does your organisation currently approach the design of experiential learning?
+        </legend>
+        <label class="radio-option"><input type="radio" name="q1" value="1"> <span>We create activities when needed, without a formal design process</span></label>
+        <label class="radio-option"><input type="radio" name="q1" value="2"> <span>We design sessions with clear goals but limited infrastructure around them</span></label>
+        <label class="radio-option"><input type="radio" name="q1" value="3"> <span>We use a structured design process that includes preparation, reflection, and assessment</span></label>
+        <label class="radio-option"><input type="radio" name="q1" value="4"> <span>Experiential learning infrastructure is designed as a repeatable system with built-in evaluation and iteration</span></label>
+      </fieldset>
+
+      <fieldset class="reflection-q">
+        <legend>
+          <span class="q-num">Question 2 of 4</span>
+          How explicitly does your current design support transfer — the application of learning in real contexts after the session?
+        </legend>
+        <label class="radio-option"><input type="radio" name="q2" value="1"> <span>We assume transfer will happen if the session is good</span></label>
+        <label class="radio-option"><input type="radio" name="q2" value="2"> <span>We encourage learners to apply what they learned but don't provide structured support</span></label>
+        <label class="radio-option"><input type="radio" name="q2" value="3"> <span>We provide application planning tools or follow-up check-ins for some programmes</span></label>
+        <label class="radio-option"><input type="radio" name="q2" value="4"> <span>Transfer supports — planning templates, peer accountability, manager briefings — are standard infrastructure for our learning programmes</span></label>
+      </fieldset>
+
+      <fieldset class="reflection-q">
+        <legend>
+          <span class="q-num">Question 3 of 4</span>
+          To what extent do adult learners' prior experience and diverse contexts shape how your learning experiences are designed?
+        </legend>
+        <label class="radio-option"><input type="radio" name="q3" value="1"> <span>We don't currently conduct learner research before designing</span></label>
+        <label class="radio-option"><input type="radio" name="q3" value="2"> <span>We gather informal input but don't systematically incorporate it into design decisions</span></label>
+        <label class="radio-option"><input type="radio" name="q3" value="3"> <span>We conduct needs assessments and use learner profiles to shape design choices</span></label>
+        <label class="radio-option"><input type="radio" name="q3" value="4"> <span>Learner research is integral to our design process, and diverse contexts and constraints are explicitly addressed in our infrastructure</span></label>
+      </fieldset>
+
+      <fieldset class="reflection-q">
+        <legend>
+          <span class="q-num">Question 4 of 4</span>
+          How does your organisation currently evaluate the effectiveness of its experiential learning infrastructure?
+        </legend>
+        <label class="radio-option"><input type="radio" name="q4" value="1"> <span>We collect participant satisfaction ratings after sessions</span></label>
+        <label class="radio-option"><input type="radio" name="q4" value="2"> <span>We gather feedback but use it mainly to assess facilitator performance, not infrastructure</span></label>
+        <label class="radio-option"><input type="radio" name="q4" value="3"> <span>We measure skill development and sometimes track application on the job</span></label>
+        <label class="radio-option"><input type="radio" name="q4" value="4"> <span>We have a measurement plan that tracks outcomes at multiple levels and uses findings to improve the infrastructure between cohorts</span></label>
+      </fieldset>
+
+      <div>
+        <button class="reflection-btn" onclick="showReflection()">See reflection</button>
+        <button class="reflection-btn-reset" onclick="resetReflection()" style="display:none" id="reset-btn">Start again</button>
+      </div>
+      <p id="reflection-validation" style="font-size:0.85rem; color: var(--warn); margin-top:8px; display:none;">Please answer all four questions to see your reflection.</p>
+    </div>
+
+    <div class="reflection-result" id="reflection-result" role="region" aria-live="polite">
+      <div class="result-label" id="result-label"></div>
+      <h3 id="result-heading"></h3>
+      <p id="result-body"></p>
+      <p id="result-body2"></p>
+      <h4 style="font-size:0.83rem; font-weight:700; color: var(--accent); text-transform:uppercase; letter-spacing:0.04em; margin-top:20px; margin-bottom:10px;">Questions worth sitting with</h4>
+      <ul class="reflection-prompts" id="result-prompts"></ul>
+    </div>
+
+  </section>
+
+  <!-- CITATIONS TAB -->
+  <section class="tab-panel citations-section" id="tab-citations" role="tabpanel" aria-labelledby="btn-citations">
+
+    <h2 class="section-heading">Academic and Professional Sources</h2>
+    <p class="section-intro">The knowledge claims, frameworks, and design guidance in this resource draw on the following sources. Citations are grouped by the area of the resource they primarily support.</p>
+
+    <div class="citation-group">
+      <h3>Experiential Learning Theory</h3>
+      <div class="citation-entry">
+        <strong>Kolb, D. A.</strong> (1984). <em>Experiential Learning: Experience as the Source of Learning and Development.</em> Prentice Hall.
+      </div>
+      <div class="citation-entry">
+        <strong>Dewey, J.</strong> (1938). <em>Experience and Education.</em> Macmillan.
+      </div>
+      <div class="citation-entry">
+        <strong>Schön, D. A.</strong> (1983). <em>The Reflective Practitioner: How Professionals Think in Action.</em> Basic Books.
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <h3>Adult Learning Theory and Andragogy</h3>
+      <div class="citation-entry">
+        <strong>Knowles, M. S., Holton, E. F., &amp; Swanson, R. A.</strong> (2015). <em>The Adult Learner: The Definitive Classic in Adult Education and Human Resource Development</em> (8th ed.). Routledge.
+      </div>
+      <div class="citation-entry">
+        <strong>Merriam, S. B., &amp; Bierema, L. L.</strong> (2014). <em>Adult Learning: Linking Theory and Practice.</em> Jossey-Bass.
+      </div>
+      <div class="citation-entry">
+        <strong>Caffarella, R. S., &amp; Daffron, S. R.</strong> (2013). <em>Planning Programs for Adult Learners: A Practical Guide</em> (3rd ed.). Jossey-Bass.
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <h3>Infrastructure Design and Learning Systems</h3>
+      <div class="citation-entry">
+        Higher Education Quality Council of Ontario. <em>Experiential Learning: Bringing Learning to Life.</em> HEQCO. <a href="https://heqco.ca" target="_blank" rel="noopener">heqco.ca</a>
+      </div>
+      <div class="citation-entry">
+        <strong>Practera.</strong> <em>The Importance of Experiential Learning for Adults.</em> <a href="https://practera.com" target="_blank" rel="noopener">practera.com</a>
+      </div>
+      <div class="citation-entry">
+        University of Calgary Taylor Institute for Teaching and Learning. <em>Resources for Online Experiential Learning.</em> <a href="https://taylorinstitute.ucalgary.ca" target="_blank" rel="noopener">taylorinstitute.ucalgary.ca</a>
+      </div>
+      <div class="citation-entry">
+        University of Toronto. <em>Experiential Learning 101.</em> <a href="https://experientiallearning.utoronto.ca" target="_blank" rel="noopener">experientiallearning.utoronto.ca</a>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <h3>Transfer of Learning</h3>
+      <div class="citation-entry">
+        <strong>Broad, M. L., &amp; Newstrom, J. W.</strong> (1992). <em>Transfer of Training: Action-Packed Strategies to Ensure High Payoff from Training Investments.</em> Addison-Wesley.
+      </div>
+      <div class="citation-entry">
+        <strong>Saks, A. M., &amp; Belcourt, M.</strong> (2006). An investigation of training activities and transfer of training in organisations. <em>Human Resource Management, 45</em>(4), 629–648.
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <h3>Facilitation Design and Reflection</h3>
+      <div class="citation-entry">
+        <strong>Laal, M., &amp; Ghodsi, S. M.</strong> (2012). Benefits of collaborative learning. <em>Procedia — Social and Behavioral Sciences, 31,</em> 486–490.
+      </div>
+      <div class="citation-entry">
+        Association for Experiential Education. <em>How To: Facilitate Reflection.</em> <a href="https://www.aee.org" target="_blank" rel="noopener">aee.org</a>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <h3>Evaluation and Learning Analytics</h3>
+      <div class="citation-entry">
+        <strong>Kirkpatrick, D. L., &amp; Kirkpatrick, J. D.</strong> (2006). <em>Evaluating Training Programs: The Four Levels</em> (3rd ed.). Berrett-Koehler.
+      </div>
+      <div class="citation-entry">
+        <strong>Brookings Institution.</strong> <em>Digital Tools for Real-Time Data Collection in Education.</em> <a href="https://www.brookings.edu" target="_blank" rel="noopener">brookings.edu</a>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <h3>Systems Thinking and Learning Infrastructure</h3>
+      <div class="citation-entry">
+        <strong>Meadows, D. H.</strong> (2008). <em>Thinking in Systems: A Primer.</em> Chelsea Green Publishing.
+      </div>
+      <div class="citation-entry">
+        Waters Center for Systems Thinking. <em>Thinking Tools Studio.</em> <a href="https://waterscenterst.org" target="_blank" rel="noopener">waterscenterst.org</a>
+      </div>
+      <div class="citation-entry">
+        Humber College Libraries. <em>Systems Thinking and Systems Research.</em> <a href="https://libguides.humber.ca" target="_blank" rel="noopener">libguides.humber.ca</a>
+      </div>
+    </div>
+
+  </section>
+
+</div><!-- /tabs-wrapper -->
+</main>
+
+<footer class="page-footer" role="contentinfo">
+  <div class="page-footer-inner">
+    Developed as a knowledge resource for learning designers, programme leads, and organisational leaders working to build more effective experiential learning infrastructure for adult learners. This resource draws on <strong>Kolb's experiential learning theory</strong>, <strong>Knowles's andragogy</strong>, the <strong>70:20:10 framework</strong>, <strong>Kirkpatrick's evaluation model</strong>, and scholarship in adult education, human-centred design, and learning transfer. It does not constitute learning design consultation or advice specific to any organisation's context.
+  </div>
+</footer>
+
+<script>
+  // Tab navigation
+  const tabs = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabs.forEach(t => { t.setAttribute('aria-selected', 'false'); });
+      panels.forEach(p => { p.classList.remove('active'); });
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(btn.getAttribute('aria-controls')).classList.add('active');
+    });
+  });
+
+  // Stage accordion
+  function toggleStage(btn) {
+    const item = btn.closest('.stage-item');
+    const isOpen = item.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.stage-item').forEach(s => s.classList.remove('open'));
+    document.querySelectorAll('.stage-btn').forEach(b => b.setAttribute('aria-expanded', 'false'));
+    if (!isOpen) {
+      item.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+  }
+
+  // Outcome toggle
+  function switchOutcome(btn, which) {
+    document.querySelectorAll('.outcome-toggle').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
+    document.querySelectorAll('.outcomes-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    btn.setAttribute('aria-pressed', 'true');
+    document.getElementById('outcomes-' + which).classList.add('active');
+  }
+
+  // Reflection tool
+  function showReflection() {
+    const qs = ['q1','q2','q3','q4'];
+    let total = 0;
+    let allAnswered = true;
+    qs.forEach(q => {
+      const val = document.querySelector(`input[name="${q}"]:checked`);
+      if (!val) { allAnswered = false; } else { total += parseInt(val.value); }
+    });
+    const valid = document.getElementById('reflection-validation');
+    if (!allAnswered) { valid.style.display = 'block'; return; }
+    valid.style.display = 'none';
+
+    const result = document.getElementById('reflection-result');
+    const label = document.getElementById('result-label');
+    const heading = document.getElementById('result-heading');
+    const body = document.getElementById('result-body');
+    const body2 = document.getElementById('result-body2');
+    const prompts = document.getElementById('result-prompts');
+
+    let data;
+    if (total <= 6) {
+      data = {
+        label: 'Early Stage',
+        heading: 'Building the foundations',
+        body: 'Your organisation is at an early stage of developing experiential learning infrastructure. This is a meaningful starting point — the decisions made now about how to design, document, and evaluate learning will determine what is possible to scale and improve later.',
+        body2: 'The highest-value investments at this stage are typically: establishing a clear design process, building in structured reflection, and creating even basic facilitator documentation. These three foundations create the conditions for everything else.',
+        prompts: [
+          'What specific outcomes do your current learning experiences target — and how would you know if they were achieved?',
+          'Where does learning go after the session? What structures exist to support application in real contexts?',
+          'What documentation currently exists for your learning experiences — and what would a new facilitator need that doesn\'t exist yet?'
+        ]
+      };
+    } else if (total <= 10) {
+      data = {
+        label: 'Developing',
+        heading: 'Strengthening the infrastructure',
+        body: 'Your organisation has meaningful design practice in place and is building toward more systematic infrastructure. The core elements exist — the opportunity now is to make them more explicit, more consistent, and more connected to each other.',
+        body2: 'Organisations at this stage often find that transfer is the most underdeveloped element: sessions are well-designed, but what happens after them is left largely to individual learners. Addressing this gap typically produces the largest return on existing design investment.',
+        prompts: [
+          'How consistently is structured reflection built into your experiences — and what would make it more reliable across facilitators?',
+          'What happens between the end of a session and a learner\'s next opportunity to use what they learned?',
+          'What does your current evaluation tell you about skill development — not just satisfaction?'
+        ]
+      };
+    } else if (total <= 14) {
+      data = {
+        label: 'Established',
+        heading: 'Extending and deepening what works',
+        body: 'Your organisation has established a substantive experiential learning infrastructure. Design is intentional, facilitation is supported, and evaluation is in place. The opportunity now is to extend this practice — deepening measurement, improving transfer supports, and building organisational capacity to sustain it.',
+        body2: 'At this stage, the question is often less about building new infrastructure and more about ensuring what exists can be maintained, improved, and applied consistently as programmes scale or as new facilitators join.',
+        prompts: [
+          'Which elements of your infrastructure are most dependent on individual knowledge — and what would happen if key people were unavailable?',
+          'How does evaluation data currently flow back into design decisions? What would make this more systematic?',
+          'Where are the learners for whom your current infrastructure works least well — and what would closing that gap require?'
+        ]
+      };
+    } else {
+      data = {
+        label: 'Advanced',
+        heading: 'Sustaining, scaling, and contributing',
+        body: 'Your organisation has mature experiential learning infrastructure — systematic, evidence-informed, and embedded in how learning is designed and evaluated. This is genuinely rare and represents significant institutional investment.',
+        body2: 'At this stage, the most productive questions are often about sustainability, knowledge transfer, and influence: how the practice survives leadership and team changes, how it is communicated to new stakeholders, and what the organisation has learned that could benefit others working in this space.',
+        prompts: [
+          'What is the fragility in your current infrastructure — and what would a transition plan look like if key knowledge holders moved on?',
+          'How explicitly is the evidence for your infrastructure\'s effectiveness documented and communicated to organisational leadership?',
+          'What does your current practice reveal about what the broader field of adult learning still needs to develop?'
+        ]
+      };
+    }
+
+    label.textContent = data.label;
+    heading.textContent = data.heading;
+    body.textContent = data.body;
+    body2.textContent = data.body2;
+    prompts.innerHTML = '';
+    data.prompts.forEach(p => {
+      const li = document.createElement('li');
+      li.textContent = p;
+      prompts.appendChild(li);
+    });
+
+    result.style.display = 'block';
+    document.getElementById('reset-btn').style.display = 'inline-block';
+    result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function resetReflection() {
+    document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+    document.getElementById('reflection-result').style.display = 'none';
+    document.getElementById('reflection-validation').style.display = 'none';
+    document.getElementById('reset-btn').style.display = 'none';
+    document.getElementById('reflection-form').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+</script>
+
+</body>
+</html>
