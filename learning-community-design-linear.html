@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning Community Design and Facilitation — Knowledge Resource (Accessible linear version)</title>
+<style>
+:root {
+  --ink: #303e44;
+  --ink-mid: #475f6a;
+  --ink-muted: #6a8390;
+  --ink-faint: #9ab3bc;
+  --surface: #f7f9fa;
+  --surface-warm: #edf2f4;
+  --surface-card: #ffffff;
+  --border: rgba(71,95,106,0.18);
+  --border-mid: rgba(71,95,106,0.30);
+  --accent: #475f6a;
+  --accent-light: #dce8ec;
+  --accent-dark: #303e44;
+  --warn-bg: #fdf3f0;
+  --warn-border: #d9917a;
+  --warn-text: #7a3a27;
+}
+
+/* Reset */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Base */
+body {
+  font-family: ASAP, 'Segoe UI', system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--ink);
+  background: var(--surface);
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+}
+
+/* Skip links */
+.skip-links {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+.skip-links a {
+  display: inline-block;
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  background: var(--accent-dark);
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 0 0 6px 0;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.skip-links a:focus {
+  left: 0;
+  position: static;
+}
+
+/* Links */
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+a:focus {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Site header */
+header {
+  border-bottom: 1px solid var(--border-mid);
+  padding: 1rem 0;
+  margin-bottom: 2.5rem;
+}
+.site-label {
+  font-size: 13px;
+  color: var(--ink-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Page title area */
+.page-title { margin-bottom: 2rem; }
+.page-title h1 {
+  font-size: clamp(1.6rem, 4vw, 2.1rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ink);
+  margin-bottom: 0.65rem;
+}
+.page-subtitle {
+  font-size: 16px;
+  color: var(--ink-mid);
+  max-width: 600px;
+  margin-bottom: 1.1rem;
+}
+.version-note {
+  background: var(--surface-warm);
+  border-left: 4px solid var(--accent);
+  padding: 0.75rem 1rem;
+  font-size: 15px;
+  color: var(--ink-mid);
+  border-radius: 0 5px 5px 0;
+  margin-bottom: 0.5rem;
+}
+.version-note strong { color: var(--ink); }
+
+/* Table of contents */
+#toc {
+  background: var(--surface-card);
+  border: 1px solid var(--border-mid);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 3rem;
+}
+#toc h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+}
+#toc ol {
+  padding-left: 1.3rem;
+  color: var(--ink-mid);
+  font-size: 15px;
+}
+#toc li { margin-bottom: 0.3rem; }
+#toc li > ol { margin-top: 0.2rem; padding-left: 1.2rem; }
+#toc a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+#toc a:hover { text-decoration: none; }
+
+/* Section wrappers */
+.section {
+  margin-bottom: 3.5rem;
+  padding-top: 1rem;
+}
+.section-label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+  background: var(--surface-warm);
+  border: 1px solid var(--border);
+  padding: 3px 9px;
+  border-radius: 3px;
+  margin-bottom: 0.65rem;
+}
+
+/* Headings */
+h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.25;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border);
+}
+h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: 1.75rem;
+  margin-bottom: 0.4rem;
+}
+h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 1.1rem;
+  margin-bottom: 0.4rem;
+}
+p { color: var(--ink-mid); margin-bottom: 0.9rem; }
+p:last-child { margin-bottom: 0; }
+
+/* Callout / aside */
+.callout {
+  background: var(--surface-warm);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  padding: 0.9rem 1.1rem;
+  margin: 1.5rem 0;
+  font-size: 15px;
+  color: var(--ink-mid);
+  line-height: 1.65;
+}
+.callout strong { color: var(--ink); }
+
+/* Highlighted box */
+.highlight-box {
+  border: 1px solid var(--border-mid);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 1.5rem 0;
+}
+.highlight-box-head {
+  background: var(--surface-warm);
+  padding: 0.6rem 1rem;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border);
+}
+.highlight-box-body {
+  background: var(--surface-card);
+  padding: 1rem 1.1rem;
+  font-size: 15px;
+  color: var(--ink-mid);
+  line-height: 1.7;
+}
+.highlight-box-body p { font-size: 15px; }
+
+/* Consideration items */
+.consideration {
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  background: var(--surface-card);
+}
+.consideration-header {
+  background: var(--surface-warm);
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid var(--border);
+}
+.consideration-number {
+  display: inline-block;
+  background: var(--accent-light);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 24px;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+.consideration-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  vertical-align: middle;
+}
+.consideration-subtitle {
+  font-size: 13px;
+  color: var(--ink-muted);
+  margin-top: 3px;
+  padding-left: 2rem;
+}
+.consideration-body { padding: 1rem 1.1rem; }
+.consideration-body p { font-size: 15px; margin-bottom: 0.75rem; }
+.consideration-note {
+  font-size: 14px;
+  color: var(--ink-muted);
+  font-style: italic;
+  border-left: 2px solid var(--border-mid);
+  padding-left: 0.75rem;
+  margin-top: 1rem;
+}
+.questions-list {
+  list-style: none;
+  padding: 0.75rem 1rem;
+  margin-top: 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+}
+.questions-list li {
+  font-size: 14px;
+  color: var(--ink-mid);
+  padding: 4px 0;
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  border-bottom: 1px solid var(--border);
+}
+.questions-list li:last-child { border-bottom: none; }
+.questions-list li::before {
+  content: '\2192';
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.questions-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-muted);
+  margin-bottom: 0.35rem;
+  display: block;
+}
+
+/* Key decisions — definition list */
+.key-decisions dl { margin: 0; }
+.key-decisions dt {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: 1.5rem;
+  margin-bottom: 0.2rem;
+}
+.key-decisions .q-sub {
+  font-size: 13px;
+  color: var(--ink-muted);
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+.key-decisions dd {
+  margin-left: 0;
+  padding-left: 1rem;
+  border-left: 3px solid var(--accent-light);
+}
+.key-decisions dd ul {
+  list-style: disc;
+  padding-left: 1.1rem;
+  color: var(--ink-mid);
+  font-size: 15px;
+}
+.key-decisions dd ul li { margin-bottom: 0.2rem; }
+
+/* Outcomes */
+.outcomes-group { margin-bottom: 2rem; }
+.outcomes-group h3 {
+  font-size: 1rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.4rem;
+  margin-bottom: 1rem;
+}
+.outcome-item {
+  display: flex;
+  gap: 0.85rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+.outcome-item:last-child { border-bottom: none; }
+.outcome-marker {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  flex-shrink: 0;
+  margin-top: 3px;
+  font-weight: 600;
+}
+.outcome-marker.short { background: var(--accent-light); color: var(--accent); }
+.outcome-marker.long { background: #d0e4eb; color: #2e5a68; }
+.outcome-item h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  text-transform: none;
+  letter-spacing: 0;
+  margin: 0 0 3px 0;
+}
+.outcome-item p { font-size: 14px; line-height: 1.6; }
+
+/* Scholar cards */
+.scholar-card {
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  background: var(--surface-card);
+}
+.scholar-card-header {
+  background: var(--surface-warm);
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.scholar-icon { font-size: 1.1rem; flex-shrink: 0; }
+.scholar-card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.scholar-card-body { padding: 1rem 1.1rem; }
+.scholar-card-body p { font-size: 15px; margin-bottom: 0.75rem; }
+
+/* Reflection form */
+.reflection-intro {
+  font-size: 15px;
+  color: var(--ink-mid);
+  margin-bottom: 1.5rem;
+  max-width: 560px;
+}
+fieldset {
+  border: 1px solid var(--border-mid);
+  border-radius: 7px;
+  padding: 1rem 1.1rem;
+  margin-bottom: 1.25rem;
+  background: var(--surface-card);
+}
+legend {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  padding: 0 0.4rem;
+  line-height: 1.4;
+}
+.radio-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.5rem 0.4rem;
+  border-radius: 5px;
+  margin-top: 0.3rem;
+  cursor: pointer;
+  font-size: 15px;
+  color: var(--ink-mid);
+  line-height: 1.5;
+}
+.radio-option:hover { background: var(--surface-warm); }
+.radio-option input[type="radio"] {
+  flex-shrink: 0;
+  margin-top: 3px;
+  accent-color: var(--accent);
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+.radio-option input[type="radio"]:focus {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+.form-actions { margin-top: 1.25rem; display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.7rem 1.75rem;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn-primary:hover { opacity: 0.88; }
+.btn-primary:focus {
+  outline: 3px solid var(--accent-dark);
+  outline-offset: 3px;
+}
+.btn-secondary {
+  background: none;
+  border: 1px solid var(--border-mid);
+  color: var(--ink-mid);
+  padding: 0.6rem 1.25rem;
+  border-radius: 5px;
+  font-size: 15px;
+  font-family: inherit;
+  cursor: pointer;
+}
+.btn-secondary:focus {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+.validation-msg {
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-border);
+  border-radius: 5px;
+  padding: 0.6rem 0.9rem;
+  font-size: 14px;
+  color: var(--warn-text);
+  margin-bottom: 1rem;
+}
+.reflection-result {
+  margin-top: 1.75rem;
+  background: var(--surface-card);
+  border: 1px solid var(--border-mid);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.result-head {
+  background: var(--surface-warm);
+  padding: 0.85rem 1.25rem;
+  font-weight: 600;
+  font-size: 15px;
+  border-bottom: 1px solid var(--border);
+}
+.result-body { padding: 1.1rem 1.25rem; }
+.result-body > p { font-size: 15px; line-height: 1.7; margin-bottom: 1rem; }
+.result-qs-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-muted);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+.result-qs {
+  list-style: none;
+  padding: 0;
+}
+.result-qs li {
+  font-size: 15px;
+  color: var(--ink-mid);
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+.result-qs li:last-child { border-bottom: none; }
+.result-qs li::before { content: '\2192'; color: var(--accent); flex-shrink: 0; }
+
+/* Citations */
+.citations-group { margin-bottom: 1.75rem; }
+.citations-group h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.65rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.35rem;
+}
+.citation {
+  font-size: 14px;
+  color: var(--ink-mid);
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.65;
+}
+.citation:last-child { border-bottom: none; }
+.cite-type {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-bottom: 3px;
+  background: var(--surface-warm);
+  color: var(--ink-muted);
+  border: 1px solid var(--border);
+}
+.citation strong { font-weight: 600; color: var(--ink); }
+
+/* Back to top */
+.back-to-top {
+  display: inline-block;
+  margin-top: 2rem;
+  font-size: 14px;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Footer */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 1.25rem 0;
+  font-size: 13px;
+  color: var(--ink-faint);
+  margin-top: 2rem;
+}
+
+/* Dividers between sections */
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2.5rem 0 0;
+}
+
+/* Print */
+@media print {
+  body { font-size: 12pt; color: #000; background: #fff; }
+  .skip-links, .back-to-top { display: none; }
+  a { color: #000; text-decoration: underline; }
+  .highlight-box, .consideration, .scholar-card { border: 1px solid #ccc; }
+}
+</style>
+</head>
+<body>
+
+<div class="skip-links">
+  <a href="#main-content">Skip to main content</a>
+  <a href="#toc">Skip to contents</a>
+</div>
+
+<header role="banner">
+  <span class="site-label">Knowledge Resource</span>
+</header>
+
+<main id="main-content">
+
+  <div class="page-title">
+    <h1>Learning Community Design and Facilitation</h1>
+    <p class="page-subtitle">A guide to the knowledge foundations, design methodology, key decisions, and outcomes that characterise effective learning community work.</p>
+    <div class="version-note">
+      <strong>Screen reader and keyboard-optimised version.</strong> All content is presented in reading order with no tabs or accordions. Navigate by headings or use the contents list below.
+    </div>
+  </div>
+
+  <nav id="toc" aria-label="Table of contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#foundations">Knowledge foundations</a>
+        <ol>
+          <li><a href="#f-learning-theory">Human development and learning theory</a></li>
+          <li><a href="#f-psych-safety">Group dynamics and psychological safety</a></li>
+          <li><a href="#f-systems">Systems thinking</a></li>
+          <li><a href="#f-facilitation">Facilitation craft</a></li>
+          <li><a href="#f-architecture">Community architecture and design</a></li>
+          <li><a href="#f-equity">Equity and power literacy</a></li>
+          <li><a href="#f-dialogue">Dialogue and communication frameworks</a></li>
+          <li><a href="#f-culture">Culture, purpose, and meaning-making</a></li>
+          <li><a href="#f-expertise">Expertise versus good intentions</a></li>
+        </ol>
+      </li>
+      <li><a href="#methodology">Design methodology</a>
+        <ol>
+          <li><a href="#m1">Purpose and community scoping</a></li>
+          <li><a href="#m2">Learning architecture design</a></li>
+          <li><a href="#m3">Psychological safety and trust-building</a></li>
+          <li><a href="#m4">Facilitation and session design</a></li>
+          <li><a href="#m5">Equity and inclusion review</a></li>
+          <li><a href="#m6">Reflection, evaluation, and adaptive design</a></li>
+        </ol>
+      </li>
+      <li><a href="#decisions">Key decisions in community design</a></li>
+      <li><a href="#outcomes">What well-designed communities enable</a>
+        <ol>
+          <li><a href="#shorter-term">What becomes visible</a></li>
+          <li><a href="#longer-term">What becomes embedded</a></li>
+        </ol>
+      </li>
+      <li><a href="#scholars">Scholarly grounding</a></li>
+      <li><a href="#reflection">Reflection on current practice</a></li>
+      <li><a href="#citations">Citations</a></li>
+    </ol>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SECTION 1: KNOWLEDGE FOUNDATIONS
+  ═══════════════════════════════════════════════════════ -->
+  <hr class="section-divider">
+  <section class="section" id="foundations" aria-labelledby="foundations-heading">
+    <span class="section-label" aria-hidden="true">Section 1</span>
+    <h2 id="foundations-heading">Knowledge foundations</h2>
+    <p>Eight interconnected bodies of knowledge inform learning community design and facilitation. Together they support communities that go well beyond what a facilitation-only approach can produce.</p>
+
+    <h3 id="f-learning-theory">1. Human development and learning theory</h3>
+    <p>Learning communities are grounded in constructivism (Vygotsky, Piaget) — the understanding that people build knowledge through experience and social interaction. Adult learning theory (andragogy) establishes that adult learners are self-directed, experience-driven, and internally motivated. Wenger's Communities of Practice framework describes how learning emerges from participation in shared domains of interest. Vygotsky's Zone of Proximal Development identifies the productive space between what learners can do independently and what they can achieve with support.</p>
+
+    <h3 id="f-psych-safety">2. Group dynamics and psychological safety</h3>
+    <p>Communities move through predictable developmental stages — Tuckman's Forming, Storming, Norming, Performing, and Adjourning — each requiring different facilitative responses. Psychological safety (Amy Edmondson) is the most consistent predictor of high-performing groups: when members feel safe to speak, question, and fail without fear of reprisal, learning deepens significantly. Google's People Analytics research identified psychological safety as the single most important characteristic of effective teams. Trust-building is not incidental; it is the prerequisite for genuine engagement.</p>
+
+    <h3 id="f-systems">3. Systems thinking</h3>
+    <p>Learning communities are living systems, not machines. They self-organise, evolve in response to their environment, and generate collective intelligence through interaction rather than top-down direction. Systems thinking requires attending to feedback loops — how energy, information, and tension circulate through a group — and recognising that interventions have effects that ripple across the system. Peter Senge's Five Disciplines framework and causal loop diagrams help designers and facilitators visualise these dynamics and identify leverage points for change.</p>
+
+    <h3 id="f-facilitation">4. Facilitation craft</h3>
+    <p>Skilled facilitation requires knowing when to guide and when to step back — holding space rather than directing. It involves listening at multiple levels simultaneously: to content, to emotion, and to what is not being said. The art of questioning — Socratic, generative, and reflective inquiry — opens new thinking rather than confirming existing positions. Reading the room and adjusting in real time, working with conflict as productive tension, and managing group energy and pacing across varied personalities are the marks of mature facilitation practice.</p>
+
+    <h3 id="f-architecture">5. Community architecture and design</h3>
+    <p>Communities require intentional structural design. This begins with purpose clarity — a compelling shared mission and an explicit answer to why the community gathers. It extends to membership design, onboarding experiences that build belonging from day one, and rituals and rhythms that sustain coherence over time. Distributing leadership and ownership prevents dependence on any single person. Both physical and digital environments shape the quality of interaction, and both warrant deliberate design attention.</p>
+
+    <h3 id="f-equity">6. Equity and power literacy</h3>
+    <p>Effective community design requires ongoing attention to who gets to speak, be heard, and shape direction. Identity, privilege, and historical context surface in every group — in patterns of dominance, in who falls silent, and in whose knowledge is treated as legitimate. Design Justice (Costanza-Chock) offers a framework for centring those most affected by design decisions. Proactively designing for access and inclusion means creating multiple pathways for participation that do not privilege verbal, extroverted, or dominant-culture modes of contribution.</p>
+
+    <h3 id="f-dialogue">7. Dialogue and communication frameworks</h3>
+    <p>Dialogue differs meaningfully from debate. David Bohm's framework describes dialogue as the suspension of assumptions in order to think together — a qualitatively different mode of communication from argumentation. Nonviolent Communication (Rosenberg) grounds exchange in needs and empathy. Circle practice and council formats structure deep listening. Liberating Structures (Lipmanowicz and McCandless) offer 33 participatory methods — including 1-2-4-All, World Café, and Open Space — that shift how groups engage with complex challenges and distribute voice more equitably.</p>
+
+    <h3 id="f-culture">8. Culture, purpose, and meaning-making</h3>
+    <p>Communities need a compelling shared narrative and a culture that is actively co-created — not declared by a leader. Culture is reinforced through repeated behaviours: what gets celebrated, what gets named in difficult moments, and how transitions and loss are held. Peter Block's framework identifies five essential conversations — possibility, ownership, dissent, commitment, and gifts — that build genuine belonging and accountability. adrienne maree brown's Emergent Strategy contributes principles of adaptability, interdependence, and trust that sustain communities through change.</p>
+
+    <div class="highlight-box" id="f-expertise">
+      <div class="highlight-box-head">Expertise versus good intentions</div>
+      <div class="highlight-box-body">
+        <p>Many people facilitate groups competently. Fewer can design learning communities that sustain engagement, deepen over time, and remain equitable under pressure. The difference lies in the capacity to hold multiple theoretical lenses simultaneously — to read a moment of group friction through the lens of Tuckman, Edmondson, and Block at once — and to make design decisions that are responsive to what is actually emerging rather than what was planned.</p>
+        <p>Skilled practitioners also distinguish between facilitation (supporting a session) and community architecture (designing the structures, rhythms, and conditions that make community possible). Both matter. Neither substitutes for the other.</p>
+      </div>
+    </div>
+
+    <div class="callout"><strong>On emergence:</strong> adrienne maree brown's Emergent Strategy articulates a principle foundational to this work: small is good, small is all. Transformation at scale begins with attending carefully to what is happening at the scale of human interaction — in the conversation, the relationship, the moment of genuine connection. Community designers who work with emergence rather than against it produce conditions where collective intelligence can arise.</div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SECTION 2: METHODOLOGY
+  ═══════════════════════════════════════════════════════ -->
+  <hr class="section-divider">
+  <section class="section" id="methodology" aria-labelledby="methodology-heading">
+    <span class="section-label" aria-hidden="true">Section 2</span>
+    <h2 id="methodology-heading">Design methodology</h2>
+    <p>Effective learning community design is structured, iterative, and attentive to what is emerging. The stages below represent a comprehensive approach; in practice, scope and depth vary with context and organisational need. Understanding the full methodology clarifies what is gained or lost when particular stages are abbreviated.</p>
+
+    <div class="consideration" id="m1">
+      <div class="consideration-header">
+        <span class="consideration-number" aria-hidden="true">1</span>
+        <span class="consideration-title">Purpose and community scoping</span>
+        <div class="consideration-subtitle">Understanding the context before designing anything</div>
+      </div>
+      <div class="consideration-body">
+        <p>Before any design begins, it is essential to establish a clear understanding of the community's purpose, the learner population, the organisational context, and any existing dynamics that will shape the work. What is the shared domain of interest? Who belongs to this community — and who is currently excluded? What conditions need to be in place for this community to thrive?</p>
+        <p>Scoping also means establishing what a realistic level of investment looks like given available time, leadership support, and resources. Communities scoped too ambitiously without adequate infrastructure tend to stall after early momentum fades.</p>
+        <span class="questions-label">What this stage produces</span>
+        <ul class="questions-list">
+          <li>Shared documentation of community purpose, membership boundaries, and success conditions</li>
+          <li>Learner population context, including existing relationships, barriers, and motivations</li>
+          <li>Identification of power dynamics and equity considerations that will shape the design</li>
+          <li>A realistic scope aligned with organisational capacity and leadership commitment</li>
+        </ul>
+        <p class="consideration-note">Communities designed without adequate scoping often lack the shared sense of purpose that sustains engagement through difficult periods. Clarity at this stage is not a bureaucratic step — it is the foundation of belonging.</p>
+      </div>
+    </div>
+
+    <div class="consideration" id="m2">
+      <div class="consideration-header">
+        <span class="consideration-number" aria-hidden="true">2</span>
+        <span class="consideration-title">Learning architecture design</span>
+        <div class="consideration-subtitle">Translating purpose into structures, rhythms, and experiences</div>
+      </div>
+      <div class="consideration-body">
+        <p>This stage translates purpose into the structures that make community possible: onboarding experiences that build belonging from day one, recurring rituals and touchpoints that sustain connection, distributed leadership roles that prevent dependence on a single person, and entry and exit pathways that honour the full arc of membership.</p>
+        <p>Effective learning architecture accounts for different learning modalities — experiential, reflective, conceptual, and applied — and sequences experiences so they build on each other over time. Backward design (starting from desired outcomes and working toward the experiences that produce them) ensures coherence between purpose and structure.</p>
+        <span class="questions-label">What this stage produces</span>
+        <ul class="questions-list">
+          <li>Community rhythm and touchpoint map — meeting cadence, asynchronous engagement, key events</li>
+          <li>Onboarding design that builds belonging and psychological safety early</li>
+          <li>Leadership distribution model and role definitions</li>
+          <li>Learning arc and sequenced experience design</li>
+          <li>Equity audit of structural choices — who is centred, who may be excluded</li>
+        </ul>
+        <p class="consideration-note">Structure and emergence are not opposites. Well-designed architecture creates the conditions for emergence — providing enough container for safety while leaving enough openness for collective intelligence to arise.</p>
+      </div>
+    </div>
+
+    <div class="consideration" id="m3">
+      <div class="consideration-header">
+        <span class="consideration-number" aria-hidden="true">3</span>
+        <span class="consideration-title">Psychological safety and trust-building</span>
+        <div class="consideration-subtitle">Creating the conditions for genuine engagement</div>
+      </div>
+      <div class="consideration-body">
+        <p>Psychological safety — the shared belief that it is safe to take interpersonal risks without fear of punishment or humiliation — does not emerge automatically. It requires deliberate cultivation, particularly in early-stage communities and during the Forming and Storming phases when members are assessing whether this is a space they can trust.</p>
+        <p>Clark's four stages of psychological safety (inclusion, learner, contributor, and challenger safety) provide a useful framework for assessing where a group is and what conditions need strengthening. Creating safety for quieter voices, naming and interrupting patterns of dominance, and modelling vulnerability as a facilitator are all part of this work.</p>
+        <span class="questions-label">What this stage produces</span>
+        <ul class="questions-list">
+          <li>Norms and agreements co-created with participants rather than imposed</li>
+          <li>Facilitation practices that actively support less-dominant voices</li>
+          <li>Early experiences that demonstrate safety rather than merely asserting it</li>
+          <li>Ongoing attention to power dynamics that might undermine trust</li>
+        </ul>
+        <p class="consideration-note">Psychological safety is not a static condition. It requires ongoing maintenance, particularly following conflict, transitions in membership, or moments when trust has been violated. Facilitators who treat it as a one-time early-stage task typically find it eroding over time.</p>
+      </div>
+    </div>
+
+    <div class="consideration" id="m4">
+      <div class="consideration-header">
+        <span class="consideration-number" aria-hidden="true">4</span>
+        <span class="consideration-title">Facilitation and session design</span>
+        <div class="consideration-subtitle">Designing and holding individual learning experiences</div>
+      </div>
+      <div class="consideration-body">
+        <p>Individual sessions are the primary site of lived community experience. Effective session design draws on a diverse facilitation toolkit — circle practice, World Café, Open Space Technology, Liberating Structures — and matches method to purpose. A method that distributes voice equitably in one context may feel contrived in another.</p>
+        <p>Real-time facilitation requires the capacity to read the room and adjust when what was planned is no longer what the group needs. This includes managing group energy and pacing, working with conflict as productive tension, and knowing when to lead, when to follow, and when to step back entirely.</p>
+        <span class="questions-label">What this stage produces</span>
+        <ul class="questions-list">
+          <li>Session designs with clear purpose, sequenced activities, and facilitation guidance</li>
+          <li>A repertoire of methods appropriate to the community's context and developmental stage</li>
+          <li>Documentation of what emerged — insights, tensions, unresolved questions — to inform subsequent design</li>
+        </ul>
+        <p class="consideration-note">Liberating Structures research consistently shows that inclusive, participatory methods — particularly those that begin with individual reflection before group share — surface insights that conventional facilitation formats miss. The structure of participation shapes the quality of what becomes possible.</p>
+      </div>
+    </div>
+
+    <div class="consideration" id="m5">
+      <div class="consideration-header">
+        <span class="consideration-number" aria-hidden="true">5</span>
+        <span class="consideration-title">Equity and inclusion review</span>
+        <div class="consideration-subtitle">Interrogating who the design serves — and who it doesn't</div>
+      </div>
+      <div class="consideration-body">
+        <p>A well-facilitated community can still exclude learners if its design assumes a narrow range of participation styles, communication norms, or cultural contexts. Equity and inclusion review asks who is centred by current design choices and who is marginalised — not only in terms of formal access, but in terms of whose knowledge is treated as valuable, whose contributions shape direction, and whose discomfort tends to go unnamed.</p>
+        <p>Design Justice principles (Costanza-Chock) offer a framework for this work: centring those most impacted by design decisions in the design process itself, recognising community members' existing knowledge and capabilities, and moving from user-centred to community-accountable design.</p>
+        <span class="questions-label">What this stage produces</span>
+        <ul class="questions-list">
+          <li>Equity audit of community structures, facilitation practices, and participation patterns</li>
+          <li>Identification of whose voices are consistently absent or quieted</li>
+          <li>Design adjustments that expand pathways for participation</li>
+          <li>Processes for ongoing community accountability rather than one-time review</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="consideration" id="m6">
+      <div class="consideration-header">
+        <span class="consideration-number" aria-hidden="true">6</span>
+        <span class="consideration-title">Reflection, evaluation, and adaptive design</span>
+        <div class="consideration-subtitle">Learning from the community to continuously improve it</div>
+      </div>
+      <div class="consideration-body">
+        <p>Effective learning community design is itself a learning process. Gathering ongoing feedback, creating structured reflection experiences for participants, and evaluating community health — not only learning outcomes but belonging, trust, and energy — provides the data needed to adapt the design in real time.</p>
+        <p>Evaluation should assess multiple dimensions: whether learning is occurring, whether belonging is deepening, whether the community is equitable, and whether the design is sustainable. Being a reflective practitioner — learning from every session and every design decision — is what allows community designers and facilitators to develop genuine expertise over time.</p>
+        <span class="questions-label">What this stage produces</span>
+        <ul class="questions-list">
+          <li>Structured feedback mechanisms appropriate to the community's context</li>
+          <li>Community health indicators that go beyond learning outcomes</li>
+          <li>Adaptive design changes based on what the community is showing</li>
+          <li>Documentation that builds institutional knowledge and enables continuity</li>
+        </ul>
+        <p class="consideration-note">Communities that are not periodically reviewed and adapted tend to drift — either calcifying around the preferences of dominant members, or quietly losing the engagement of those for whom the current design does not work.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SECTION 3: KEY DECISIONS
+  ═══════════════════════════════════════════════════════ -->
+  <hr class="section-divider">
+  <section class="section" id="decisions" aria-labelledby="decisions-heading">
+    <span class="section-label" aria-hidden="true">Section 3</span>
+    <h2 id="decisions-heading">Key decisions in community design</h2>
+    <p>No two learning communities look the same. The decisions an organisation or designer makes about purpose, scale, equity, and facilitation depth determine what kind of community is appropriate and what it will produce. Understanding these dimensions helps set realistic expectations and make better use of the design process.</p>
+
+    <div class="key-decisions">
+      <dl>
+        <dt>What holds this community together?</dt>
+        <span class="q-sub">Purpose and domain</span>
+        <dd>
+          <ul>
+            <li><strong>Professional learning</strong> — shared practice domain within or across organisations</li>
+            <li><strong>Organisational change</strong> — communities mobilised around transformation goals</li>
+            <li><strong>Equity and justice</strong> — communities centred on systemic change and collective action</li>
+          </ul>
+        </dd>
+
+        <dt>How large and how bounded is this community?</dt>
+        <span class="q-sub">Scale and scope</span>
+        <dd>
+          <ul>
+            <li><strong>Small cohort</strong> — 8–25 members; deep relational engagement is possible</li>
+            <li><strong>Programme community</strong> — multiple cohorts or a full learning pathway</li>
+            <li><strong>Organisational community</strong> — cross-functional, institution-wide, or networked</li>
+          </ul>
+        </dd>
+
+        <dt>To what extent do community members shape the design?</dt>
+        <span class="q-sub">Learner involvement in design</span>
+        <dd>
+          <ul>
+            <li><strong>Designer-led</strong> — expert design with participant feedback sought periodically</li>
+            <li><strong>Participatory design</strong> — community members involved in key design decisions</li>
+            <li><strong>Co-design</strong> — members as co-designers from inception through ongoing adaptation</li>
+          </ul>
+        </dd>
+
+        <dt>How does the community unfold over time?</dt>
+        <span class="q-sub">Temporal design</span>
+        <dd>
+          <ul>
+            <li><strong>Fixed cohort</strong> — defined start, middle, and end with a consistent membership group</li>
+            <li><strong>Ongoing membership</strong> — open membership with rotating participation and peer onboarding</li>
+            <li><strong>Project-based</strong> — community formed around a defined challenge or deliverable</li>
+          </ul>
+        </dd>
+
+        <dt>How is facilitation resourced and distributed?</dt>
+        <span class="q-sub">Facilitation model</span>
+        <dd>
+          <ul>
+            <li><strong>Dedicated facilitator</strong> — a skilled practitioner holds the container for the community</li>
+            <li><strong>Rotating facilitation</strong> — leadership distributed across members over time</li>
+            <li><strong>Peer facilitation with coaching</strong> — members develop as facilitators with external support</li>
+          </ul>
+        </dd>
+
+        <dt>How intentional is the equity and inclusion practice?</dt>
+        <span class="q-sub">Equity orientation</span>
+        <dd>
+          <ul>
+            <li><strong>Open access</strong> — barriers reduced; equity is implicit rather than designed</li>
+            <li><strong>Equity-informed</strong> — equity principles actively applied to design decisions</li>
+            <li><strong>Justice-centred</strong> — Design Justice framework; those most impacted lead the design</li>
+          </ul>
+        </dd>
+      </dl>
+    </div>
+
+    <div class="highlight-box" style="margin-top: 2rem;">
+      <div class="highlight-box-head">On scope and ambition</div>
+      <div class="highlight-box-body">
+        <p>Communities designed at a scale that exceeds available facilitation capacity and organisational infrastructure consistently underperform. A smaller, better-resourced community with strong facilitation and genuine equity attention produces more durable outcomes than an ambitious one that lacks the conditions to sustain it.</p>
+        <p>There is no universally correct size, structure, or facilitation model. The value of engaging with the full range of decisions lies in developing the judgement to design something that genuinely fits — the learners, the work, and the organisation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SECTION 4: OUTCOMES
+  ═══════════════════════════════════════════════════════ -->
+  <hr class="section-divider">
+  <section class="section" id="outcomes" aria-labelledby="outcomes-heading">
+    <span class="section-label" aria-hidden="true">Section 4</span>
+    <h2 id="outcomes-heading">What well-designed communities enable</h2>
+    <p>Learning community design creates change at two horizons — some visible relatively quickly, others that take hold over time as community becomes part of how an organisation learns, leads, and treats its people.</p>
+
+    <div class="outcomes-group" id="shorter-term">
+      <h3>What becomes visible</h3>
+
+      <div class="outcome-item">
+        <div class="outcome-marker short" aria-hidden="true">&#10003;</div>
+        <div>
+          <h4>Belonging is established</h4>
+          <p>Members develop a genuine sense of connection to the community and to one another, reducing isolation and increasing willingness to engage.</p>
+        </div>
+      </div>
+      <div class="outcome-item">
+        <div class="outcome-marker short" aria-hidden="true">&#10003;</div>
+        <div>
+          <h4>Learning is activated</h4>
+          <p>Participants engage with content, practice, and each other in ways that produce visible shifts in knowledge, perspective, and skill.</p>
+        </div>
+      </div>
+      <div class="outcome-item">
+        <div class="outcome-marker short" aria-hidden="true">&#10003;</div>
+        <div>
+          <h4>Psychological safety is measurable</h4>
+          <p>Members take interpersonal risks — asking difficult questions, sharing failures, challenging assumptions — that would not occur in a lower-trust environment.</p>
+        </div>
+      </div>
+      <div class="outcome-item">
+        <div class="outcome-marker short" aria-hidden="true">&#10003;</div>
+        <div>
+          <h4>Facilitation capacity grows</h4>
+          <p>Through exposure to skilled facilitation and participatory methods, members develop their own capacity to hold space for learning and dialogue.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="outcomes-group" id="longer-term">
+      <h3>What becomes embedded</h3>
+
+      <div class="outcome-item">
+        <div class="outcome-marker long" aria-hidden="true">&#8594;</div>
+        <div>
+          <h4>Learning becomes organisational</h4>
+          <p>Individual learning is translated into shared practice, changed norms, and institutional knowledge that persists beyond any single person.</p>
+        </div>
+      </div>
+      <div class="outcome-item">
+        <div class="outcome-marker long" aria-hidden="true">&#8594;</div>
+        <div>
+          <h4>Leadership is distributed</h4>
+          <p>Communities that are well-designed develop their own leadership capacity, reducing dependence on any single facilitator or designer.</p>
+        </div>
+      </div>
+      <div class="outcome-item">
+        <div class="outcome-marker long" aria-hidden="true">&#8594;</div>
+        <div>
+          <h4>Culture shifts toward inclusion</h4>
+          <p>The patterns developed in a well-designed learning community — listening differently, creating space for dissent, distributing voice — migrate into the broader organisational culture.</p>
+        </div>
+      </div>
+      <div class="outcome-item">
+        <div class="outcome-marker long" aria-hidden="true">&#8594;</div>
+        <div>
+          <h4>Adaptive capacity increases</h4>
+          <p>Organisations with strong learning community infrastructure respond more effectively to change, uncertainty, and complexity — because they have practised collective sense-making.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout"><strong>On evidence and outcomes:</strong> Research on communities of practice, psychological safety, and learning organisation design consistently demonstrates that communities producing genuine belonging and trust also produce better learning outcomes, stronger retention, and greater capacity for adaptive response. The relational conditions and the learning outcomes are not separate — they are the same phenomenon viewed from different angles.</div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SECTION 5: SCHOLARLY GROUNDING
+  ═══════════════════════════════════════════════════════ -->
+  <hr class="section-divider">
+  <section class="section" id="scholars" aria-labelledby="scholars-heading">
+    <span class="section-label" aria-hidden="true">Section 5</span>
+    <h2 id="scholars-heading">Scholarly grounding</h2>
+    <p>Learning community design and facilitation draws on a body of scholarship spanning education, organisational development, social justice, and complexity science. The thinkers below represent some of the most generative contributions to this field.</p>
+
+    <div class="scholar-card">
+      <div class="scholar-card-header">
+        <span class="scholar-icon" aria-hidden="true">📗</span>
+        <span class="scholar-card-title">Etienne Wenger — Communities of Practice</span>
+      </div>
+      <div class="scholar-card-body">
+        <p>Wenger's Communities of Practice framework, developed with Lave, established that learning is fundamentally a social phenomenon — emerging through participation in shared domains of practice rather than through individual information transfer. A Community of Practice is defined by three elements: a shared domain of interest, a community of practitioners who interact and learn together, and a shared repertoire of resources, tools, and approaches. This framework remains the most influential theoretical grounding for learning community design, providing both a descriptive account of how communities learn and a normative vision of what to cultivate.</p>
+      </div>
+    </div>
+
+    <div class="scholar-card">
+      <div class="scholar-card-header">
+        <span class="scholar-icon" aria-hidden="true">📘</span>
+        <span class="scholar-card-title">Peter Block — Community: The Structure of Belonging</span>
+      </div>
+      <div class="scholar-card-body">
+        <p>Block's work argues that community is not a collection of individuals but a relational and organic process requiring intentional structuring through dialogue and shared experience. He defines belonging as both the experience of being part of something larger and the sense of genuine ownership within that community — a distinction that separates passive membership from active participation. Block identifies five essential conversations for building belonging: possibility, ownership, dissent, commitment, and gifts. His framework is a practical design resource for facilitators working to create conditions in which community members feel genuinely accountable to one another rather than merely present.</p>
+      </div>
+    </div>
+
+    <div class="scholar-card">
+      <div class="scholar-card-header">
+        <span class="scholar-icon" aria-hidden="true">📙</span>
+        <span class="scholar-card-title">adrienne maree brown — Emergent Strategy</span>
+      </div>
+      <div class="scholar-card-body">
+        <p>Emergent Strategy offers both a philosophical orientation and a practical toolkit for navigating change in community and organisational contexts. brown's core argument is that transformation at scale mirrors transformation at small scale — and that attending carefully to the quality of relationships and interactions is itself a strategy. Key principles include intentional adaptation, decentralised leadership, interdependence, and trusting the people. brown draws on complexity science to articulate how collective intelligence emerges from relationship rather than from control. This work is particularly generative for facilitators and designers working in contexts of uncertainty, urgency, and systemic inequity.</p>
+      </div>
+    </div>
+
+    <div class="scholar-card">
+      <div class="scholar-card-header">
+        <span class="scholar-icon" aria-hidden="true">📕</span>
+        <span class="scholar-card-title">Amy Edmondson — Psychological Safety</span>
+      </div>
+      <div class="scholar-card-body">
+        <p>Edmondson's research established psychological safety as the most significant predictor of team effectiveness and learning. She defines it as a shared belief that the team is safe for interpersonal risk-taking — and distinguishes it from trust (which operates between individuals) by its collective, group-level character. Her four-stage model of psychological safety (inclusion, learner, contributor, and challenger safety) provides a developmental framework that practitioners can use to assess where a community stands and what conditions need strengthening. Her work is indispensable for anyone designing or facilitating learning communities.</p>
+      </div>
+    </div>
+
+    <div class="scholar-card">
+      <div class="scholar-card-header">
+        <span class="scholar-icon" aria-hidden="true">📓</span>
+        <span class="scholar-card-title">Sasha Costanza-Chock — Design Justice</span>
+      </div>
+      <div class="scholar-card-body">
+        <p>Design Justice offers a framework for analysing how design decisions distribute benefits and burdens across different populations. Costanza-Chock argues that conventional user-centred design often reproduces existing power dynamics by centring the preferences of dominant groups. Design Justice instead positions those most impacted by design decisions as the primary drivers of the design process, and works toward dismantling rather than reinforcing structural inequity. For learning community designers, this framework provides a critical lens for interrogating whose voices shape the design — and whose are systematically absent.</p>
+      </div>
+    </div>
+
+    <div class="scholar-card">
+      <div class="scholar-card-header">
+        <span class="scholar-icon" aria-hidden="true">📔</span>
+        <span class="scholar-card-title">Malcolm Knowles — Adult Learning Theory (Andragogy)</span>
+      </div>
+      <div class="scholar-card-body">
+        <p>Knowles distinguished andragogy — the art and science of helping adults learn — from pedagogy by identifying characteristics specific to adult learners: they are self-directed rather than dependent, they bring experience as a rich resource for learning, their readiness to learn is linked to real developmental tasks, they are problem-centred rather than subject-centred, and they are primarily internally motivated. These principles argue against didactic transfer of information and toward participatory, experience-grounded learning experiences in which learners have genuine agency over their process.</p>
+      </div>
+    </div>
+
+    <div class="callout"><strong>On integration:</strong> These thinkers are most useful when held in relationship with one another. Wenger provides the theoretical account of how communities learn. Block provides the practical design language for building belonging. brown contributes an adaptive, justice-oriented philosophy of change. Edmondson grounds the relational conditions in empirical research. Costanza-Chock interrogates who design serves. Knowles anchors adult learning design in the actual characteristics of adult learners. Together, they constitute a rich and mutually reinforcing foundation for this work.</div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SECTION 6: REFLECTION
+  ═══════════════════════════════════════════════════════ -->
+  <hr class="section-divider">
+  <section class="section" id="reflection" aria-labelledby="reflection-heading">
+    <span class="section-label" aria-hidden="true">Section 6</span>
+    <h2 id="reflection-heading">Reflection on current practice</h2>
+    <p class="reflection-intro">This reflection is designed to surface useful questions about your organisation's current learning community practice. There are no right or wrong answers — choose the response that most honestly reflects your current situation, then select <strong>See reflection</strong> for a profile and questions worth sitting with.</p>
+
+    <div class="validation-msg" id="validationMsg" style="display:none;" tabindex="-1" role="alert">
+      Please answer all four questions before continuing.
+    </div>
+
+    <form id="reflectionForm" novalidate>
+
+      <fieldset>
+        <legend>1. How does your organisation currently approach the design of learning communities?</legend>
+        <label class="radio-option">
+          <input type="radio" name="q1" value="1">
+          We do not currently design learning communities intentionally
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q1" value="2">
+          We bring people together for learning events but have not designed for community
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q1" value="3">
+          We have some community structures in place, though they are not consistently sustained
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q1" value="4">
+          Learning community design is embedded in how we develop people and knowledge
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>2. How would you describe your organisation's approach to psychological safety in learning contexts?</legend>
+        <label class="radio-option">
+          <input type="radio" name="q2" value="1">
+          Psychological safety is not something we have thought about explicitly
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q2" value="2">
+          We assume it is present but have not designed for it specifically
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q2" value="3">
+          We take intentional steps to build safety, though consistency varies
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q2" value="4">
+          Creating and maintaining psychological safety is a central design commitment
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>3. To what extent do equity and inclusion principles shape how your learning communities are designed?</legend>
+        <label class="radio-option">
+          <input type="radio" name="q3" value="1">
+          Equity is not currently a design consideration
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q3" value="2">
+          We aim for openness and welcome but have not examined who our design centres
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q3" value="3">
+          We apply equity principles to some design decisions, though gaps remain
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q3" value="4">
+          Design Justice principles actively guide our community design and facilitation
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>4. How does your organisation currently evaluate the health and effectiveness of its learning communities?</legend>
+        <label class="radio-option">
+          <input type="radio" name="q4" value="1">
+          We do not currently evaluate learning communities formally
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q4" value="2">
+          We gather informal feedback when concerns are raised
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q4" value="3">
+          We use some evaluation measures, though they focus primarily on learning outcomes
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="q4" value="4">
+          We assess belonging, trust, equity, and learning outcomes as integrated indicators of community health
+        </label>
+      </fieldset>
+
+      <div class="form-actions">
+        <button type="button" class="btn-primary" id="seeReflectionBtn">See reflection</button>
+        <button type="button" class="btn-secondary" id="resetBtn" style="display:none;">Start again</button>
+      </div>
+    </form>
+
+    <div class="reflection-result" id="reflectionResult" aria-live="polite" style="display:none;">
+      <div class="result-head" id="resultHead" tabindex="-1"></div>
+      <div class="result-body">
+        <p id="resultText"></p>
+        <span class="result-qs-label">Questions worth sitting with</span>
+        <ul class="result-qs" id="resultQuestions"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SECTION 7: CITATIONS
+  ═══════════════════════════════════════════════════════ -->
+  <hr class="section-divider">
+  <section class="section" id="citations" aria-labelledby="citations-heading">
+    <span class="section-label" aria-hidden="true">Section 7</span>
+    <h2 id="citations-heading">Citations</h2>
+    <p>Sources informing the knowledge claims and frameworks discussed in this resource, grouped by area.</p>
+
+    <div class="citations-group">
+      <h3>Communities of practice</h3>
+      <div class="citation">
+        <span class="cite-type">Foundational framework</span><br>
+        <strong>Wenger, E.</strong> Communities of Practice: Learning, Meaning, and Identity. Cambridge University Press, 1998.
+      </div>
+      <div class="citation">
+        <span class="cite-type">Situated learning theory</span><br>
+        <strong>Lave, J., &amp; Wenger, E.</strong> Situated Learning: Legitimate Peripheral Participation. Cambridge University Press, 1991.
+      </div>
+    </div>
+
+    <div class="citations-group">
+      <h3>Community design and belonging</h3>
+      <div class="citation">
+        <span class="cite-type">Structure of belonging</span><br>
+        <strong>Block, P.</strong> Community: The Structure of Belonging. 2nd ed. Berrett-Koehler, 2018.
+      </div>
+    </div>
+
+    <div class="citations-group">
+      <h3>Emergent strategy and adaptive change</h3>
+      <div class="citation">
+        <span class="cite-type">Emergent strategy framework</span><br>
+        <strong>brown, adrienne maree.</strong> Emergent Strategy: Shaping Change, Changing Worlds. AK Press, 2017.
+      </div>
+    </div>
+
+    <div class="citations-group">
+      <h3>Psychological safety and group dynamics</h3>
+      <div class="citation">
+        <span class="cite-type">Foundational research</span><br>
+        <strong>Edmondson, A. C.</strong> &ldquo;Psychological Safety and Learning Behavior in Work Teams.&rdquo; <em>Administrative Science Quarterly,</em> 44(2), 350&ndash;383, 1999.
+      </div>
+      <div class="citation">
+        <span class="cite-type">Four stages of psychological safety</span><br>
+        <strong>Clark, T. R.</strong> The 4 Stages of Psychological Safety: Defining the Path to Inclusion and Innovation. Berrett-Koehler, 2020.
+      </div>
+      <div class="citation">
+        <span class="cite-type">Group development stages</span><br>
+        <strong>Tuckman, B. W.</strong> &ldquo;Developmental Sequence in Small Groups.&rdquo; <em>Psychological Bulletin,</em> 63(6), 384&ndash;399, 1965.
+      </div>
+    </div>
+
+    <div class="citations-group">
+      <h3>Equity and design justice</h3>
+      <div class="citation">
+        <span class="cite-type">Design Justice framework</span><br>
+        <strong>Costanza-Chock, S.</strong> Design Justice: Community-Led Practices to Build the Worlds We Need. MIT Press, 2020.
+      </div>
+    </div>
+
+    <div class="citations-group">
+      <h3>Adult learning theory</h3>
+      <div class="citation">
+        <span class="cite-type">Andragogy</span><br>
+        <strong>Knowles, M. S., Holton, E. F., &amp; Swanson, R. A.</strong> The Adult Learner: The Definitive Classic in Adult Education and Human Resource Development. 8th ed. Routledge, 2015.
+      </div>
+    </div>
+
+    <div class="citations-group">
+      <h3>Facilitation and participatory methods</h3>
+      <div class="citation">
+        <span class="cite-type">Liberating Structures</span><br>
+        <strong>Lipmanowicz, H., &amp; McCandless, K.</strong> The Surprising Power of Liberating Structures: Simple Rules to Unleash A Culture of Innovation. Liberating Structures Press, 2014.
+      </div>
+      <div class="citation">
+        <span class="cite-type">Dialogue theory</span><br>
+        <strong>Bohm, D.</strong> On Dialogue. Routledge, 1996.
+      </div>
+    </div>
+
+    <div class="citations-group">
+      <h3>Systems thinking and organisational learning</h3>
+      <div class="citation">
+        <span class="cite-type">Five disciplines</span><br>
+        <strong>Senge, P. M.</strong> The Fifth Discipline: The Art and Practice of the Learning Organization. Revised ed. Doubleday, 2006.
+      </div>
+    </div>
+
+    <p style="font-size:13px; color: var(--ink-faint); margin-top: 1.5rem;">This resource draws on scholarship in adult learning theory, communities of practice, psychological safety research, design justice, and emergent strategy. It does not constitute professional advice.</p>
+  </section>
+
+  <a class="back-to-top" href="#toc">&#8593; Back to contents</a>
+
+</main>
+
+<footer role="contentinfo">
+  Knowledge Resource &middot; Learning Community Design and Facilitation &middot; Each community's design is shaped by its own learners, context, and purpose.
+</footer>
+
+<script>
+(function () {
+  var profiles = [
+    {
+      range: [4, 7],
+      head: 'Early stage: establishing the foundations',
+      text: 'Most organisations at this stage find that the most valuable immediate investment is in building clarity about purpose — understanding what kind of community they are actually trying to create, and for whom, before trying to design anything systematically. There is no universal starting point; the right entry depends on the organisation, its people, and its culture.',
+      questions: [
+        'What do you actually know about what would make learning meaningful and sustaining for the people in your organisation — and how did that knowledge reach you?',
+        'Is there one context in your organisation where genuine community and belonging already exists, even informally? What conditions made that possible?',
+        'Who has the knowledge, relationships, and authority to take a meaningful first step — and are they connected to one another?'
+      ]
+    },
+    {
+      range: [8, 10],
+      head: 'Reactive stage: moving from events to community',
+      text: 'Organisations at this stage have genuine learning activity but tend to find that engagement is event-dependent rather than sustained. The gap between a well-designed learning event and a learning community is relational — and relational conditions need to be designed for explicitly. The questions that tend to be most productive concern what would need to be true for people to want to keep showing up.',
+      questions: [
+        'Which people in your organisation are most likely to quietly disengage from learning programmes rather than name what is not working — and what does that cost them and the organisation?',
+        'Are your learning experiences producing sustained practice change, or primarily in-the-moment engagement? How would you know the difference?',
+        'What would need to be in place for learning to feel like something people are genuinely part of — rather than something that happens to them?'
+      ]
+    },
+    {
+      range: [11, 13],
+      head: 'Developing stage: extending and deepening the practice',
+      text: 'Organisations at this stage have community structures in place but often find significant variation in depth, equity, and sustainability. The questions that tend to be most productive concern how existing community efforts connect to genuine belonging — and where the current design may be serving some members well while quietly losing others.',
+      questions: [
+        'Where does community engagement tend to thin out — at the point of design, of facilitation, or of sustained belonging?',
+        'Whose perspectives actively shape how your learning communities are designed — and whose are gathered after the fact, if at all?',
+        'Does your community practice extend to how leadership and ownership are distributed, or does it primarily depend on the skill and presence of a single facilitator?'
+      ]
+    },
+    {
+      range: [14, 16],
+      head: 'Integrated stage: sustaining and evolving',
+      text: 'Organisations at this stage have learning community design embedded across multiple dimensions and a culture that values genuine belonging alongside learning outcomes. The most productive questions now often concern how the practice itself is evolving — whether it continues to fit the organisation as its people, programmes, and context change, and whether equity is embedded throughout rather than periodically visited.',
+      questions: [
+        'How do you know whether your community practice is actually producing belonging and equity for those who are less visible or less vocal — what evidence do you have, and what is missing?',
+        'Is your learning community expertise distributed across the organisation, or does it depend on a small number of people whose departure would leave a significant gap?',
+        'Where are the remaining blind spots — the member populations, participation formats, or equity dimensions your current design does not yet adequately reach?'
+      ]
+    }
+  ];
+
+  function getProfile(total) {
+    for (var i = 0; i < profiles.length; i++) {
+      if (total >= profiles[i].range[0] && total <= profiles[i].range[1]) return profiles[i];
+    }
+    return profiles[profiles.length - 1];
+  }
+
+  document.getElementById('seeReflectionBtn').addEventListener('click', function () {
+    var names = ['q1', 'q2', 'q3', 'q4'];
+    var answers = names.map(function (n) {
+      var el = document.querySelector('input[name="' + n + '"]:checked');
+      return el ? parseInt(el.value, 10) : null;
+    });
+
+    var missing = answers.some(function (a) { return a === null; });
+    var msg = document.getElementById('validationMsg');
+    if (missing) {
+      msg.style.display = 'block';
+      msg.focus();
+      return;
+    }
+    msg.style.display = 'none';
+
+    var total = answers.reduce(function (s, v) { return s + v; }, 0);
+    var p = getProfile(total);
+
+    document.getElementById('resultHead').textContent = p.head;
+    document.getElementById('resultText').textContent = p.text;
+
+    var ul = document.getElementById('resultQuestions');
+    ul.innerHTML = '';
+    p.questions.forEach(function (q) {
+      var li = document.createElement('li');
+      li.textContent = q;
+      ul.appendChild(li);
+    });
+
+    var result = document.getElementById('reflectionResult');
+    result.style.display = 'block';
+    document.getElementById('resultHead').focus();
+
+    document.getElementById('seeReflectionBtn').style.display = 'none';
+    document.getElementById('resetBtn').style.display = 'inline-block';
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', function () {
+    document.querySelectorAll('input[type="radio"]').forEach(function (r) { r.checked = false; });
+    document.getElementById('reflectionResult').style.display = 'none';
+    document.getElementById('validationMsg').style.display = 'none';
+    document.getElementById('seeReflectionBtn').style.display = 'inline-block';
+    document.getElementById('resetBtn').style.display = 'none';
+    document.getElementById('reflectionForm').querySelector('input[type="radio"]').focus();
+  });
+}());
+</script>
+
+</body>
+</html>
