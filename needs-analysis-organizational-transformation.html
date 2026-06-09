@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Needs Analysis for Organizational Transformation — Knowledge Resource</title>
+  <link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f6f7;
+      --surface-alt: #eaecee;
+      --ink: #303e44;
+      --ink-mid: #4f6068;
+      --ink-light: #7a9098;
+      --accent: #475f6a;
+      --accent-light: #e4eaed;
+      --accent-mid: #7a9aa8;
+      --border: #d5dde1;
+      --border-strong: #b5c5cc;
+      --radius: 10px;
+      --radius-sm: 6px;
+      --font: 'Asap', system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font); background: var(--bg); color: var(--ink); min-height: 100vh; font-size: 15px; line-height: 1.65; }
+    .skip-link { position: absolute; top: -100px; left: 1rem; background: var(--accent); color: #fff; padding: 0.5rem 1rem; border-radius: var(--radius-sm); text-decoration: none; font-size: 0.85rem; z-index: 999; transition: top 0.2s; }
+    .skip-link:focus { top: 1rem; }
+
+    /* Header */
+    header { background: var(--bg); border-bottom: 1px solid var(--border); padding: 0 2rem; }
+    .header-inner { max-width: 960px; margin: 0 auto; padding: 2rem 0 1.75rem; }
+    .site-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+    header h1 { font-size: 1.85rem; font-weight: 700; line-height: 1.2; color: var(--ink); max-width: 680px; }
+    .header-sub { font-size: 0.9rem; color: var(--ink-mid); margin-top: 0.5rem; max-width: 620px; line-height: 1.6; }
+    .info-banner { background: var(--accent-light); border-left: 3px solid var(--accent); margin-top: 1.25rem; padding: 0.65rem 1rem; font-size: 0.83rem; color: var(--ink-mid); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; display: flex; align-items: flex-start; gap: 0.5rem; }
+
+    /* Tab nav */
+    .tab-nav { background: var(--bg); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; }
+    .tab-nav-inner { max-width: 960px; margin: 0 auto; padding: 0 2rem; display: flex; overflow-x: auto; scrollbar-width: none; }
+    .tab-nav-inner::-webkit-scrollbar { display: none; }
+    .tab-btn { background: none; border: none; border-bottom: 2px solid transparent; padding: 0.85rem 1rem; font-family: var(--font); font-size: 0.82rem; font-weight: 500; color: var(--ink-light); cursor: pointer; white-space: nowrap; transition: color 0.15s, border-color 0.15s; margin-bottom: -1px; }
+    .tab-btn:hover { color: var(--ink); }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    /* Main content */
+    main { max-width: 960px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeIn 0.2s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+
+    /* Panel headers */
+    .panel-title { font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-bottom: 0.35rem; }
+    .panel-lead { font-size: 0.9rem; color: var(--ink-mid); max-width: 700px; margin-bottom: 2rem; line-height: 1.65; }
+
+    /* Foundation cards */
+    .foundations-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(275px, 1fr)); gap: 1rem; margin-bottom: 1.75rem; }
+    .foundation-card { background: var(--bg); border: 1px solid var(--border); border-top: 3px solid var(--accent); border-radius: var(--radius); padding: 1.25rem 1.35rem; }
+    .foundation-card.v2 { border-top-color: #5e8090; }
+    .foundation-card.v3 { border-top-color: #3d5c67; }
+    .foundation-card.v4 { border-top-color: #6a8a96; }
+    .foundation-card.v5 { border-top-color: #4d7080; }
+    .foundation-card.v6 { border-top-color: #2e4f5a; }
+    .foundation-icon { font-size: 1.4rem; margin-bottom: 0.6rem; display: block; }
+    .foundation-card h3 { font-size: 0.95rem; font-weight: 600; color: var(--ink); margin-bottom: 0.45rem; }
+    .foundation-card p { font-size: 0.84rem; color: var(--ink-mid); line-height: 1.65; }
+
+    /* Callouts */
+    .callout { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.1rem 1.25rem; margin: 1.5rem 0; font-size: 0.86rem; color: var(--ink-mid); line-height: 1.65; }
+    .callout strong { color: var(--ink); }
+    .callout.note { border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; background: var(--accent-light); }
+    .callout .label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 0.4rem; }
+
+    /* Prose sections */
+    .prose h3 { font-size: 1rem; font-weight: 600; margin: 1.75rem 0 0.45rem; color: var(--ink); }
+    .prose p { font-size: 0.875rem; color: var(--ink-mid); line-height: 1.7; margin-bottom: 0.7rem; }
+    .prose p strong { color: var(--ink); }
+    .section-divider { height: 1px; background: var(--border); margin: 2rem 0; }
+
+    /* Accordion stages */
+    .stages-list { margin: 1.5rem 0; }
+    .stage-item { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 0.45rem; overflow: hidden; }
+    .stage-trigger { width: 100%; background: none; border: none; display: flex; align-items: center; gap: 0.9rem; padding: 0.95rem 1.15rem; cursor: pointer; text-align: left; font-family: var(--font); transition: background 0.15s; }
+    .stage-trigger:hover, .stage-trigger[aria-expanded="true"] { background: var(--surface); }
+    .stage-num { background: var(--accent); color: #fff; font-size: 0.68rem; font-weight: 700; border-radius: 999px; width: 1.65rem; height: 1.65rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .stage-meta { flex: 1; }
+    .stage-title { font-size: 0.88rem; font-weight: 600; color: var(--ink); display: block; }
+    .stage-subtitle { font-size: 0.77rem; color: var(--ink-light); margin-top: 0.1rem; }
+    .stage-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+    .stage-tag { font-size: 0.67rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 999px; background: var(--accent-light); color: var(--accent); }
+    .stage-tag.alt { background: var(--surface-alt); color: var(--ink-mid); }
+    .stage-chevron { font-size: 0.72rem; color: var(--ink-light); transition: transform 0.2s; flex-shrink: 0; }
+    .stage-trigger[aria-expanded="true"] .stage-chevron { transform: rotate(180deg); }
+    .stage-body { display: none; padding: 0 1.15rem 1.15rem 3.55rem; }
+    .stage-body.open { display: block; }
+    .stage-body p { font-size: 0.86rem; color: var(--ink-mid); line-height: 1.7; margin-bottom: 0.65rem; }
+    .stage-produces { background: var(--surface); border-radius: var(--radius-sm); padding: 0.85rem 1rem; margin-top: 0.6rem; }
+    .stage-produces-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 0.45rem; }
+    .stage-produces ul { padding-left: 1.1rem; margin: 0; }
+    .stage-produces li { font-size: 0.82rem; color: var(--ink-mid); margin-bottom: 0.25rem; line-height: 1.5; }
+    .stage-note { font-size: 0.8rem; font-style: italic; color: var(--ink-light); margin-top: 0.65rem; padding-top: 0.65rem; border-top: 1px solid var(--border); }
+
+    /* Decisions grid */
+    .decisions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(265px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+    .decision-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.15rem 1.25rem; }
+    .decision-icon { font-size: 1.3rem; margin-bottom: 0.5rem; display: block; }
+    .decision-card h3 { font-size: 0.9rem; font-weight: 600; color: var(--ink); margin-bottom: 0.2rem; }
+    .decision-card .decision-q { font-size: 0.78rem; font-style: italic; color: var(--accent); margin-bottom: 0.55rem; display: block; }
+    .decision-card p { font-size: 0.83rem; color: var(--ink-mid); line-height: 1.6; }
+
+    /* Impact columns */
+    .impact-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+    .impact-col-header { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); padding-bottom: 0.6rem; border-bottom: 2px solid var(--border); margin-bottom: 1rem; }
+    .impact-col-header span { display: block; font-size: 1rem; font-weight: 700; letter-spacing: 0; text-transform: none; color: var(--ink); margin-top: 0.2rem; }
+    .impact-item { display: flex; gap: 0.7rem; margin-bottom: 0.85rem; align-items: flex-start; }
+    .impact-check { width: 1.35rem; height: 1.35rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700; flex-shrink: 0; margin-top: 0.05rem; background: var(--accent-light); color: var(--accent); }
+    .impact-check.arrow { background: var(--surface-alt); color: var(--ink-mid); }
+    .impact-item-text h4 { font-size: 0.875rem; font-weight: 600; color: var(--ink); margin-bottom: 0.2rem; }
+    .impact-item-text p { font-size: 0.82rem; color: var(--ink-mid); line-height: 1.6; }
+
+    /* Competency items */
+    .competency-item { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.05rem 1.25rem; margin-bottom: 0.55rem; display: flex; gap: 0.9rem; align-items: flex-start; }
+    .comp-accent { width: 3px; border-radius: 999px; background: var(--accent); align-self: stretch; flex-shrink: 0; min-height: 1.5rem; }
+    .comp-accent.v2 { background: #5e8090; }
+    .comp-accent.v3 { background: #3d5c67; }
+    .comp-accent.v4 { background: #6a8a96; }
+    .comp-accent.v5 { background: #4d7080; }
+    .comp-accent.v6 { background: #2e4f5a; }
+    .comp-content h3 { font-size: 0.88rem; font-weight: 600; color: var(--ink); margin-bottom: 0.25rem; }
+    .comp-content p { font-size: 0.84rem; color: var(--ink-mid); line-height: 1.65; }
+
+    /* Reflection tool */
+    .reflection-q { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.15rem 1.25rem; margin-bottom: 0.65rem; }
+    .reflection-q-num { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 0.3rem; }
+    .reflection-q-label { font-size: 0.875rem; font-weight: 500; color: var(--ink); margin-bottom: 0.7rem; display: block; }
+    .options-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 0.4rem; }
+    .option-btn { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 0.55rem 0.8rem; font-family: var(--font); font-size: 0.8rem; color: var(--ink-mid); cursor: pointer; text-align: left; line-height: 1.45; transition: all 0.15s; }
+    .option-btn:hover { border-color: var(--accent-mid); color: var(--ink); }
+    .option-btn.selected { background: var(--accent-light); border-color: var(--accent); color: var(--accent); font-weight: 500; }
+    .reflection-actions { display: flex; gap: 0.65rem; margin-top: 1rem; flex-wrap: wrap; }
+    .btn-primary { background: var(--accent); color: #fff; border: none; border-radius: var(--radius-sm); padding: 0.6rem 1.25rem; font-family: var(--font); font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+    .btn-primary:hover { background: #3a4f58; }
+    .btn-secondary { background: none; color: var(--ink-mid); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.6rem 1.25rem; font-family: var(--font); font-size: 0.85rem; cursor: pointer; transition: all 0.15s; }
+    .btn-secondary:hover { border-color: var(--ink-light); color: var(--ink); }
+    .error-msg { font-size: 0.81rem; color: #8a3a10; margin-top: 0.4rem; display: none; }
+    .reflection-result { display: none; background: var(--accent-light); border: 1px solid var(--border-strong); border-radius: var(--radius); padding: 1.4rem; margin-top: 1rem; }
+    .reflection-result.visible { display: block; animation: fadeIn 0.3s ease; }
+    .result-title { font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: 0.65rem; }
+    .result-body { font-size: 0.875rem; color: var(--ink-mid); line-height: 1.7; }
+    .result-points { margin: 0.75rem 0 0; padding-left: 1.2rem; }
+    .result-points li { font-size: 0.865rem; color: var(--ink-mid); margin-bottom: 0.4rem; line-height: 1.55; }
+
+    /* Citations */
+    .citation-group { margin-bottom: 1.75rem; }
+    .citation-group-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 0.65rem; padding-bottom: 0.35rem; border-bottom: 1px solid var(--border); }
+    .citation-entry { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.8rem 1rem; margin-bottom: 0.45rem; }
+    .citation-entry .cite-label { font-size: 0.67rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.2rem; display: block; }
+    .citation-entry p { font-size: 0.82rem; color: var(--ink-mid); line-height: 1.55; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border); background: var(--surface); padding: 1.5rem 2rem; text-align: center; font-size: 0.78rem; color: var(--ink-light); line-height: 1.65; }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      main { padding: 1.5rem 1rem 4rem; }
+      header { padding: 0 1rem; }
+      .tab-nav-inner { padding: 0 1rem; }
+      header h1 { font-size: 1.45rem; }
+      .foundations-grid, .decisions-grid { grid-template-columns: 1fr; }
+      .impact-cols { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header>
+  <div class="header-inner">
+    <div class="site-label">Needs Analysis for Organizational Transformation — Knowledge Resource</div>
+    <h1>Understanding Needs Analysis for Organizational Transformation</h1>
+    <p class="header-sub">A guide to the knowledge foundations, diagnostic methodology, key decisions, and professional practice that characterise rigorous needs analysis in organizational transformation contexts.</p>
+    <div class="info-banner">
+      <span>ℹ️</span>
+      <span>This resource is for organizational leaders, learning designers, and those commissioning or conducting needs analysis in complex change contexts. Use the tabs to explore at whatever depth is useful to you.</span>
+    </div>
+  </div>
+</header>
+
+<nav class="tab-nav" aria-label="Resource sections">
+  <div class="tab-nav-inner">
+    <button class="tab-btn active" data-tab="foundations">Foundations</button>
+    <button class="tab-btn" data-tab="methodology">Methodology</button>
+    <button class="tab-btn" data-tab="decisions">Key Decisions</button>
+    <button class="tab-btn" data-tab="competencies">Competencies</button>
+    <button class="tab-btn" data-tab="impact">Outcomes</button>
+    <button class="tab-btn" data-tab="reflection">Reflection Tool</button>
+    <button class="tab-btn" data-tab="citations">Citations</button>
+  </div>
+</nav>
+
+<main id="main-content">
+
+  <!-- FOUNDATIONS -->
+  <section class="tab-panel active" id="tab-foundations" role="tabpanel">
+    <h2 class="panel-title">Six Knowledge Foundations</h2>
+    <p class="panel-lead">Rigorous needs analysis draws on six interconnected bodies of knowledge. The most consequential diagnostic work holds all six in view simultaneously — and produces findings that a survey-based approach cannot replicate.</p>
+
+    <div class="foundations-grid">
+      <div class="foundation-card">
+        <span class="foundation-icon">🏛</span>
+        <h3>Organizational Theory &amp; Change Models</h3>
+        <p>Effective needs analysis requires literacy in how organizations transform. This means distinguishing technical challenges — which have known solutions implementable through established expertise — from adaptive challenges, which require shifts in culture, identity, and values. Kotter's 8-Step, ADKAR, and Lewin's change stages provide the structural vocabulary; Heifetz and Linsky's technical/adaptive distinction is the most important scoping tool in the field.</p>
+      </div>
+      <div class="foundation-card v2">
+        <span class="foundation-icon">⚙️</span>
+        <h3>Learning &amp; Performance Theory</h3>
+        <p>Gilbert's Behaviour Engineering Model makes explicit that performance gaps are rarely caused by knowledge deficits alone. Environmental factors — information, resources, incentives, feedback — typically carry more leverage than individual-level factors. A designer fluent in performance theory asks fundamentally different diagnostic questions: not "what do people not know?" but "what is the performance system failing to support?"</p>
+      </div>
+      <div class="foundation-card v3">
+        <span class="foundation-icon">🔎</span>
+        <h3>Needs Analysis Models &amp; Methods</h3>
+        <p>Kaufman's Organizational Elements Model links mega (societal), macro (organizational), and micro (individual/team) outcomes in a causal chain — forcing analysis to the level of "what is this organization actually for?" Rossett's cause analysis protocols provide the practitioner's toolkit: interview guides, stakeholder surveys, and a principled framework for selecting the right instrument at each stage of diagnosis.</p>
+      </div>
+      <div class="foundation-card v4">
+        <span class="foundation-icon">📊</span>
+        <h3>Research Methods &amp; Data Literacy</h3>
+        <p>Credible diagnosis draws on a mixed-methods toolkit. Interviews surface what people think and feel; observation reveals what they actually do; surveys provide breadth; document analysis uncovers systemic patterns. Triangulating across these sources is what distinguishes diagnosis from assumption — and what makes findings hold up to scrutiny with skeptical senior leaders.</p>
+      </div>
+      <div class="foundation-card v5">
+        <span class="foundation-icon">🌐</span>
+        <h3>Organizational Context &amp; Strategy</h3>
+        <p>Needs analysis situated within organizational strategy produces recommendations executives recognize and act on. This requires reading business context critically — sector pressures, workforce realities, technology landscape, and the operating model — and framing diagnostic findings in terms that connect capability gaps to strategic consequences. Rummler and Brache's nine-box model provides the most practical diagnostic grid for revealing cross-functional gaps that no single-level analysis can detect.</p>
+      </div>
+      <div class="foundation-card v6">
+        <span class="foundation-icon">🤝</span>
+        <h3>Stakeholder &amp; Power Dynamics</h3>
+        <p>Organizational transformation is political as much as it is rational. Rigorous analysis maps who holds formal and informal power, where resistance is likely to emerge, and whose perspectives are structurally absent from existing data. Schein's humble inquiry — the discipline of asking rather than telling — is the relational posture that makes candid stakeholder engagement possible. Without it, findings reflect what people are willing to say rather than what is actually true.</p>
+      </div>
+    </div>
+
+    <div class="callout note">
+      <span class="label">A Practical Hierarchy</span>
+      Use organizational theory to understand the nature of the challenge. Use performance theory to expand the diagnostic frame beyond training. Use needs analysis models to select the right instruments. Use research methods to collect credible data. Use business context to frame findings for decision-makers. Use stakeholder and power knowledge to ensure the right voices inform the analysis. Rigorous practice holds all six in view simultaneously.
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="prose">
+      <h3>Needs Analysis as a Performance System Diagnostic</h3>
+      <p>Needs analysis in transformation contexts is an analytical and consulting discipline, not a data collection exercise. The most consequential work happens before any instrument is designed: understanding why the organization is transforming, mapping how people, processes, and technology interact, and resisting the pressure to recommend a solution before the problem is properly understood.</p>
+      <p><strong>Gilbert's central argument</strong> — that environmental factors nearly always have more leverage over performance than individual-level factors — reframes the purpose of the entire inquiry. A well-designed needs analysis diagnoses the performance system: the conditions that make competent behavior either possible or impossible, regardless of individual knowledge or skill.</p>
+      <p>Rummler and Brache extend this: their nine-box model reveals cross-functional "white space" — performance gaps that exist between organizational functions rather than within them, and that no single-level analysis can surface. These gaps are frequently where the most significant transformation obstacles reside.</p>
+      <h3>The Technical/Adaptive Distinction as a Scoping Tool</h3>
+      <p>Heifetz and Linsky's distinction between technical and adaptive challenges is the most important conceptual tool for scoping a needs analysis correctly. A technical problem has a known solution that can be implemented through existing expertise; an adaptive challenge requires people to change beliefs, habits, or values — and training rarely addresses those. Misidentifying an adaptive challenge as a technical one produces recommendations that appear sound on paper but fail when implemented.</p>
+      <p><strong>In practice:</strong> Effective scoping begins by asking which type of challenge is actually present — and sometimes reveals that both coexist within the same transformation initiative. This determination shapes every subsequent methodological decision, from which stakeholders to engage to how findings are framed for leadership.</p>
+      <h3>Evaluation Frameworks as Diagnostic Tools</h3>
+      <p>Understanding how transformation success will be measured — before diagnosis begins — is not a post-hoc concern. Kirkpatrick's four levels, Phillips' ROI methodology, and Brinkerhoff's Success Case Method are not only evaluation frameworks; they provide the causal logic that makes diagnostic findings actionable. Brinkerhoff's approach is particularly instructive: by deliberately sampling those who gained the most and least value from prior interventions, it surfaces environmental and systemic barriers far more reliably than aggregate survey data.</p>
+    </div>
+  </section>
+
+  <!-- METHODOLOGY -->
+  <section class="tab-panel" id="tab-methodology" role="tabpanel">
+    <h2 class="panel-title">How a Rigorous Needs Analysis Works</h2>
+    <p class="panel-lead">Effective needs analysis is structured, iterative, and context-sensitive. The stages below represent a comprehensive approach; in practice, scope and depth are calibrated to each organization's constraints and readiness. Understanding the full methodology clarifies what is gained or lost when particular stages are abbreviated.</p>
+
+    <div class="stages-list">
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false">
+          <div class="stage-num">1</div>
+          <div class="stage-meta">
+            <span class="stage-title">Intake &amp; Scoping</span>
+            <span class="stage-subtitle">Understanding the context before diagnosing it</span>
+          </div>
+          <div class="stage-tags"><span class="stage-tag">Foundational</span><span class="stage-tag alt">Consultative</span></div>
+          <span class="stage-chevron">▼</span>
+        </button>
+        <div class="stage-body">
+          <p>Before any instrument is designed, it is essential to understand what the organization is trying to achieve, what kind of challenge is actually present, and whether a needs analysis is the appropriate next step. This includes reading the strategic context, identifying who has commissioned the work and why, and mapping the constraints — time, access, political climate — that will shape what is feasible.</p>
+          <p>Scoping also establishes the relational contract: decision-making authority, review processes, what will be done with the findings, and who will be responsible for acting on them. These conversations surface assumptions that, if left unexamined, produce recommendations no one is positioned to implement.</p>
+          <div class="stage-produces">
+            <div class="stage-produces-label">This stage produces</div>
+            <ul>
+              <li>Documented scope, constraints, and stakeholder decision-making authority</li>
+              <li>Preliminary determination of whether the challenge is technical, adaptive, or both</li>
+              <li>Shared understanding of what the analysis will and will not address</li>
+              <li>Agreement on how findings will be used and by whom</li>
+            </ul>
+          </div>
+          <div class="stage-note">Needs analyses that lack rigorous scoping frequently produce findings that are analytically credible but organizationally unusable — disconnected from the decision-making context where they need to land.</div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false">
+          <div class="stage-num">2</div>
+          <div class="stage-meta">
+            <span class="stage-title">Stakeholder Mapping &amp; Engagement Design</span>
+            <span class="stage-subtitle">Identifying whose perspectives are essential — and whose are structurally absent</span>
+          </div>
+          <div class="stage-tags"><span class="stage-tag">Analytical</span><span class="stage-tag alt">Relational</span></div>
+          <span class="stage-chevron">▼</span>
+        </button>
+        <div class="stage-body">
+          <p>Transformation affects people differently, and those effects are not uniformly visible from above. Stakeholder mapping identifies who holds formal authority, who holds informal influence, whose experience is most directly affected by the performance gap, and whose perspective is typically underweighted in organizational data. All four groups are analytically necessary.</p>
+          <p>Engagement design then determines how to reach each group in a way that generates candid, useful data. Schein's humble inquiry — approaching conversations with genuine curiosity rather than a predetermined hypothesis — is the relational posture that makes this possible. People share what is actually true when they trust that their perspective will be heard rather than managed.</p>
+          <div class="stage-produces">
+            <div class="stage-produces-label">This stage produces</div>
+            <ul>
+              <li>Stakeholder map identifying formal and informal power, interest, and proximity to the performance gap</li>
+              <li>Engagement plan specifying method, sequence, and approach for each stakeholder group</li>
+              <li>Explicit identification of perspectives that would otherwise be absent from the analysis</li>
+            </ul>
+          </div>
+          <div class="stage-note">Organizations facing adaptive challenges must be especially deliberate about engaging those whose values are in tension — not only those already aligned with the change direction. The data most likely to be missing is the data most likely to matter.</div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false">
+          <div class="stage-num">3</div>
+          <div class="stage-meta">
+            <span class="stage-title">Data Collection: Qualitative &amp; Quantitative</span>
+            <span class="stage-subtitle">Building a multi-source evidence base</span>
+          </div>
+          <div class="stage-tags"><span class="stage-tag">Systematic</span><span class="stage-tag alt">Mixed methods</span></div>
+          <span class="stage-chevron">▼</span>
+        </button>
+        <div class="stage-body">
+          <p>Rossett's toolkit distinguishes between optimal performance data (what excellent performance looks like), actual performance data (what is currently happening), and cause data (why the gap exists). Each requires different instruments. Interviews and focus groups surface the reasoning, values, and experiences behind behavior. Surveys provide breadth across larger populations. Observation and document analysis reveal what people do and what the system actually produces — not only what participants report.</p>
+          <p>The goal is triangulation: using multiple sources to test whether the same pattern holds across different vantage points. Findings that appear consistently across qualitative and quantitative data are far more defensible than those resting on a single instrument.</p>
+          <div class="stage-produces">
+            <div class="stage-produces-label">This stage produces</div>
+            <ul>
+              <li>Interview and focus group transcripts coded for recurring themes</li>
+              <li>Survey data analyzed for distribution, not only averages</li>
+              <li>Document and records analysis identifying systemic patterns</li>
+              <li>Observation notes where direct access to the work environment is possible</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false">
+          <div class="stage-num">4</div>
+          <div class="stage-meta">
+            <span class="stage-title">Cause Analysis</span>
+            <span class="stage-subtitle">Diagnosing the performance system — not only the knowledge gap</span>
+          </div>
+          <div class="stage-tags"><span class="stage-tag">High-stakes</span><span class="stage-tag alt">Analytical</span></div>
+          <span class="stage-chevron">▼</span>
+        </button>
+        <div class="stage-body">
+          <p>Gilbert's Behaviour Engineering Model provides the analytical framework for cause analysis. It examines six factors across two dimensions: environmental supports (information, resources, incentives) and individual repertoire (knowledge, capacity, motives). In most organizational performance gaps, environmental factors account for the majority of the variance — meaning that a training intervention will not resolve the problem, regardless of its quality.</p>
+          <p>Rummler and Brache's nine-box model adds a structural dimension: it examines performance gaps at the organizational, process, and individual levels simultaneously, and specifically surfaces gaps in the "white space" between functions — where accountability is diffuse and no single person owns the problem. This level of analysis is what distinguishes a strategic recommendation from a training request.</p>
+          <div class="stage-produces">
+            <div class="stage-produces-label">This stage produces</div>
+            <ul>
+              <li>Causal map distinguishing environmental from individual-level performance factors</li>
+              <li>Identification of whether learning, process redesign, or structural change is the appropriate response</li>
+              <li>Cross-functional gap analysis surfacing issues that no single department can resolve alone</li>
+              <li>Evidence-based basis for recommending — or declining to recommend — a learning intervention</li>
+            </ul>
+          </div>
+          <div class="stage-note">The most professionally significant finding a needs analyst can produce is the determination that training is not the right intervention. This conclusion, grounded in cause analysis, protects organizations from investing in solutions that cannot address the actual performance system.</div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false">
+          <div class="stage-num">5</div>
+          <div class="stage-meta">
+            <span class="stage-title">Synthesis &amp; Sense-Making</span>
+            <span class="stage-subtitle">Translating data into patterns that hold up to scrutiny</span>
+          </div>
+          <div class="stage-tags"><span class="stage-tag">Analytical</span><span class="stage-tag alt">Interpretive</span></div>
+          <span class="stage-chevron">▼</span>
+        </button>
+        <div class="stage-body">
+          <p>Synthesis is where data becomes understanding. This stage involves coding qualitative themes without losing nuance, identifying where quantitative and qualitative data converge or diverge, and constructing an explanatory account of the performance gap that is both accurate and communicable. The goal is not a comprehensive summary of everything collected — it is a coherent argument about what is actually happening and why.</p>
+          <p>Effective synthesis also involves identifying the limits of the data: what cannot be concluded, where inference is being made, and what additional evidence would be needed to confirm a particular explanation. This epistemic honesty is what makes findings credible to sophisticated audiences.</p>
+          <div class="stage-produces">
+            <div class="stage-produces-label">This stage produces</div>
+            <ul>
+              <li>Coherent explanatory account of the performance gap and its causes</li>
+              <li>Convergent and divergent findings across data sources</li>
+              <li>Clear statement of what the data supports and what it does not</li>
+              <li>Prioritized implications for intervention design</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false">
+          <div class="stage-num">6</div>
+          <div class="stage-meta">
+            <span class="stage-title">Reporting &amp; Recommendation</span>
+            <span class="stage-subtitle">Findings that can be acted on — by the people who need to act</span>
+          </div>
+          <div class="stage-tags"><span class="stage-tag">Actionable</span><span class="stage-tag alt">Consultative</span></div>
+          <span class="stage-chevron">▼</span>
+        </button>
+        <div class="stage-body">
+          <p>Findings are only as useful as the decisions they enable. Effective reporting connects diagnostic conclusions to specific, actionable recommendations — distinguishing what can be addressed immediately from what requires structural or governance-level change. Recommendations that exceed the organization's decision-making capacity produce frustration rather than progress.</p>
+          <p>Different audiences require different outputs. Senior leaders need strategic framing and consequence language. HR and learning professionals need specific intervention guidance. Line managers need to understand what is being asked of them in supporting transfer. A single document that attempts to serve all three audiences typically serves none effectively.</p>
+          <div class="stage-produces">
+            <div class="stage-produces-label">This stage produces</div>
+            <ul>
+              <li>Differentiated reporting for strategic, operational, and practitioner audiences</li>
+              <li>Prioritized recommendations connected to cause analysis findings</li>
+              <li>Explicit identification of what falls outside the scope of a learning intervention</li>
+              <li>Framework for evaluating the impact of recommended interventions</li>
+            </ul>
+          </div>
+          <div class="stage-note">Reporting that proposes learning solutions for non-learning problems — because that is what was commissioned — undermines both the analysis and the trust that makes future diagnostic work possible.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="callout">
+      <strong>On scope and depth:</strong> Not every context requires a full six-stage analysis. Rapid assessments trade methodological completeness for speed and are appropriate for initial prioritization, provided findings are understood as a starting point rather than a complete diagnostic picture. What matters is that the scope decision is made deliberately, with shared understanding of what is gained or lost by each choice.
+    </div>
+  </section>
+
+  <!-- KEY DECISIONS -->
+  <section class="tab-panel" id="tab-decisions" role="tabpanel">
+    <h2 class="panel-title">What Shapes a Needs Analysis</h2>
+    <p class="panel-lead">No two needs analyses look the same. The decisions an organization makes about scope, stakeholder involvement, challenge type, and reporting determine what kind of analysis is appropriate — and what it will produce. Understanding these dimensions helps set realistic expectations and make better use of the process.</p>
+
+    <div class="decisions-grid">
+
+      <div class="decision-card">
+        <span class="decision-icon">🎯</span>
+        <h3>Challenge Type</h3>
+        <span class="decision-q">Is this a technical problem or an adaptive challenge?</span>
+        <p><strong>Technical</strong> — a known solution exists; implementation is primarily a matter of expertise and process.<br><br>
+        <strong>Adaptive</strong> — the solution requires people to change values, behaviors, or identity; training rarely resolves this.<br><br>
+        <strong>Both</strong> — most significant transformation initiatives involve technical components within an adaptive context.</p>
+      </div>
+
+      <div class="decision-card">
+        <span class="decision-icon">🔍</span>
+        <h3>Depth of Analysis</h3>
+        <span class="decision-q">How thorough does the diagnostic work need to be?</span>
+        <p><strong>Rapid assessment</strong> — key performance factors identified efficiently for initial prioritization.<br><br>
+        <strong>Comprehensive diagnosis</strong> — full cause analysis across organizational, process, and individual levels.<br><br>
+        <strong>Iterative inquiry</strong> — embedded within the transformation cycle, revisited as the change unfolds.</p>
+      </div>
+
+      <div class="decision-card">
+        <span class="decision-icon">👥</span>
+        <h3>Stakeholder Involvement</h3>
+        <span class="decision-q">Who informs the analysis, and how?</span>
+        <p><strong>Leadership-informed</strong> — executive and senior perspectives frame the analysis.<br><br>
+        <strong>Multi-level</strong> — data collected across organizational levels, including those closest to the work.<br><br>
+        <strong>Co-designed</strong> — those most affected by the performance gap are active participants in shaping the inquiry.</p>
+      </div>
+
+      <div class="decision-card">
+        <span class="decision-icon">⏱</span>
+        <h3>Timing in the Transformation Cycle</h3>
+        <span class="decision-q">When does the analysis occur relative to the change initiative?</span>
+        <p><strong>Pre-initiation</strong> — informing the design of the change strategy before interventions are determined.<br><br>
+        <strong>During implementation</strong> — diagnosing emerging gaps as the transformation unfolds.<br><br>
+        <strong>Post-intervention</strong> — evaluating whether interventions produced the intended performance change.</p>
+      </div>
+
+      <div class="decision-card">
+        <span class="decision-icon">📐</span>
+        <h3>Level of Analysis</h3>
+        <span class="decision-q">Where is the diagnostic focus directed?</span>
+        <p><strong>Individual/team</strong> — knowledge, skills, motivation, and capacity of specific performers.<br><br>
+        <strong>Process</strong> — workflows, accountability structures, and cross-functional gaps.<br><br>
+        <strong>Organizational</strong> — strategy, culture, governance, and the conditions shaping system-wide performance.</p>
+      </div>
+
+      <div class="decision-card">
+        <span class="decision-icon">📄</span>
+        <h3>Use of Findings</h3>
+        <span class="decision-q">Who needs to act on the analysis, and in what way?</span>
+        <p><strong>Decision support</strong> — findings inform a specific investment or initiative decision.<br><br>
+        <strong>Intervention design</strong> — findings shape the learning or change strategy that follows.<br><br>
+        <strong>Organizational learning</strong> — the diagnostic process itself builds internal capacity to understand performance.</p>
+      </div>
+
+    </div>
+
+    <div class="callout note">
+      <span class="label">The Most Consequential Decision</span>
+      Whether a learning intervention is the appropriate response to a performance gap is not a given — it is the central analytical question of needs analysis. Organizations that skip rigorous diagnosis and move directly to training design invest significantly in solutions that address the surface of a problem without touching its causes. The cost of this pattern, in both resources and organizational trust, typically exceeds the cost of the diagnostic work it displaces.
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="prose">
+      <h3>When Needs Analysis Is — and Is Not — the Right Starting Point</h3>
+      <p>A needs analysis is most valuable when the cause of a performance gap is genuinely uncertain, when multiple stakeholders have competing theories about what is driving underperformance, or when the organization is considering a significant capability investment and needs evidence to guide that decision.</p>
+      <p>It is less necessary when the cause is already well-understood, when the appropriate intervention is evident from existing data, or when the gap is primarily a resource or process issue rather than a capability one. Recommending a full needs analysis in these situations delays action without adding proportionate analytical value.</p>
+      <p><strong>The professional judgment involved</strong> in making this determination — and explaining it clearly to those who commissioned the work — is itself a hallmark of analytical maturity in this role.</p>
+    </div>
+  </section>
+
+  <!-- COMPETENCIES -->
+  <section class="tab-panel" id="tab-competencies" role="tabpanel">
+    <h2 class="panel-title">Six Core Competencies</h2>
+    <p class="panel-lead">Effective needs analysis in organizational transformation contexts requires a coherent set of competencies that extend well beyond research design. The following domains describe what distinguishes strategic diagnostic practice from a well-executed survey exercise.</p>
+
+    <div class="competency-item">
+      <div class="comp-accent"></div>
+      <div class="comp-content">
+        <h3>Strategic &amp; Systems Thinking</h3>
+        <p>Before a needs analysis can be scoped, it is necessary to understand why the organization is transforming and what success looks like at a strategic level. This means reading strategy documents critically, mapping how people, processes, and technology interact, and resisting the pressure to recommend a solution before the problem is properly understood. Systems thinking — particularly Senge's Five Disciplines and causal loop analysis — equips analysts to diagnose root causes rather than surface symptoms.</p>
+      </div>
+    </div>
+
+    <div class="competency-item">
+      <div class="comp-accent v2"></div>
+      <div class="comp-content">
+        <h3>Research &amp; Data Literacy</h3>
+        <p>Rigorous inquiry is the foundation of credible needs analysis. This includes knowing when to use surveys versus interviews, how to code qualitative themes without losing nuance, how to identify sampling biases that limit the representativeness of findings, and how to triangulate multiple data sources so conclusions hold up to scrutiny with skeptical decision-makers. Mixed methods competency — the ability to integrate qualitative and quantitative data into a coherent explanatory account — is particularly valuable in complex transformation contexts.</p>
+      </div>
+    </div>
+
+    <div class="competency-item">
+      <div class="comp-accent v3"></div>
+      <div class="comp-content">
+        <h3>Stakeholder Engagement</h3>
+        <p>Organizational transformation is political as much as it is rational. This competency involves identifying who holds formal and informal power, building sufficient trust for people to share honest perspectives, and facilitating conversations where competing interests are surfaced and examined rather than avoided. Schein's humble inquiry — genuine curiosity as a relational practice — is the foundational disposition. Without it, stakeholder data reflects what people are willing to say in the presence of authority, not what is actually driving performance.</p>
+      </div>
+    </div>
+
+    <div class="competency-item">
+      <div class="comp-accent v4"></div>
+      <div class="comp-content">
+        <h3>Facilitation &amp; Process Design</h3>
+        <p>The needs analysis itself is a social process. Designing the right sequence of discovery conversations, sense-making workshops, and data feedback sessions — and then holding the room skillfully during them — is a distinct craft. Effective facilitation makes it possible for people across hierarchical levels to contribute honestly, for competing interpretations to surface and be examined, and for the organization to develop a shared understanding of its own performance challenges that it did not have before the process began.</p>
+      </div>
+    </div>
+
+    <div class="competency-item">
+      <div class="comp-accent v5"></div>
+      <div class="comp-content">
+        <h3>Change &amp; Organizational Development Acumen</h3>
+        <p>Not every performance gap is a learning problem. Analysts fluent in organizational development can distinguish capability deficits — where learning helps — from structural, motivational, environmental, or cultural barriers where it does not. Cummings and Worley's open systems model, Heifetz and Linsky's technical/adaptive distinction, and Gilbert's Behaviour Engineering Model provide the conceptual tools for making this determination with precision. Positioning recommendations within the appropriate level of the performance system is what gives findings their strategic weight.</p>
+      </div>
+    </div>
+
+    <div class="competency-item">
+      <div class="comp-accent v6"></div>
+      <div class="comp-content">
+        <h3>Consultancy &amp; Advisory Practice</h3>
+        <p>Operating as a trusted analytical advisor — whether internal or external — means contracting clearly on scope and deliverables, maintaining analytical independence when findings are inconvenient, and presenting conclusions as evidence-based recommendations rather than responses to the solution that was already preferred. The ability to say "the data suggests a learning intervention is not the appropriate response here" — and to explain that conclusion with precision and respect — is the hallmark of professional maturity in this role.</p>
+      </div>
+    </div>
+
+    <div class="callout note" style="margin-top: 1.5rem;">
+      <span class="label">Underpinning Disposition</span>
+      Beneath these six competency domains is a less codifiable quality: genuine curiosity, ethical care for the people whose experiences inform the analysis, cultural humility in diverse organizational contexts, and a tolerance for the ambiguity that always accompanies serious diagnostic work. These dispositions are not prerequisites — they develop through practice. But their absence is visible in the quality of what gets asked, what gets heard, and what gets recommended.
+    </div>
+  </section>
+
+  <!-- OUTCOMES / IMPACT -->
+  <section class="tab-panel" id="tab-impact" role="tabpanel">
+    <h2 class="panel-title">What Changes — and When</h2>
+    <p class="panel-lead">Rigorous needs analysis produces change at two horizons. The shorter-term outcomes are specific and measurable. The longer-term shift is in organizational capability — the ability to understand and address performance challenges without defaulting to training as the first response.</p>
+
+    <div class="impact-cols">
+      <div>
+        <div class="impact-col-header">Shorter Term<span>What becomes visible and actionable</span></div>
+
+        <div class="impact-item">
+          <div class="impact-check">✓</div>
+          <div class="impact-item-text">
+            <h4>The performance gap is named with precision</h4>
+            <p>A clear, evidence-based account of what is actually happening, what the gap costs the organization, and what is causing it — organized by analytical source and level of confidence.</p>
+          </div>
+        </div>
+
+        <div class="impact-item">
+          <div class="impact-check">✓</div>
+          <div class="impact-item-text">
+            <h4>The appropriate intervention is identified</h4>
+            <p>Whether the response is a learning intervention, a process redesign, a structural change, or some combination — and which is most likely to address the actual causes of the gap.</p>
+          </div>
+        </div>
+
+        <div class="impact-item">
+          <div class="impact-check">✓</div>
+          <div class="impact-item-text">
+            <h4>Competing theories are resolved</h4>
+            <p>When different stakeholders hold different explanations for underperformance, rigorous diagnosis provides a shared evidentiary basis for making decisions that were previously contested.</p>
+          </div>
+        </div>
+
+        <div class="impact-item">
+          <div class="impact-check">✓</div>
+          <div class="impact-item-text">
+            <h4>Investment is directed to highest leverage</h4>
+            <p>Resources are allocated to addressing the actual causes of performance gaps rather than their most visible symptoms — reducing waste and improving the likelihood of sustained change.</p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="impact-col-header">Longer Term<span>What becomes embedded in practice</span></div>
+
+        <div class="impact-item">
+          <div class="impact-check arrow">→</div>
+          <div class="impact-item-text">
+            <h4>Diagnostic thinking becomes organizational habit</h4>
+            <p>Leaders and learning professionals develop the instinct to ask "what is actually causing this?" before commissioning solutions — reducing the organizational pattern of defaulting to training for problems training cannot solve.</p>
+          </div>
+        </div>
+
+        <div class="impact-item">
+          <div class="impact-check arrow">→</div>
+          <div class="impact-item-text">
+            <h4>Environmental conditions receive appropriate attention</h4>
+            <p>As Gilbert's framework becomes part of the organizational diagnostic vocabulary, performance conversations expand to address information, resources, incentives, and feedback structures — not only individual knowledge and skill.</p>
+          </div>
+        </div>
+
+        <div class="impact-item">
+          <div class="impact-check arrow">→</div>
+          <div class="impact-item-text">
+            <h4>Stakeholder voices are systematically included</h4>
+            <p>The experience of those closest to the work becomes a reliable input into performance decisions — reducing the risk of recommendations that look sound from above but are unworkable in practice.</p>
+          </div>
+        </div>
+
+        <div class="impact-item">
+          <div class="impact-check arrow">→</div>
+          <div class="impact-item-text">
+            <h4>Adaptive and technical challenges are distinguished</h4>
+            <p>Organizations develop the analytical language to recognize when a performance challenge requires cultural or behavioral change — and to design transformation initiatives accordingly, rather than applying technical solutions to adaptive problems.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>On evidence and impact:</strong> Transformation initiatives grounded in rigorous needs analysis consistently produce more durable performance change than those that skip diagnosis. This is not because analysis is intrinsically valuable — it is because the causal relationship between intervention and outcome is only legible when the causes of the gap are clearly understood before the intervention is designed. Brinkerhoff's Success Case Method, used both pre-diagnosis and post-evaluation, provides one of the most practical frameworks for connecting these two moments.
+    </div>
+  </section>
+
+  <!-- REFLECTION TOOL -->
+  <section class="tab-panel" id="tab-reflection" role="tabpanel">
+    <h2 class="panel-title">Where Is Your Organization in This Work?</h2>
+    <p class="panel-lead">This reflection surfaces useful questions about your organization's current diagnostic practice and helps identify where focused attention may be most productive. There are no right or wrong answers — choose the response that most honestly reflects your current situation.</p>
+
+    <div class="reflection-q">
+      <span class="reflection-q-num">Question 1</span>
+      <span class="reflection-q-label">How does your organization currently respond to performance gaps?</span>
+      <div class="options-grid">
+        <button class="option-btn" data-q="1" data-v="1">We typically move directly to training or program development</button>
+        <button class="option-btn" data-q="1" data-v="2">We conduct informal conversations before deciding on an approach</button>
+        <button class="option-btn" data-q="1" data-v="3">We use structured analysis to determine the cause before recommending a response</button>
+        <button class="option-btn" data-q="1" data-v="4">Cause analysis is embedded in how we approach every significant performance challenge</button>
+      </div>
+    </div>
+
+    <div class="reflection-q">
+      <span class="reflection-q-num">Question 2</span>
+      <span class="reflection-q-label">To what extent does your diagnostic work address environmental factors — not only individual knowledge and skill?</span>
+      <div class="options-grid">
+        <button class="option-btn" data-q="2" data-v="1">Our analysis focuses primarily on what people know or can do</button>
+        <button class="option-btn" data-q="2" data-v="2">We sometimes consider environmental factors but do not systematically analyze them</button>
+        <button class="option-btn" data-q="2" data-v="3">We regularly examine information, resources, incentives, and feedback as potential performance barriers</button>
+        <button class="option-btn" data-q="2" data-v="4">Environmental analysis is central to how we understand performance gaps at every level</button>
+      </div>
+    </div>
+
+    <div class="reflection-q">
+      <span class="reflection-q-num">Question 3</span>
+      <span class="reflection-q-label">How well does your organization distinguish between technical and adaptive challenges?</span>
+      <div class="options-grid">
+        <button class="option-btn" data-q="3" data-v="1">We do not currently make this distinction in our diagnostic practice</button>
+        <button class="option-btn" data-q="3" data-v="2">We recognize the distinction conceptually but do not apply it consistently</button>
+        <button class="option-btn" data-q="3" data-v="3">We use this distinction to shape how we scope and approach transformation initiatives</button>
+        <button class="option-btn" data-q="3" data-v="4">This distinction is foundational to how we design change strategies across the organization</button>
+      </div>
+    </div>
+
+    <div class="reflection-q">
+      <span class="reflection-q-num">Question 4</span>
+      <span class="reflection-q-label">Where does diagnostic authority currently sit in your organization?</span>
+      <div class="options-grid">
+        <button class="option-btn" data-q="4" data-v="1">Solution decisions are typically made before any formal diagnosis occurs</button>
+        <button class="option-btn" data-q="4" data-v="2">One or two individuals conduct analysis, but findings do not consistently influence decisions</button>
+        <button class="option-btn" data-q="4" data-v="3">Diagnostic findings regularly inform decisions about how performance challenges are addressed</button>
+        <button class="option-btn" data-q="4" data-v="4">Systematic diagnosis is embedded in governance, talent strategy, and transformation planning</button>
+      </div>
+    </div>
+
+    <div class="reflection-actions">
+      <button class="btn-primary" id="reflection-submit">See reflection</button>
+      <span class="error-msg" id="reflection-error">Please answer all four questions to see your reflection.</span>
+      <button class="btn-secondary" id="reflection-reset" style="display:none;">Start again</button>
+    </div>
+
+    <div class="reflection-result" id="reflection-result">
+      <div class="result-title" id="result-title"></div>
+      <div class="result-body" id="result-body"></div>
+      <ul class="result-points" id="result-points"></ul>
+    </div>
+  </section>
+
+  <!-- CITATIONS -->
+  <section class="tab-panel" id="tab-citations" role="tabpanel">
+    <h2 class="panel-title">Academic &amp; Professional Citations</h2>
+    <p class="panel-lead">The following sources underpin the knowledge claims, frameworks, and evidence presented in this resource. They are grouped by the area of the resource they primarily support.</p>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Performance Analysis &amp; Cause Analysis</div>
+      <div class="citation-entry">
+        <span class="cite-label">Foundational framework</span>
+        <p><strong>Gilbert, T. F.</strong> <em>Human Competence: Engineering Worthy Performance.</em> ISPI/Pfeiffer, 1978 (re-released 2007). The Behaviour Engineering Model and the foundational argument that environmental factors carry more leverage than individual-level factors in most performance systems.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Practitioner methodology</span>
+        <p><strong>Rossett, A.</strong> <em>First Things Fast: A Handbook for Performance Analysis.</em> 2nd ed. Pfeiffer, 2009. The practitioner's toolkit: interview guides, cause analysis protocols, stakeholder survey templates, and a principled framework for scoping analysis.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Organizational Performance &amp; Systems Diagnosis</div>
+      <div class="citation-entry">
+        <span class="cite-label">Diagnostic framework</span>
+        <p><strong>Rummler, G. A., &amp; Brache, A. P.</strong> <em>Improving Performance: How to Manage the White Space on the Organization Chart.</em> 3rd ed. Jossey-Bass, 2013. The nine-box model as the most practical diagnostic grid for surfacing cross-functional performance gaps.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Strategic alignment</span>
+        <p><strong>Kaufman, R.</strong> <em>Strategic Planning for Success: Aligning People, Performance, and Payoffs.</em> Jossey-Bass/Pfeiffer, 2003. The Organizational Elements Model linking mega, macro, and micro outcomes in a causal chain.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Organizational Development &amp; Change</div>
+      <div class="citation-entry">
+        <span class="cite-label">OD canon</span>
+        <p><strong>Cummings, T. G., &amp; Worley, C. G.</strong> <em>Organization Development and Change.</em> 10th ed. Cengage, 2015. The open systems model and OD diagnostic frameworks used across graduate programs and HR/transformation practice.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Technical/adaptive distinction</span>
+        <p><strong>Heifetz, R., &amp; Linsky, M.</strong> <em>Leadership on the Line: Staying Alive Through the Dangers of Change.</em> Harvard Business Review Press, 2002. The conceptual foundation for distinguishing challenge types in needs analysis scoping.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Evaluation &amp; Diagnosis</div>
+      <div class="citation-entry">
+        <span class="cite-label">Success Case Method</span>
+        <p><strong>Brinkerhoff, R. O.</strong> <em>The Success Case Method: Find Out Quickly What's Working and What's Not.</em> Berrett-Koehler, 2003. A rigorous evaluation and pre-diagnosis tool that samples extreme cases to surface environmental and systemic barriers.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Organizational Culture &amp; Stakeholder Engagement</div>
+      <div class="citation-entry">
+        <span class="cite-label">Cultural analysis &amp; inquiry practice</span>
+        <p><strong>Schein, E. H.</strong> <em>Organizational Culture and Leadership.</em> 5th ed. Jossey-Bass, 2017; and <em>Humble Inquiry: The Gentle Art of Asking Instead of Telling.</em> Berrett-Koehler, 2013. The three-level model of organizational culture and the relational practice that makes candid stakeholder engagement possible.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Equity, Inclusion &amp; Evaluation Design</div>
+      <div class="citation-entry">
+        <span class="cite-label">Decolonizing evaluation frameworks</span>
+        <p>Scholarship on decolonizing data practices in workplace learning evaluation — including the application of OCAP principles (Ownership, Control, Access, Possession) and participatory action research — informs the commitment to community-centered, culturally responsive evaluation design embedded in this resource's approach to stakeholder engagement and data collection.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Research Methods</div>
+      <div class="citation-entry">
+        <span class="cite-label">Mixed methods design</span>
+        <p><strong>Creswell, J. W., &amp; Creswell, J. D.</strong> <em>Research Design: Qualitative, Quantitative, and Mixed Methods Approaches.</em> 5th ed. SAGE, 2018. The foundational reference for mixed methods inquiry design applied to organizational diagnosis.</p>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  Developed as a professional knowledge resource on <strong>Needs Analysis for Organizational Transformation</strong>. This resource draws on the foundational works of Gilbert, Rummler &amp; Brache, Rossett, Kaufman, Heifetz &amp; Linsky, Brinkerhoff, Schein, and Cummings &amp; Worley, as cited above.
+</footer>
+
+<script>
+  // Tab switching
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tab-panel');
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabPanels.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  // Accordion stages
+  document.querySelectorAll('.stage-trigger').forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const expanded = trigger.getAttribute('aria-expanded') === 'true';
+      trigger.setAttribute('aria-expanded', String(!expanded));
+      const body = trigger.nextElementSibling;
+      body.classList.toggle('open', !expanded);
+    });
+  });
+
+  // Option buttons
+  document.querySelectorAll('.option-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const q = btn.dataset.q;
+      document.querySelectorAll(`.option-btn[data-q="${q}"]`).forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    });
+  });
+
+  // Reflection logic
+  const reflectionData = {
+    low: {
+      title: "Questions worth sitting with",
+      body: "Your current approach to performance challenges leans toward solution-first thinking — a pattern that is common and understandable given organizational pressures. The risk is that interventions are designed before the causes are fully understood, which reduces their effectiveness and can erode stakeholder trust in learning and development functions.",
+      points: [
+        "Consider what a lightweight cause analysis might look like before the next significant program decision — even a brief structured conversation can shift the quality of what follows.",
+        "Gilbert's Behaviour Engineering Model offers a practical framework for expanding the diagnostic frame beyond training. The core question it asks — what in the performance environment is making this difficult? — is worth building into how performance challenges are initially framed.",
+        "The distinction between technical and adaptive challenges is worth introducing into your organizational vocabulary. Naming this distinction accurately changes what gets designed in response."
+      ]
+    },
+    mid: {
+      title: "Building on existing awareness",
+      body: "Your organization has some diagnostic capacity and awareness, though it may not yet be consistently applied or organizationally embedded. This is a common position: individual practitioners understand the value of rigorous analysis, but structural and time pressures often redirect attention to solutions before causes are fully understood.",
+      points: [
+        "The most productive next step is often not learning more about methodology, but building organizational conditions that make analysis possible: protected time, access to stakeholders across levels, and decision-making processes that treat diagnostic findings as essential inputs.",
+        "Rossett's cause analysis protocols offer practical structure for conversations that might currently happen informally — making implicit diagnostic thinking more explicit and therefore more defensible.",
+        "If your organization has not yet systematically examined environmental factors — information, resources, incentives, feedback — alongside individual capability, that is typically where the most significant analytical value lies."
+      ]
+    },
+    high: {
+      title: "Diagnostic practice at organizational scale",
+      body: "Your organization demonstrates significant maturity in how it approaches performance challenges — using evidence to inform decisions, distinguishing between challenge types, and situating analysis within broader strategic and environmental context. The questions worth focusing on are those of depth and embeddedness.",
+      points: [
+        "How consistently is diagnostic authority distributed across the organization — or does rigorous analysis depend on specific individuals whose capacity may not transfer?",
+        "Brinkerhoff's Success Case Method is worth exploring if you have not already: its deliberate sampling of extreme cases surfaces systemic barriers that aggregate data consistently misses.",
+        "The most sophisticated needs analysis practice integrates evaluation design from the start — ensuring that the causal logic connecting intervention to outcome is legible before the intervention is commissioned."
+      ]
+    }
+  };
+
+  document.getElementById('reflection-submit').addEventListener('click', () => {
+    const answers = [];
+    for (let i = 1; i <= 4; i++) {
+      const sel = document.querySelector(`.option-btn[data-q="${i}"].selected`);
+      if (!sel) {
+        document.getElementById('reflection-error').style.display = 'block';
+        return;
+      }
+      answers.push(parseInt(sel.dataset.v));
+    }
+    document.getElementById('reflection-error').style.display = 'none';
+    const avg = answers.reduce((a, b) => a + b, 0) / answers.length;
+    const profile = avg <= 1.75 ? 'low' : avg <= 2.75 ? 'mid' : 'high';
+    const data = reflectionData[profile];
+    document.getElementById('result-title').textContent = data.title;
+    document.getElementById('result-body').textContent = data.body;
+    const pointsList = document.getElementById('result-points');
+    pointsList.innerHTML = data.points.map(p => `<li>${p}</li>`).join('');
+    document.getElementById('reflection-result').classList.add('visible');
+    document.getElementById('reflection-reset').style.display = 'inline-block';
+  });
+
+  document.getElementById('reflection-reset').addEventListener('click', () => {
+    document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('reflection-result').classList.remove('visible');
+    document.getElementById('reflection-reset').style.display = 'none';
+  });
+</script>
+</body>
+</html>
