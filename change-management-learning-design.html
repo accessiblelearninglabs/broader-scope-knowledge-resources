@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Change Management Through Learning Design — Knowledge Resource</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --colour-bg: #edf0f1;
+      --colour-surface: #ffffff;
+      --colour-border: #cdd5d8;
+      --colour-text: #303e44;
+      --colour-text-secondary: #56686f;
+      --colour-accent: #303e44;
+      --colour-accent-mid: #475f6a;
+      --colour-accent-light: #e6eaec;
+      --colour-accent-muted: #7a9299;
+      --colour-tag-bg: #e6eaec;
+      --colour-note-bg: #f0f3f4;
+      --colour-note-border: #b0c0c5;
+      --radius: 6px;
+      --radius-lg: 10px;
+      --font-body: "Asap", system-ui, sans-serif;
+      --font-ui: "Asap", system-ui, sans-serif;
+    }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { background: var(--colour-bg); color: var(--colour-text); font-family: var(--font-body); line-height: 1.7; }
+    .skip-link { position: absolute; top: -100%; left: 1rem; background: var(--colour-accent); color: #fff; padding: 0.5rem 1rem; border-radius: var(--radius); font-family: var(--font-ui); font-size: 0.875rem; text-decoration: none; z-index: 1000; }
+    .skip-link:focus { top: 1rem; }
+    .site-header { background: var(--colour-surface); border-bottom: 1px solid var(--colour-border); padding: 0.75rem 2rem; font-family: var(--font-ui); font-size: 0.8125rem; color: var(--colour-text-secondary); }
+    .page-wrapper { max-width: 860px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+    .page-title-block { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--colour-border); }
+    h1 { font-family: var(--font-body); font-size: clamp(1.6rem, 4vw, 2.1rem); font-weight: normal; line-height: 1.25; color: var(--colour-text); margin-bottom: 0.75rem; }
+    .page-subtitle { font-family: var(--font-ui); font-size: 0.9375rem; color: var(--colour-text-secondary); line-height: 1.5; }
+    .info-banner { display: flex; gap: 0.75rem; align-items: flex-start; background: var(--colour-accent-light); border: 1px solid #bec9cd; border-radius: var(--radius); padding: 0.875rem 1.1rem; margin-bottom: 2rem; font-family: var(--font-ui); font-size: 0.875rem; color: #2e3f45; line-height: 1.5; }
+    .tab-nav { display: flex; border-bottom: 2px solid var(--colour-border); margin-bottom: 2.5rem; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .tab-btn { font-family: var(--font-ui); font-size: 0.875rem; font-weight: 500; color: var(--colour-text-secondary); background: none; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; padding: 0.75rem 1.1rem; cursor: pointer; white-space: nowrap; transition: color 0.15s, border-color 0.15s, background 0.15s; border-radius: var(--radius) var(--radius) 0 0; }
+    .tab-btn:hover { color: var(--colour-accent); background: var(--colour-accent-light); }
+    .tab-btn[aria-selected="true"] { color: var(--colour-accent); border-bottom-color: var(--colour-accent); background: var(--colour-accent-light); }
+    .tab-btn:focus-visible { outline: 2px solid var(--colour-accent); outline-offset: 2px; }
+    .tab-panel { display: none; animation: fadeIn 0.2s ease; }
+    .tab-panel.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    h2 { font-family: var(--font-body); font-size: 1.5rem; font-weight: normal; color: var(--colour-text); margin-bottom: 0.5rem; line-height: 1.3; }
+    .section-intro { font-size: 1rem; color: var(--colour-text-secondary); margin-bottom: 2rem; max-width: 65ch; }
+    h3 { font-family: var(--font-ui); font-size: 1rem; font-weight: 600; color: var(--colour-text); margin-bottom: 0.4rem; margin-top: 1.5rem; }
+    h4 { font-family: var(--font-ui); font-size: 0.875rem; font-weight: 600; color: var(--colour-text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.5rem; margin-top: 1rem; }
+    p { margin-bottom: 1em; }
+    p:last-child { margin-bottom: 0; }
+    ul, ol { padding-left: 1.4em; margin-bottom: 1em; }
+    li { margin-bottom: 0.3em; }
+    strong { font-weight: 600; }
+    .pillars-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 2rem; }
+    @media (max-width: 600px) { .pillars-grid { grid-template-columns: 1fr; } }
+    .pillar-card { background: var(--colour-surface); border: 1px solid var(--colour-border); border-radius: var(--radius-lg); padding: 1.25rem 1.35rem; }
+    .pillar-icon { font-size: 1.5rem; margin-bottom: 0.6rem; display: block; }
+    .callout { background: var(--colour-note-bg); border-left: 3px solid var(--colour-note-border); border-radius: 0 var(--radius) var(--radius) 0; padding: 0.9rem 1.1rem; margin: 1.5rem 0; font-family: var(--font-ui); font-size: 0.875rem; color: var(--colour-text-secondary); line-height: 1.55; }
+    .callout strong { color: var(--colour-text); }
+    .highlight-box { background: var(--colour-accent-light); border: 1px solid #bec9cd; border-radius: var(--radius-lg); padding: 1.1rem 1.35rem; margin: 1.75rem 0; font-family: var(--font-ui); font-size: 0.9rem; line-height: 1.6; color: #2b3c42; }
+    .highlight-box strong { color: #303e44; }
+    .stages { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem; }
+    .stage-item { border: 1px solid var(--colour-border); border-radius: var(--radius-lg); overflow: hidden; background: var(--colour-surface); }
+    .stage-trigger { width: 100%; display: grid; grid-template-columns: 2rem 1fr auto auto; align-items: center; gap: 1rem; padding: 1rem 1.25rem; background: none; border: none; cursor: pointer; text-align: left; transition: background 0.15s; }
+    .stage-trigger:hover { background: var(--colour-accent-light); }
+    .stage-trigger:focus-visible { outline: 2px solid var(--colour-accent); outline-offset: -2px; }
+    .stage-trigger[aria-expanded="true"] { background: var(--colour-accent-light); }
+    .stage-number { font-family: var(--font-ui); font-size: 1.1rem; font-weight: 700; color: var(--colour-accent-muted); }
+    .stage-title-group { display: flex; flex-direction: column; gap: 0.15rem; }
+    .stage-label { font-family: var(--font-ui); font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--colour-accent-muted); }
+    .stage-name { font-family: var(--font-body); font-size: 1.05rem; color: var(--colour-text); }
+    .stage-subtitle { font-family: var(--font-ui); font-size: 0.8rem; color: var(--colour-text-secondary); }
+    .stage-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .tag { font-family: var(--font-ui); font-size: 0.7rem; font-weight: 500; color: var(--colour-accent-mid); background: var(--colour-tag-bg); border: 1px solid #bec9cd; border-radius: 20px; padding: 0.2em 0.65em; white-space: nowrap; }
+    .stage-chevron { font-size: 0.7rem; color: var(--colour-text-secondary); transition: transform 0.2s; }
+    .stage-trigger[aria-expanded="true"] .stage-chevron { transform: rotate(180deg); }
+    .stage-body { display: none; padding: 0 1.25rem 1.25rem; font-size: 0.9375rem; line-height: 1.7; }
+    .stage-body.open { display: block; }
+    .decisions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem; }
+    @media (max-width: 600px) { .decisions-grid { grid-template-columns: 1fr; } }
+    .decision-card { background: var(--colour-surface); border: 1px solid var(--colour-border); border-radius: var(--radius-lg); padding: 1.25rem; }
+    .decision-icon { font-size: 1.4rem; margin-bottom: 0.5rem; display: block; }
+    .decision-subtitle { font-family: var(--font-ui); font-size: 0.8125rem; color: var(--colour-text-secondary); margin-bottom: 0.75rem; }
+    .decision-options { font-family: var(--font-ui); font-size: 0.875rem; line-height: 1.65; }
+    .decision-options p { margin-bottom: 0.35em; color: var(--colour-text-secondary); }
+    .decision-options strong { color: var(--colour-text); }
+    .impact-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1.5rem; }
+    @media (max-width: 600px) { .impact-cols { grid-template-columns: 1fr; } }
+    .impact-col-label { font-family: var(--font-ui); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--colour-accent-muted); margin-bottom: 1rem; }
+    .impact-item { display: flex; gap: 0.75rem; margin-bottom: 1.25rem; align-items: flex-start; }
+    .impact-check, .impact-arrow { flex-shrink: 0; width: 1.25rem; height: 1.25rem; background: var(--colour-accent-light); border: 1.5px solid var(--colour-accent-muted); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; color: var(--colour-accent); margin-top: 0.2rem; }
+    .impact-text h4 { font-size: 0.875rem; margin-bottom: 0.2rem; color: var(--colour-text); text-transform: none; letter-spacing: 0; margin-top: 0; }
+    .impact-text p { font-size: 0.875rem; color: var(--colour-text-secondary); font-family: var(--font-ui); margin: 0; }
+    .context-card { background: var(--colour-surface); border: 1px solid var(--colour-border); border-radius: var(--radius-lg); padding: 1.35rem; margin-bottom: 1.25rem; }
+    .context-card-header { display: flex; gap: 0.75rem; align-items: flex-start; margin-bottom: 0.75rem; }
+    .context-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .context-card h3 { margin-top: 0; }
+    .context-card p { font-size: 0.9375rem; }
+    .reflection-intro { font-size: 0.9375rem; color: var(--colour-text-secondary); margin-bottom: 1.5rem; font-family: var(--font-ui); }
+    .reflection-question { background: var(--colour-surface); border: 1px solid var(--colour-border); border-radius: var(--radius-lg); padding: 1.1rem 1.25rem; margin-bottom: 0.75rem; }
+    .reflection-q-text { font-size: 0.9375rem; margin-bottom: 0.75rem; }
+    .reflection-options { display: flex; flex-direction: column; gap: 0.4rem; }
+    .reflection-option { display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; font-family: var(--font-ui); font-size: 0.875rem; color: var(--colour-text-secondary); padding: 0.35rem 0; line-height: 1.4; }
+    .reflection-option input[type="radio"] { accent-color: var(--colour-accent); margin-top: 0.15rem; flex-shrink: 0; }
+    .page-footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--colour-border); font-family: var(--font-ui); font-size: 0.8125rem; color: var(--colour-text-secondary); line-height: 1.6; }
+    .citations-section { margin-bottom: 2.5rem; }
+    .citations-section h3 { font-size: 0.875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--colour-accent-muted); margin-top: 2rem; margin-bottom: 1rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--colour-border); }
+    .citations-section h3:first-child { margin-top: 0; }
+    .citation-entry { margin-bottom: 1.1rem; padding: 0.9rem 1.1rem; background: var(--colour-surface); border: 1px solid var(--colour-border); border-radius: var(--radius); font-size: 0.875rem; line-height: 1.65; }
+    .citation-entry .citation-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--colour-accent-muted); margin-bottom: 0.35rem; }
+    .citation-entry p { margin: 0; color: var(--colour-text-secondary); }
+    .citation-entry a { color: var(--colour-accent-mid); word-break: break-all; }
+    .citation-entry a:hover { text-decoration: underline; }
+    .citation-entry strong { color: var(--colour-text); }
+    .reflection-submit-row { margin-top: 1.25rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .reflection-submit { background: var(--colour-accent); color: #fff; border: none; border-radius: var(--radius); padding: 0.65rem 1.4rem; font-family: var(--font-ui); font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: background 0.15s, opacity 0.15s; }
+    .reflection-submit:hover { background: #475f6a; }
+    .reflection-submit:focus-visible { outline: 2px solid var(--colour-accent); outline-offset: 3px; }
+    .reflection-submit:disabled { opacity: 0.45; cursor: not-allowed; }
+    .reflection-incomplete { font-family: var(--font-ui); font-size: 0.8125rem; color: var(--colour-text-secondary); display: none; }
+    .reflection-result { margin-top: 2rem; border-top: 2px solid var(--colour-border); padding-top: 1.75rem; display: none; }
+    .reflection-result.visible { display: block; }
+    .result-pattern { font-family: var(--font-ui); font-size: 0.8125rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--colour-accent-muted); margin-bottom: 0.5rem; }
+    .result-heading { font-family: var(--font-ui); font-size: 1.05rem; font-weight: 600; color: var(--colour-text); margin-bottom: 0.75rem; }
+    .result-body { font-family: var(--font-ui); font-size: 0.9rem; color: var(--colour-text-secondary); line-height: 1.65; margin-bottom: 1.25rem; }
+    .result-questions { background: var(--colour-note-bg); border-left: 3px solid var(--colour-note-border); border-radius: 0 var(--radius) var(--radius) 0; padding: 1rem 1.1rem; }
+    .result-questions p { font-family: var(--font-ui); font-size: 0.875rem; font-weight: 600; color: var(--colour-text); margin-bottom: 0.6rem; }
+    .result-questions ul { padding-left: 1.2em; margin: 0; }
+    .result-questions li { font-family: var(--font-ui); font-size: 0.875rem; color: var(--colour-text-secondary); margin-bottom: 0.4em; line-height: 1.5; }
+    .reflection-reset { margin-top: 1.25rem; background: none; border: 1px solid var(--colour-border); border-radius: var(--radius); padding: 0.5rem 1rem; font-family: var(--font-ui); font-size: 0.8125rem; color: var(--colour-text-secondary); cursor: pointer; transition: border-color 0.15s; }
+    .reflection-reset:hover { border-color: var(--colour-accent); color: var(--colour-accent); }
+  </style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<header class="site-header">Change Management Through Learning Design — Knowledge Resource</header>
+
+<main id="main-content" class="page-wrapper">
+
+  <div class="page-title-block">
+    <h1>Change Management Through Learning Design</h1>
+    <p class="page-subtitle">A guide to the knowledge foundations, methodology, key design decisions, and organizational outcomes that characterize effective learning-centred change work.</p>
+  </div>
+
+  <div class="info-banner" role="note">
+    <span aria-hidden="true">ℹ️</span>
+    <span>This resource is for learning designers, L&amp;D professionals, HR leaders, and organizational change practitioners. Use the tabs to explore at whatever depth is useful to you.</span>
+  </div>
+
+  <nav aria-label="Resource sections">
+    <div class="tab-nav" role="tablist">
+      <button class="tab-btn" role="tab" aria-selected="true"  aria-controls="panel-foundation" id="tab-foundation">Foundation</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-methodology" id="tab-methodology">Methodology</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-decisions" id="tab-decisions">Design Decisions</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-impact" id="tab-impact">Outcomes</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-context" id="tab-context">Organizational Context</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-reflection" id="tab-reflection">Reflection Tool</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-citations" id="tab-citations">Sources</button>
+    </div>
+  </nav>
+
+  <!-- PANEL 1: FOUNDATION -->
+  <div class="tab-panel active" id="panel-foundation" role="tabpanel" aria-labelledby="tab-foundation">
+    <h2>Nine Knowledge Foundations</h2>
+    <p class="section-intro">Effective change management through learning design draws on nine interconnected bodies of knowledge. The most rigorous practice holds multiple domains in view simultaneously — and produces learning that a training-only approach cannot.</p>
+    <div class="pillars-grid">
+
+      <div class="pillar-card">
+        <span class="pillar-icon" aria-hidden="true">🔄</span>
+        <h3>Change Management Theory &amp; Models</h3>
+        <p>A learning designer must understand the intellectual foundations of change management before designing any learning solution. This includes the Prosci ADKAR model — which maps directly to learning intervention points across Awareness, Desire, Knowledge, Ability, and Reinforcement — as well as Kotter's 8-Step model, Lewin's Unfreeze-Change-Refreeze framework, Bridges' Transition Model (which distinguishes the situational change from the psychological transition), and the Satir Change Model, which helps designers anticipate performance dips and time support accordingly.</p>
+      </div>
+
+      <div class="pillar-card">
+        <span class="pillar-icon" aria-hidden="true">🧠</span>
+        <h3>Adult Learning Theory</h3>
+        <p>Effective change learning is built on how adults learn differently from children. Adults are self-directed, experience-driven, and need relevance and immediate application (Knowles). Change often requires shifts in frames of reference, not merely the addition of new information — Mezirow's transformative learning theory provides the grounding for designing learning that challenges existing assumptions and fosters genuine mindset change. Kolb's experiential cycle of experience, reflection, conceptualization, and experimentation gives learning designers a practical structure for deep processing. Social learning theory and spaced practice principles complete the picture.</p>
+      </div>
+
+      <div class="pillar-card">
+        <span class="pillar-icon" aria-hidden="true">🏗</span>
+        <h3>Instructional Design Principles</h3>
+        <p>The structural knowledge required to architect effective learning solutions. This includes foundational process models (ADDIE, SAM), Bloom's Taxonomy for aligning objectives to appropriate cognitive levels, Merrill's Principles of Instruction, Gagne's Nine Events for sequencing instructional events, Universal Design for Learning for inclusive design, and backward design — which starts from desired organizational outcomes and works backward to content. In change contexts, SAM's iterative approach is especially well suited to fast-moving initiatives.</p>
+      </div>
+
+      <div class="pillar-card">
+        <span class="pillar-icon" aria-hidden="true">🧬</span>
+        <h3>Cognitive Load Theory &amp; Learning Science</h3>
+        <p>People experiencing change are cognitively and emotionally taxed. Cognitive Load Theory (Sweller, Mayer) reveals that working memory is limited — effective design manages intrinsic load, eliminates extraneous load, and promotes germane load through chunking, multimodal instruction, scaffolding, and clear structure. In change contexts where employees may be managing multiple concurrent initiatives, these principles are not optional refinements — they are foundational to whether learning will register at all. Research shows employees in 2022 were managing an average of 10 planned enterprise changes; design must account for this saturation.</p>
+      </div>
+
+      <div class="pillar-card">
+        <span class="pillar-icon" aria-hidden="true">🎯</span>
+        <h3>Self-Determination Theory &amp; Motivation</h3>
+        <p>Self-Determination Theory (Deci &amp; Ryan) is the most empirically robust theory of human motivation and directly explains why people engage with — or resist — learning and change. It posits three fundamental psychological needs: autonomy (feeling in control of one's actions), competence (feeling effective), and relatedness (feeling connected). When change learning supports these needs, it builds genuine desire for change rather than surface compliance. SDT helps designers move from telling people what to do to creating environments where people choose to engage.</p>
+      </div>
+
+      <div class="pillar-card">
+        <span class="pillar-icon" aria-hidden="true">🔬</span>
+        <h3>Behavioral Science &amp; Behavior Change</h3>
+        <p>Understanding the science of behavior change — beyond learning alone — is critical to designing interventions that shift what people do, not just what they know. The COM-B model (Michie et al.) frames behavior as arising from Capability, Opportunity, and Motivation and serves as a diagnostic tool for identifying real barriers. Nudge Theory (Thaler &amp; Sunstein) addresses how subtle shifts in choice architecture can influence behavior without restricting freedom. Together, these frameworks help designers move from information delivery to genuine behavior design.</p>
+      </div>
+
+      <div class="pillar-card">
+        <span class="pillar-icon" aria-hidden="true">🌐</span>
+        <h3>Organizational Development &amp; Systems Thinking</h3>
+        <p>Learning designers working in change must understand the organizational system they are trying to shift. Culture, structure, leadership, and interdependencies all shape learning effectiveness. Senge's five disciplines — especially systems thinking and mental models — help designers see feedback loops and root causes rather than surface symptoms. Schein's model of organizational culture (artifacts, espoused values, underlying assumptions) reveals why change efforts succeed or fail in ways that training alone cannot address. Learning is always embedded in a system; design must account for that system.</p>
+      </div>
+
+      <div class="pillar-card">
+        <span class="pillar-icon" aria-hidden="true">⚡</span>
+        <h3>Neuroscience of Learning &amp; Change</h3>
+        <p>Neuroscience provides evidence-based insight into how the brain processes change, threat, and new learning. Rock's SCARF model identifies five social domains — Status, Certainty, Autonomy, Relatedness, Fairness — that trigger threat or reward responses, directly affecting openness to change and learning. Immordino-Yang's research demonstrates that emotional engagement can increase learning retention by up to 30%, and that emotions are not incidental to learning — they are foundational to how memory, meaning-making, and behavior change occur. Change triggers threat; effective design activates safety and reward.</p>
+      </div>
+
+      <div class="pillar-card">
+        <span class="pillar-icon" aria-hidden="true">📊</span>
+        <h3>Measurement &amp; Evaluation Frameworks</h3>
+        <p>Demonstrating that learning is driving the desired change is as important as designing the learning itself. The Kirkpatrick Four-Level Model (Reaction, Learning, Behavior, Results) — and its New World iteration, which works backward from business results — provides the standard evaluation framework. Phillips' ROI Methodology extends this to financial return. The critical skill is connecting learning metrics to change adoption metrics: speed of adoption, ultimate utilization, and proficiency give the clearest picture of whether change is actually landing in the organization.</p>
+      </div>
+
+    </div>
+
+    <div class="highlight-box">
+      <strong>A working integration:</strong> Change theory tells you when and why to intervene with learning. Adult learning and cognitive science tell you how to design for real behavior change. Behavioral science and motivation theory tell you why people change — or don't. Organizational development tells you where learning fits in the broader system. Evaluation frameworks tell you whether it worked. The most effective change learning integrates all of these — not as a checklist, but as a coherent design perspective.
+    </div>
+
+    <h3>What Distinguishes Strategic Learning Design from Training Delivery</h3>
+    <p>Training delivers content. Strategic learning design diagnoses the change challenge, selects interventions matched to where people actually are, anticipates resistance and cognitive saturation, designs for transfer and reinforcement — and evaluates whether behavior changed, not merely whether learners reacted positively. The gap between "training was completed" and "change actually happened" is precisely where human-centred, evidence-informed learning design is irreplaceable.</p>
+
+    <h3>The Learning Designer's Role Across the Change Journey</h3>
+    <p>Before change begins, the learning designer's primary contribution is needs analysis, stakeholder consulting, and readiness assessment. During the change itself, the focus shifts to skill-building, adoption support, and facilitation. After the change, the priority becomes reinforcement, transfer, and embedding new behaviors into daily practice. The most effective learning designers move fluently across all three horizons — and operate at the intersection of learning science, organizational psychology, and strategic consulting.</p>
+  </div>
+
+  <!-- PANEL 2: METHODOLOGY -->
+  <div class="tab-panel" id="panel-methodology" role="tabpanel" aria-labelledby="tab-methodology">
+    <h2>How Rigorous Change Learning Design Works</h2>
+    <p class="section-intro">Effective change learning design is structured, iterative, and diagnostically grounded. The phases below represent a comprehensive approach; in practice, scope and depth vary with context, resources, and organizational need. Understanding the full methodology clarifies what is gained or lost when particular phases are abbreviated. Select any phase to explore it.</p>
+    <div class="stages">
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false" aria-controls="sb1" id="st1">
+          <span class="stage-number">1</span>
+          <span class="stage-title-group">
+            <span class="stage-label">Phase 1</span>
+            <span class="stage-name">Discovery &amp; Needs Analysis</span>
+            <span class="stage-subtitle">Diagnosing the real problem before designing the solution</span>
+          </span>
+          <span class="stage-tags" aria-hidden="true"><span class="tag">Diagnostic</span><span class="tag">Collaborative</span></span>
+          <span class="stage-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="stage-body" id="sb1" role="region" aria-labelledby="st1">
+          <p>Before any learning solution is designed, it is essential to understand the nature of the change, the people it affects, and the organizational system it must navigate. What is actually changing — process, technology, behavior, culture, or identity? Where are people in the ADKAR journey? What are the real barriers: knowledge gaps, motivation, capability, opportunity, or a combination? What does success look like, and for whom?</p>
+          <p>A critical skill at this stage is distinguishing learning problems from non-learning problems. Not every performance gap is a knowledge or skill gap. Process barriers, tool failures, motivation deficits, and structural constraints all require different interventions — and misdiagnosing them leads to learning solutions that cannot succeed regardless of how well they are designed.</p>
+          <h4>What this phase produces</h4>
+          <ul>
+            <li>Stakeholder analysis and resistance mapping</li>
+            <li>Root cause analysis distinguishing learning from non-learning barriers</li>
+            <li>Learner population segmentation and readiness assessment</li>
+            <li>Clearly defined learning outcomes tied to change adoption metrics</li>
+            <li>Agreed scope, success criteria, and evaluation approach</li>
+          </ul>
+          <div class="callout"><strong>Note:</strong> Learning solutions designed without thorough needs analysis frequently address the visible symptom of a change challenge rather than its cause. The investment in diagnosis protects every subsequent phase of the work.</div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false" aria-controls="sb2" id="st2">
+          <span class="stage-number">2</span>
+          <span class="stage-title-group">
+            <span class="stage-label">Phase 2</span>
+            <span class="stage-name">Learning Strategy &amp; Architecture</span>
+            <span class="stage-subtitle">Designing the structure before building the content</span>
+          </span>
+          <span class="stage-tags" aria-hidden="true"><span class="tag">Strategic</span><span class="tag">Evidence-based</span></span>
+          <span class="stage-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="stage-body" id="sb2" role="region" aria-labelledby="st2">
+          <p>Learning strategy defines how the learning journey will be structured across the change timeline — what modalities will be used, in what sequence, for which audiences, and to what end. This is where change theory and learning science are integrated: the ADKAR model tells you what people need at each stage; cognitive load theory, SDT, and behavioral science tell you how to design for it.</p>
+          <p>Modality selection is a strategic decision, not a preference. Asynchronous eLearning and microlearning are well suited to building awareness and foundational knowledge at scale. Live facilitation — virtual or in-person — is better suited to navigating resistance, practicing difficult conversations, and building the psychological safety that deep change requires. Blended approaches, performance support tools, and peer learning structures complement formal learning across the change journey.</p>
+          <h4>What this phase produces</h4>
+          <ul>
+            <li>Learning journey map aligned to the change timeline and ADKAR stages</li>
+            <li>Modality and delivery recommendations with rationale</li>
+            <li>Audience segmentation and differentiated pathways where needed</li>
+            <li>Content scope and sequencing plan</li>
+            <li>Reinforcement and transfer strategy for post-learning application</li>
+          </ul>
+          <div class="callout"><strong>Note:</strong> The learning architecture precedes content development. Organizations that begin by building content before establishing strategy typically produce training that is well-produced but misaligned — covering the right topics in the wrong sequence, for the wrong audiences, without a clear theory of how learning will transfer to behavior.</div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false" aria-controls="sb3" id="st3">
+          <span class="stage-number">3</span>
+          <span class="stage-title-group">
+            <span class="stage-label">Phase 3</span>
+            <span class="stage-name">Learning Design &amp; Development</span>
+            <span class="stage-subtitle">Building learning experiences grounded in evidence</span>
+          </span>
+          <span class="stage-tags" aria-hidden="true"><span class="tag">Design</span><span class="tag">Iterative</span></span>
+          <span class="stage-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="stage-body" id="sb3" role="region" aria-labelledby="st3">
+          <p>Effective learning design in change contexts applies evidence-based principles throughout. Cognitive load is managed by chunking complex information into meaningful units, using multimodal instruction to distribute processing across channels, and eliminating content that does not serve the learning objective. Emotional engagement is designed for deliberately — not left to chance — because neuroscience is clear that emotion is foundational to memory formation and behavior change.</p>
+          <p>Scenario-based and experiential learning design gives people practice with the actual decisions and behaviors required by the change, in contexts that feel authentic. Transformative learning design challenges existing assumptions rather than layering new information on top of them — essential when the change requires people to genuinely shift how they think, not just what they do.</p>
+          <h4>What this phase produces</h4>
+          <ul>
+            <li>Learning content built to specification: eLearning modules, facilitation guides, job aids, microlearning, video, and blended resources as required</li>
+            <li>Scenario-based and practice-oriented learning experiences</li>
+            <li>Facilitator preparation and capability-building resources</li>
+            <li>Piloted and iterated content validated against real learner responses</li>
+          </ul>
+          <div class="callout"><strong>Note:</strong> Content that passes a subject-matter expert review is not the same as content that works for learners. Piloting with representative learners — and iterating based on what is discovered — consistently improves quality and transfer in ways that internal review alone cannot.</div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false" aria-controls="sb4" id="st4">
+          <span class="stage-number">4</span>
+          <span class="stage-title-group">
+            <span class="stage-label">Phase 4</span>
+            <span class="stage-name">Facilitation &amp; Delivery</span>
+            <span class="stage-subtitle">Holding space for learning through uncertainty</span>
+          </span>
+          <span class="stage-tags" aria-hidden="true"><span class="tag">Human-centred</span><span class="tag">Adaptive</span></span>
+          <span class="stage-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="stage-body" id="sb4" role="region" aria-labelledby="st4">
+          <p>Facilitation in change contexts is not neutral content delivery. Learners arrive with their own histories with the organization, with prior change experiences, and with emotional responses to the current change that will be present in the room — whether acknowledged or not. Skilled facilitation creates the psychological safety that allows people to engage with uncertainty, voice resistance, practice new behaviors, and begin to build confidence.</p>
+          <p>This requires the ability to adapt in real time — reading participant energy, slowing down where resistance is high, adjusting pacing when cognitive load is visible, and holding space for emotional responses to change without amplifying or dismissing them. The facilitation design itself must be built to accommodate this range of participant experience.</p>
+          <h4>What this phase produces</h4>
+          <ul>
+            <li>Learning sessions that achieve their behavioral objectives, not merely their completion metrics</li>
+            <li>Participant experience of being heard and respected through the change process</li>
+            <li>Real-time insight into where resistance, confusion, or gaps remain — feeding back into reinforcement design</li>
+          </ul>
+          <div class="callout"><strong>Note:</strong> Facilitation capability is often underestimated as a design variable. A well-designed learning experience delivered by an underprepared facilitator will underperform. Facilitator preparation — including how to hold difficult conversations and navigate emotional responses to change — is an integral part of the learning design, not a separate concern.</div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false" aria-controls="sb5" id="st5">
+          <span class="stage-number">5</span>
+          <span class="stage-title-group">
+            <span class="stage-label">Phase 5</span>
+            <span class="stage-name">Reinforcement &amp; Transfer</span>
+            <span class="stage-subtitle">Embedding new behaviors in daily work</span>
+          </span>
+          <span class="stage-tags" aria-hidden="true"><span class="tag">Transfer</span><span class="tag">Sustainability</span></span>
+          <span class="stage-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="stage-body" id="sb5" role="region" aria-labelledby="st5">
+          <p>Learning that is not reinforced after the formal learning experience is rarely sustained. Transfer — the application of new knowledge and behavior in the real work environment — requires deliberate design. This includes on-the-job practice structures, manager reinforcement tools, performance support resources at the point of need, spaced retrieval to embed new knowledge in long-term memory, and recognition of adoption progress.</p>
+          <p>Manager behavior is one of the strongest predictors of learning transfer. Managers who actively reinforce the change, coach toward new behaviors, and model the desired approaches dramatically increase the probability that learning will translate to practice. Designing for this — giving managers the knowledge, tools, and confidence to play this role — is part of the learning designer's responsibility.</p>
+          <h4>What this phase produces</h4>
+          <ul>
+            <li>Performance support tools and job aids for point-of-need application</li>
+            <li>Manager reinforcement guides and coaching resources</li>
+            <li>Spaced practice and retrieval structures built into workflows</li>
+            <li>Adoption tracking connected to real behavior indicators</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false" aria-controls="sb6" id="st6">
+          <span class="stage-number">6</span>
+          <span class="stage-title-group">
+            <span class="stage-label">Phase 6</span>
+            <span class="stage-name">Evaluation &amp; Iteration</span>
+            <span class="stage-subtitle">Proving and improving the impact of learning</span>
+          </span>
+          <span class="stage-tags" aria-hidden="true"><span class="tag">Evidence-based</span><span class="tag">Continuous improvement</span></span>
+          <span class="stage-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="stage-body" id="sb6" role="region" aria-labelledby="st6">
+          <p>Evaluation in change learning design begins at the end of the design process, not the beginning of evaluation. Starting from the business result required (Kirkpatrick Level 4) and working backward through behavior change (Level 3), learning (Level 2), and learner reaction (Level 1) ensures that every measurement is connected to something that matters to the organization. This "backward design" for evaluation also shapes the learning design itself — clarifying exactly what behaviors must change, and what learning must occur to produce those behaviors.</p>
+          <p>Leading indicators — early signals of adoption — are particularly valuable in change contexts because they allow adjustment while the change is still in progress. Lagging indicators confirm results but cannot inform course corrections in real time. A strong evaluation strategy uses both.</p>
+          <h4>What this phase produces</h4>
+          <ul>
+            <li>Evaluation data at all four Kirkpatrick levels, connected to change adoption metrics</li>
+            <li>Insight into what is working, for whom, and under what conditions</li>
+            <li>Evidence-based recommendations for adjusting learning design during rollout</li>
+            <li>Documentation of learning's contribution to organizational results</li>
+          </ul>
+          <div class="callout"><strong>Note:</strong> Evaluation is most useful when it is designed before learning is built, not after. The question "how will we know if this worked?" should shape every design decision — from objective writing to content selection to the choice of delivery modality.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PANEL 3: DESIGN DECISIONS -->
+  <div class="tab-panel" id="panel-decisions" role="tabpanel" aria-labelledby="tab-decisions">
+    <h2>What Shapes a Change Learning Design</h2>
+    <p class="section-intro">No two change learning initiatives look the same. The decisions made about scope, depth, audience, modality, timing, and measurement determine what kind of learning is appropriate and what it will produce. Understanding these dimensions helps set realistic expectations — and produce better-targeted solutions.</p>
+    <div class="decisions-grid">
+      <div class="decision-card">
+        <span class="decision-icon" aria-hidden="true">🎯</span>
+        <h3>Change Type</h3>
+        <p class="decision-subtitle">What kind of change is this, and what does it require of people?</p>
+        <div class="decision-options">
+          <p><strong>Process or technology change</strong> — primarily requires knowledge and skill-building</p>
+          <p><strong>Cultural or behavioral change</strong> — requires assumptions to shift, not just skills to build</p>
+          <p><strong>Organizational restructure or identity change</strong> — requires psychological transition support alongside knowledge</p>
+        </div>
+      </div>
+      <div class="decision-card">
+        <span class="decision-icon" aria-hidden="true">👥</span>
+        <h3>Learner Readiness</h3>
+        <p class="decision-subtitle">Where are people in the ADKAR journey?</p>
+        <div class="decision-options">
+          <p><strong>Low awareness</strong> — learning must build the case for change before addressing skill</p>
+          <p><strong>Awareness without desire</strong> — learning must address motivation and the "what's in it for me"</p>
+          <p><strong>Desire without knowledge or ability</strong> — focused skill-building and practice are the priority</p>
+        </div>
+      </div>
+      <div class="decision-card">
+        <span class="decision-icon" aria-hidden="true">📡</span>
+        <h3>Modality</h3>
+        <p class="decision-subtitle">Which delivery approach fits the learning need?</p>
+        <div class="decision-options">
+          <p><strong>Asynchronous eLearning or microlearning</strong> — scalable, self-paced; suited to awareness and knowledge transfer</p>
+          <p><strong>Live facilitation (virtual or in-person)</strong> — essential for practice, dialogue, and resistance navigation</p>
+          <p><strong>Blended approach</strong> — combines modalities strategically across the change journey for sustained impact</p>
+        </div>
+      </div>
+      <div class="decision-card">
+        <span class="decision-icon" aria-hidden="true">⏱</span>
+        <h3>Timing in the Change Cycle</h3>
+        <p class="decision-subtitle">When does learning occur relative to the change?</p>
+        <div class="decision-options">
+          <p><strong>Pre-change</strong> — building awareness, readiness, and foundational knowledge</p>
+          <p><strong>During change</strong> — skill-building, adoption support, and resistance navigation</p>
+          <p><strong>Post-change</strong> — reinforcement, transfer, and embedding new behaviors</p>
+        </div>
+      </div>
+      <div class="decision-card">
+        <span class="decision-icon" aria-hidden="true">📐</span>
+        <h3>Depth of Design</h3>
+        <p class="decision-subtitle">How much design investment does this initiative require?</p>
+        <div class="decision-options">
+          <p><strong>Rapid development</strong> — targeted, lean resources for fast-moving or lower-stakes changes</p>
+          <p><strong>Structured program</strong> — multi-session, multi-modality design for significant change initiatives</p>
+          <p><strong>Organizational learning system</strong> — embedded, continuous learning infrastructure for transformational change</p>
+        </div>
+      </div>
+      <div class="decision-card">
+        <span class="decision-icon" aria-hidden="true">📊</span>
+        <h3>Measurement Focus</h3>
+        <p class="decision-subtitle">What evidence of impact matters most?</p>
+        <div class="decision-options">
+          <p><strong>Completion and reaction data</strong> — Kirkpatrick Levels 1–2; necessary but insufficient</p>
+          <p><strong>Behavior change data</strong> — Kirkpatrick Level 3; most directly connected to change adoption</p>
+          <p><strong>Organizational results</strong> — Kirkpatrick Level 4; the ultimate measure of change learning effectiveness</p>
+        </div>
+      </div>
+    </div>
+    <div class="callout"><strong>On cognitive saturation:</strong> One of the most frequently overlooked design variables is the total cognitive load employees are carrying at the time of the change. When people are managing multiple simultaneous changes, the design must prioritize ruthlessly — delivering less content more effectively, rather than more content comprehensively. A smaller, well-targeted learning experience that people can actually absorb will always outperform a comprehensive program they cannot.</div>
+  </div>
+
+  <!-- PANEL 4: OUTCOMES -->
+  <div class="tab-panel" id="panel-impact" role="tabpanel" aria-labelledby="tab-impact">
+    <h2>What Effective Change Learning Produces</h2>
+    <p class="section-intro">Well-designed change learning creates change at two horizons. The shorter-term outcomes are tangible and observable. The longer-term shift is organizational — affecting how the institution navigates change, develops people, and builds its capacity for transformation over time.</p>
+    <div class="impact-cols">
+      <div>
+        <p class="impact-col-label">Shorter Term</p>
+        <h3 style="font-size:0.9375rem; margin-bottom:1rem;">What becomes visible during the change</h3>
+        <div class="impact-item">
+          <span class="impact-check" aria-hidden="true">✓</span>
+          <div class="impact-text">
+            <h4>Resistance is reduced, not suppressed</h4>
+            <p>When learning addresses the real reasons for resistance — uncertainty, loss of competence, threat to autonomy — it converts resistance into productive engagement rather than managing it as an obstacle.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <span class="impact-check" aria-hidden="true">✓</span>
+          <div class="impact-text">
+            <h4>Knowledge and skill gaps close</h4>
+            <p>People have what they need to perform effectively in the changed environment — not just awareness of what changed, but genuine capability in the new ways of working.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <span class="impact-check" aria-hidden="true">✓</span>
+          <div class="impact-text">
+            <h4>Adoption accelerates</h4>
+            <p>Speed of adoption, ultimate utilization, and proficiency — the three core change adoption metrics — all improve when learning is designed to the right people, at the right time, with the right approach.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <span class="impact-check" aria-hidden="true">✓</span>
+          <div class="impact-text">
+            <h4>Leaders and managers are equipped</h4>
+            <p>Sponsors, managers, and team leads have the knowledge and tools to reinforce the change in their daily interactions — which research consistently identifies as the strongest predictor of adoption success.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="impact-col-label">Longer Term</p>
+        <h3 style="font-size:0.9375rem; margin-bottom:1rem;">What becomes embedded in the organization</h3>
+        <div class="impact-item">
+          <span class="impact-arrow" aria-hidden="true">→</span>
+          <div class="impact-text">
+            <h4>Change capability grows</h4>
+            <p>Organizations that invest in people through change become more skilled at changing — building the adaptive capacity that makes subsequent transformations less costly and less disruptive.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <span class="impact-arrow" aria-hidden="true">→</span>
+          <div class="impact-text">
+            <h4>Organizational learning culture deepens</h4>
+            <p>When people experience learning that respects their intelligence, addresses their real concerns, and builds genuine capability — they trust learning as a resource for navigating change, not just a compliance obligation.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <span class="impact-arrow" aria-hidden="true">→</span>
+          <div class="impact-text">
+            <h4>Business results are demonstrated</h4>
+            <p>A rigorous evaluation approach produces evidence — not anecdote — that learning drove the change outcomes the organization needed. This shifts the perception of L&amp;D from a cost centre to a strategic partner.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <span class="impact-arrow" aria-hidden="true">→</span>
+          <div class="impact-text">
+            <h4>People feel respected through the change</h4>
+            <p>Learning that is designed with genuine regard for learners — their cognitive capacity, emotional reality, and need for autonomy and competence — produces a fundamentally different human experience of organizational change.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="callout"><strong>On the relationship between learning and change results:</strong> Research consistently demonstrates that organizations with effective change management — including purposeful learning design — are significantly more likely to meet project objectives, stay on schedule, and stay on budget than those without. The investment in learning is not a soft benefit alongside the real work of change. It is a primary driver of whether change succeeds.</div>
+  </div>
+
+  <!-- PANEL 5: ORGANIZATIONAL CONTEXT -->
+  <div class="tab-panel" id="panel-context" role="tabpanel" aria-labelledby="tab-context">
+    <h2>The Organizational System Learning Must Navigate</h2>
+    <p class="section-intro">Learning solutions do not exist in isolation. They operate within organizational systems — cultures, structures, leadership behaviors, and competing priorities — that shape whether learning can do its work. Understanding these dynamics is as important as the quality of the design itself.</p>
+
+    <div class="context-card">
+      <div class="context-card-header">
+        <span class="context-icon" aria-hidden="true">🏛</span>
+        <h3>Organizational Culture</h3>
+      </div>
+      <p>Schein's model of organizational culture — artifacts (visible structures and practices), espoused values (stated beliefs), and underlying assumptions (unconscious drivers of behavior) — reveals why learning designed for the surface level often fails to change behavior at the deeper level. Change learning must work at all three levels. A training module that addresses the artifact layer will not shift the underlying assumptions that are driving resistance. Designing for cultural change requires engaging the why beneath the what.</p>
+    </div>
+
+    <div class="context-card">
+      <div class="context-card-header">
+        <span class="context-icon" aria-hidden="true">👤</span>
+        <h3>Leadership &amp; Sponsorship</h3>
+      </div>
+      <p>No learning design compensates for absent or misaligned leadership. Active, visible sponsorship of change — leaders who communicate the vision, reinforce new behaviors, and model the change themselves — is the single most important factor in whether organizational change succeeds. The learning designer's role includes preparing leaders to play this role effectively: giving sponsors and managers the understanding, language, and practical tools to support learning transfer in their teams. Manager reinforcement is not a "nice to have" — it is a design requirement.</p>
+    </div>
+
+    <div class="context-card">
+      <div class="context-card-header">
+        <span class="context-icon" aria-hidden="true">🔁</span>
+        <h3>Systems Thinking &amp; Feedback Loops</h3>
+      </div>
+      <p>Organizations are systems: changes in one area affect other parts in ways that are not always predictable. Senge's systems thinking disciplines — especially the recognition of feedback loops, unintended consequences, and the difference between symptomatic fixes and structural solutions — are directly applicable to change learning design. When a learning solution fails to produce the expected behavior change, the cause is often not in the content or the delivery. It is in a structural constraint, an incentive misalignment, or a cultural assumption that the learning was not designed to address. Effective designers look for these root causes.</p>
+    </div>
+
+    <div class="context-card">
+      <div class="context-card-header">
+        <span class="context-icon" aria-hidden="true">⚖</span>
+        <h3>Change Saturation &amp; Competing Priorities</h3>
+      </div>
+      <p>In contemporary organizations, change is rarely singular. Employees are typically managing multiple concurrent initiatives, each with its own learning requirements, communication streams, and expectations. This saturation directly affects cognitive capacity for learning and behavior change. Effective change learning design accounts for this context — prioritizing ruthlessly, reducing cognitive load, sequencing learning at the moments when people have the capacity to absorb it, and designing reinforcement that fits into existing workflows rather than adding to them.</p>
+    </div>
+
+    <div class="context-card">
+      <div class="context-card-header">
+        <span class="context-icon" aria-hidden="true">🤝</span>
+        <h3>Stakeholder Landscape</h3>
+      </div>
+      <p>Change learning initiatives involve multiple stakeholders with different needs, different levels of authority over the change, and different relationships to its outcomes. Executives need strategic framing and evidence of impact. Managers need practical tools to support their teams. Employees need learning that respects their intelligence and addresses their real concerns. Project teams need timely, accurate content. The learning designer must navigate this landscape — consulting, advising, building trust, and communicating design rationale clearly to non-learning audiences — while maintaining the integrity of an evidence-informed approach.</p>
+    </div>
+
+    <div class="callout"><strong>A useful question for any change learning initiative:</strong> If the learning is perfectly designed but the organization's structure, incentives, and leadership behaviors remain unchanged — what will actually change in how people work? If the answer is "not much," the learning design conversation needs to expand to include the organizational conditions that will enable or inhibit transfer. Learning design is most effective when it is part of a coherent change strategy, not a substitute for one.</div>
+  </div>
+
+  <!-- PANEL 6: REFLECTION TOOL -->
+  <div class="tab-panel" id="panel-reflection" role="tabpanel" aria-labelledby="tab-reflection">
+    <h2>Where Is Your Organization in This Work?</h2>
+    <p class="reflection-intro">This reflection is designed to surface useful questions about your organization's current approach to change management and learning design. There are no right or wrong answers — choose the response that most honestly reflects your current situation. The reflection takes about two minutes.</p>
+    <div id="reflection-form">
+      <div class="reflection-question">
+        <p class="reflection-q-text">1. How does your organization currently approach learning design during organizational change?</p>
+        <div class="reflection-options" role="radiogroup">
+          <label class="reflection-option"><input type="radio" name="q1" value="a"> We deliver training as part of implementation, but it is not specifically designed around the change journey</label>
+          <label class="reflection-option"><input type="radio" name="q1" value="b"> We conduct needs analysis before designing, but it is not always connected to change management frameworks</label>
+          <label class="reflection-option"><input type="radio" name="q1" value="c"> We integrate change management models into our learning design, with attention to where people are in the adoption journey</label>
+          <label class="reflection-option"><input type="radio" name="q1" value="d"> Learning design is embedded in our change strategy from the outset, with reinforcement, transfer, and evaluation built in</label>
+        </div>
+      </div>
+      <div class="reflection-question">
+        <p class="reflection-q-text">2. How does your organization measure whether change learning produced behavior change?</p>
+        <div class="reflection-options" role="radiogroup">
+          <label class="reflection-option"><input type="radio" name="q2" value="a"> We track completion and, sometimes, learner satisfaction</label>
+          <label class="reflection-option"><input type="radio" name="q2" value="b"> We assess knowledge gain through post-training tests or quizzes</label>
+          <label class="reflection-option"><input type="radio" name="q2" value="c"> We gather some data on behavior change through manager observation or adoption metrics</label>
+          <label class="reflection-option"><input type="radio" name="q2" value="d"> We have an evaluation strategy that connects learning outcomes to change adoption metrics and business results</label>
+        </div>
+      </div>
+      <div class="reflection-question">
+        <p class="reflection-q-text">3. To what extent does your learning design account for the human experience of change — resistance, uncertainty, cognitive load, and motivation?</p>
+        <div class="reflection-options" role="radiogroup">
+          <label class="reflection-option"><input type="radio" name="q3" value="a"> Our learning focuses primarily on the knowledge and skills required by the change</label>
+          <label class="reflection-option"><input type="radio" name="q3" value="b"> We acknowledge resistance in our facilitation but do not systematically design for it</label>
+          <label class="reflection-option"><input type="radio" name="q3" value="c"> We apply behavioral science and motivation principles to address resistance and build genuine desire for change</label>
+          <label class="reflection-option"><input type="radio" name="q3" value="d"> We design learning experiences that address the full psychological experience of change, including cognitive load, emotional safety, and autonomy</label>
+        </div>
+      </div>
+      <div class="reflection-question">
+        <p class="reflection-q-text">4. Where does learning design sit in relation to your organization's change management work?</p>
+        <div class="reflection-options" role="radiogroup">
+          <label class="reflection-option"><input type="radio" name="q4" value="a"> Training is a deliverable we produce to support change, but we are not typically involved in change strategy</label>
+          <label class="reflection-option"><input type="radio" name="q4" value="b"> We are consulted on learning needs, but our involvement begins after the change strategy is set</label>
+          <label class="reflection-option"><input type="radio" name="q4" value="c"> We contribute to change planning, and our learning strategy is aligned to the overall change approach</label>
+          <label class="reflection-option"><input type="radio" name="q4" value="d"> Learning design is a core part of change strategy — we are involved from diagnosis through reinforcement, and we contribute to evaluating change success</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="reflection-submit-row">
+      <button class="reflection-submit" id="reflection-submit-btn" type="button">See reflection</button>
+      <span class="reflection-incomplete" id="reflection-incomplete" role="alert">Please answer all four questions to see your reflection.</span>
+    </div>
+
+    <div class="reflection-result" id="reflection-result" aria-live="polite" aria-atomic="true">
+      <p class="result-pattern" id="result-pattern"></p>
+      <p class="result-heading" id="result-heading"></p>
+      <p class="result-body" id="result-body"></p>
+      <div class="result-questions">
+        <p>Questions worth sitting with:</p>
+        <ul id="result-questions-list"></ul>
+      </div>
+      <button class="reflection-reset" id="reflection-reset-btn" type="button">Start again</button>
+    </div>
+  </div>
+
+  <!-- PANEL 7: SOURCES -->
+  <div class="tab-panel" id="panel-citations" role="tabpanel" aria-labelledby="tab-citations">
+    <h2>Sources</h2>
+    <p class="section-intro">The knowledge claims and frameworks in this resource draw on the following bodies of work. Sources are grouped by the domain they primarily support.</p>
+
+    <div class="citations-section">
+
+      <h3>Change Management Frameworks</h3>
+
+      <div class="citation-entry">
+        <p class="citation-label">Individual change model</p>
+        <p><strong>Hiatt, J.</strong> <em>ADKAR: A Model for Change in Business, Government and Our Community.</em> Prosci Learning Center, 2006.</p>
+      </div>
+
+      <div class="citation-entry">
+        <p class="citation-label">Eight-step change process</p>
+        <p><strong>Kotter, J.P.</strong> <em>Leading Change.</em> Harvard Business Review Press, 1996.</p>
+      </div>
+
+      <div class="citation-entry">
+        <p class="citation-label">Transition versus change</p>
+        <p><strong>Bridges, W.</strong> <em>Managing Transitions: Making the Most of Change.</em> 3rd ed., Da Capo Press, 2009.</p>
+      </div>
+
+      <div class="citation-entry">
+        <p class="citation-label">Prosci methodology and research</p>
+        <p><strong>Prosci Inc.</strong> <em>Best Practices in Change Management.</em> Prosci Research, ongoing editions. <a href="https://www.prosci.com/resources/articles/change-management-best-practices" target="_blank" rel="noopener">prosci.com</a></p>
+      </div>
+
+      <h3>Adult Learning Theory</h3>
+
+      <div class="citation-entry">
+        <p class="citation-label">Transformative learning</p>
+        <p><strong>Mezirow, J.</strong> <em>Transformative Dimensions of Adult Learning.</em> Jossey-Bass, 1991.</p>
+      </div>
+
+      <div class="citation-entry">
+        <p class="citation-label">Experiential learning cycle</p>
+        <p><strong>Kolb, D.A.</strong> <em>Experiential Learning: Experience as the Source of Learning and Development.</em> Prentice Hall, 1984.</p>
+      </div>
+
+      <div class="citation-entry">
+        <p class="citation-label">Adult learning principles</p>
+        <p><strong>Knowles, M.S., Holton, E.F., &amp; Swanson, R.A.</strong> <em>The Adult Learner: The Definitive Classic in Adult Education and Human Resource Development.</em> 8th ed., Routledge, 2015.</p>
+      </div>
+
+      <h3>Cognitive Load Theory &amp; Learning Science</h3>
+
+      <div class="citation-entry">
+        <p class="citation-label">Cognitive Load Theory</p>
+        <p><strong>Sweller, J., van Merriënboer, J.J.G., &amp; Paas, F.</strong> "Cognitive Architecture and Instructional Design." <em>Educational Psychology Review,</em> vol. 10, no. 3, 1998, pp. 251–296.</p>
+      </div>
+
+      <div class="citation-entry">
+        <p class="citation-label">Multimedia learning</p>
+        <p><strong>Mayer, R.E.</strong> <em>Multimedia Learning.</em> 2nd ed., Cambridge University Press, 2009.</p>
+      </div>
+
+      <h3>Motivation &amp; Self-Determination Theory</h3>
+
+      <div class="citation-entry">
+        <p class="citation-label">Self-Determination Theory</p>
+        <p><strong>Deci, E.L. &amp; Ryan, R.M.</strong> <em>Self-Determination and Intrinsic Motivation in Human Behavior.</em> Plenum, 1985. See also <a href="https://selfdeterminationtheory.org" target="_blank" rel="noopener">selfdeterminationtheory.org</a></p>
+      </div>
+
+      <div class="citation-entry">
+        <p class="citation-label">Applied motivation design</p>
+        <p><strong>Pink, D.H.</strong> <em>Drive: The Surprising Truth About What Motivates Us.</em> Riverhead Books, 2009.</p>
+      </div>
+
+      <h3>Behavioral Science &amp; Behavior Change</h3>
+
+      <div class="citation-entry">
+        <p class="citation-label">COM-B model and Behaviour Change Wheel</p>
+        <p><strong>Michie, S., van Stralen, M.M., &amp; West, R.</strong> "The Behaviour Change Wheel: A New Method for Characterising and Designing Behaviour Change Interventions." <em>Implementation Science,</em> vol. 6, no. 42, 2011. <a href="https://behaviourchangewheel.com" target="_blank" rel="noopener">behaviourchangewheel.com</a></p>
+      </div>
+
+      <div class="citation-entry">
+        <p class="citation-label">Nudge Theory</p>
+        <p><strong>Thaler, R.H. &amp; Sunstein, C.R.</strong> <em>Nudge: Improving Decisions About Health, Wealth, and Happiness.</em> Yale University Press, 2008.</p>
+      </div>
+
+      <h3>Organizational Development &amp; Systems Thinking</h3>
+
+      <div class="citation-entry">
+        <p class="citation-label">Learning organization and systems thinking</p>
+        <p><strong>Senge, P.M.</strong> <em>The Fifth Discipline: The Art and Practice of the Learning Organization.</em> Doubleday, 1990.</p>
+      </div>
+
+      <div class="citation-entry">
+        <p class="citation-label">Organizational culture</p>
+        <p><strong>Schein, E.H.</strong> <em>Organizational Culture and Leadership.</em> 5th ed., Wiley, 2017.</p>
+      </div>
+
+      <h3>Neuroscience of Learning &amp; Change</h3>
+
+      <div class="citation-entry">
+        <p class="citation-label">SCARF model and neuroscience of change</p>
+        <p><strong>Rock, D.</strong> <em>Your Brain at Work: Strategies for Overcoming Distraction, Regaining Focus, and Working Smarter All Day Long.</em> HarperCollins, 2009. See also <a href="https://neuroleadership.com" target="_blank" rel="noopener">neuroleadership.com</a></p>
+      </div>
+
+      <div class="citation-entry">
+        <p class="citation-label">Emotion and learning</p>
+        <p><strong>Immordino-Yang, M.H.</strong> <em>Emotions, Learning, and the Brain: Exploring the Educational Implications of Affective Neuroscience.</em> W.W. Norton, 2016.</p>
+      </div>
+
+      <h3>Evaluation Frameworks</h3>
+
+      <div class="citation-entry">
+        <p class="citation-label">Four-level evaluation model</p>
+        <p><strong>Kirkpatrick, J.D. &amp; Kirkpatrick, W.K.</strong> <em>Kirkpatrick's Four Levels of Training Evaluation.</em> ATD Press, 2016. <a href="https://www.kirkpatrickpartners.com" target="_blank" rel="noopener">kirkpatrickpartners.com</a></p>
+      </div>
+
+      <div class="citation-entry">
+        <p class="citation-label">ROI Methodology</p>
+        <p><strong>Phillips, J.J. &amp; Phillips, P.P.</strong> <em>Handbook of Training Evaluation and Measurement Methods.</em> 4th ed., Routledge, 2016.</p>
+      </div>
+
+      <h3>Professional Bodies of Knowledge</h3>
+
+      <div class="citation-entry">
+        <p class="citation-label">Talent development professional framework</p>
+        <p><strong>Association for Talent Development.</strong> <em>ATD Talent Development Capability Model.</em> ATD Press. <a href="https://www.td.org" target="_blank" rel="noopener">td.org</a></p>
+      </div>
+
+      <div class="citation-entry">
+        <p class="citation-label">Change management professional standard</p>
+        <p><strong>Association of Change Management Professionals (ACMP).</strong> <em>Standard for Change Management.</em> ACMP, 2019. <a href="https://www.acmpglobal.org" target="_blank" rel="noopener">acmpglobal.org</a></p>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    This resource synthesizes established frameworks in change management, learning design, behavioral science, adult learning theory, and organizational development. It is designed to support practitioners and leaders navigating the intersection of organizational change and intentional learning design.
+  </footer>
+
+</main>
+
+<script>
+  // Tab navigation
+  const tabs = document.querySelectorAll('[role="tab"]');
+  const panels = document.querySelectorAll('.tab-panel');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.setAttribute('aria-selected', 'false'));
+      panels.forEach(p => p.classList.remove('active'));
+      tab.setAttribute('aria-selected', 'true');
+      document.getElementById(tab.getAttribute('aria-controls')).classList.add('active');
+    });
+    tab.addEventListener('keydown', e => {
+      const idx = Array.from(tabs).indexOf(e.currentTarget);
+      if (e.key === 'ArrowRight') { tabs[(idx+1)%tabs.length].focus(); tabs[(idx+1)%tabs.length].click(); }
+      if (e.key === 'ArrowLeft')  { tabs[(idx-1+tabs.length)%tabs.length].focus(); tabs[(idx-1+tabs.length)%tabs.length].click(); }
+      if (e.key === 'Home') { tabs[0].focus(); tabs[0].click(); }
+      if (e.key === 'End')  { tabs[tabs.length-1].focus(); tabs[tabs.length-1].click(); }
+    });
+  });
+
+  // Accordion stages
+  document.querySelectorAll('.stage-trigger').forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const expanded = trigger.getAttribute('aria-expanded') === 'true';
+      trigger.setAttribute('aria-expanded', String(!expanded));
+      document.getElementById(trigger.getAttribute('aria-controls')).classList.toggle('open', !expanded);
+    });
+  });
+
+  // Reflection tool
+  const reflectionData = {
+    profiles: [
+      {
+        range: [4, 7],
+        pattern: 'Training-focused stage',
+        heading: 'Learning is treated primarily as a training deliverable within the change initiative.',
+        body: 'This is a very common starting point. Training is produced, deployed, and tracked — and it may be well-produced — but the connection between learning and change adoption is assumed rather than designed. The most productive next step is usually strengthening the front end: understanding where people actually are in the change journey before designing what they need to learn.',
+        questions: [
+          'What do you know about why people in your organization are resisting or struggling with this change — and did that understanding shape the learning design?',
+          'Is learning completion being tracked as a proxy for change adoption? If so, what is that assumption based on?',
+          'At what point in the change initiative does learning design typically begin — and what would change if it started earlier?'
+        ]
+      },
+      {
+        range: [8, 10],
+        pattern: 'Developing stage',
+        heading: 'Your organization conducts needs analysis and aligns learning to change goals, though the connection is not yet systematic.',
+        body: 'Organizations at this stage have moved beyond order-taking and are asking better questions before building. The gap is often between the design and the delivery — or between the training event and the transfer that follows. Learning is well-designed but not always well-supported once it leaves the formal learning environment.',
+        questions: [
+          'What happens to the behaviors your learning is designed to build after the training is complete — and who is responsible for reinforcing them?',
+          'How does your learning design account for the reality that people return to environments that may not support the new behaviors?',
+          'Are managers equipped to reinforce what employees are learning — and is this treated as a learning design requirement, or a separate conversation?'
+        ]
+      },
+      {
+        range: [11, 13],
+        pattern: 'Integrated stage',
+        heading: 'Learning design is connected to change management strategy, with attention to adoption, reinforcement, and some measurement.',
+        body: 'Organizations at this stage have established real integration between learning and change work. The most common area for growth is evaluation — moving from measuring learning activity to measuring learning impact, and connecting that impact to the change outcomes the organization cares about.',
+        questions: [
+          'Can you demonstrate — with data — that your learning design produced behavior change, or do you have evidence of learning activity but not learning impact?',
+          'Where in the change journey does your learning design have the most influence — and where are the gaps in your current approach?',
+          'How does your learning strategy account for the psychological experience of change, including threat responses, cognitive saturation, and motivation?'
+        ]
+      },
+      {
+        range: [14, 16],
+        pattern: 'Strategic stage',
+        heading: 'Learning design is embedded in your change strategy, with diagnostic rigor, evidence-based design, and connected evaluation.',
+        body: 'Organizations at this stage treat learning design as a strategic partner in change — not a service provider delivering training on request. The most productive questions now are about sustainability, evidence quality, and where the approach still depends on individual expertise rather than organizational capability.',
+        questions: [
+          'How confident are you that your evaluation evidence reflects genuine behavior change — rather than well-designed learning experiences that people responded to positively but did not apply?',
+          'Is your change learning capability distributed across the organization, or concentrated in a small number of practitioners whose departure would leave a significant gap?',
+          'Where are the remaining blind spots — the change types, learner populations, or organizational conditions that your current approach does not yet address well?'
+        ]
+      }
+    ]
+  };
+
+  const submitBtn = document.getElementById('reflection-submit-btn');
+  const incompleteMsg = document.getElementById('reflection-incomplete');
+  const resultPanel = document.getElementById('reflection-result');
+
+  submitBtn.addEventListener('click', () => {
+    const answers = ['q1','q2','q3','q4'].map(name => {
+      const sel = document.querySelector('input[name="' + name + '"]:checked');
+      return sel ? sel.value : null;
+    });
+    if (answers.includes(null)) {
+      incompleteMsg.style.display = 'inline';
+      submitBtn.setAttribute('aria-describedby', 'reflection-incomplete');
+      return;
+    }
+    incompleteMsg.style.display = 'none';
+    const score = answers.reduce((sum, v) => sum + { a:1, b:2, c:3, d:4 }[v], 0);
+    const profile = reflectionData.profiles.find(p => score >= p.range[0] && score <= p.range[1]);
+    document.getElementById('result-pattern').textContent = profile.pattern;
+    document.getElementById('result-heading').textContent = profile.heading;
+    document.getElementById('result-body').textContent = profile.body;
+    const qList = document.getElementById('result-questions-list');
+    qList.innerHTML = '';
+    profile.questions.forEach(q => {
+      const li = document.createElement('li');
+      li.textContent = q;
+      qList.appendChild(li);
+    });
+    resultPanel.classList.add('visible');
+    resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('reflection-form').style.display = 'none';
+    document.querySelector('.reflection-submit-row').style.display = 'none';
+  });
+
+  document.getElementById('reflection-reset-btn').addEventListener('click', () => {
+    document.querySelectorAll('input[name="q1"], input[name="q2"], input[name="q3"], input[name="q4"]').forEach(r => r.checked = false);
+    resultPanel.classList.remove('visible');
+    document.getElementById('reflection-form').style.display = 'block';
+    document.querySelector('.reflection-submit-row').style.display = 'flex';
+    incompleteMsg.style.display = 'none';
+    document.getElementById('reflection-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>
+</body>
+</html>
