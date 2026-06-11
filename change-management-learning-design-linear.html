@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Change Management Through Learning Design — Knowledge Resource</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --colour-bg: #edf0f1;
+      --colour-surface: #ffffff;
+      --colour-border: #cdd5d8;
+      --colour-text: #303e44;
+      --colour-text-secondary: #56686f;
+      --colour-accent: #303e44;
+      --colour-accent-mid: #475f6a;
+      --colour-accent-light: #e6eaec;
+      --colour-accent-muted: #7a9299;
+      --colour-note-bg: #f0f3f4;
+      --colour-note-border: #b0c0c5;
+      --radius: 6px;
+      --radius-lg: 10px;
+      --font-body: "Asap", system-ui, sans-serif;
+      --font-ui: "Asap", system-ui, sans-serif;
+    }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { background: var(--colour-bg); color: var(--colour-text); font-family: var(--font-body); line-height: 1.75; }
+
+    .skip-link { position: absolute; top: -100%; left: 1rem; background: var(--colour-accent); color: #fff; padding: 0.5rem 1rem; border-radius: var(--radius); font-family: var(--font-ui); font-size: 0.875rem; text-decoration: none; z-index: 1000; }
+    .skip-link:focus { top: 1rem; }
+    .skip-toc { position: absolute; top: -100%; left: 8rem; background: var(--colour-accent); color: #fff; padding: 0.5rem 1rem; border-radius: var(--radius); font-family: var(--font-ui); font-size: 0.875rem; text-decoration: none; z-index: 1000; }
+    .skip-toc:focus { top: 1rem; }
+
+    .site-header { background: var(--colour-surface); border-bottom: 1px solid var(--colour-border); padding: 0.75rem 2rem; font-family: var(--font-ui); font-size: 0.8125rem; color: var(--colour-text-secondary); }
+    .page-wrapper { max-width: 720px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+    .page-title-block { margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--colour-border); }
+    h1 { font-family: var(--font-body); font-size: clamp(1.5rem, 4vw, 2rem); font-weight: normal; line-height: 1.25; color: var(--colour-text); margin-bottom: 0.75rem; }
+    .page-subtitle { font-family: var(--font-ui); font-size: 0.9375rem; color: var(--colour-text-secondary); line-height: 1.5; margin-bottom: 1rem; }
+    .at-banner { background: var(--colour-accent-light); border: 1px solid #bec9cd; border-radius: var(--radius); padding: 0.875rem 1.1rem; font-family: var(--font-ui); font-size: 0.875rem; color: #2e3f45; line-height: 1.5; margin-bottom: 0; }
+    .at-banner a { color: var(--colour-accent-mid); }
+
+    /* TOC */
+    .toc-section { background: var(--colour-surface); border: 1px solid var(--colour-border); border-radius: var(--radius-lg); padding: 1.5rem 1.75rem; margin: 2rem 0; }
+    .toc-section h2 { font-family: var(--font-ui); font-size: 0.875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--colour-text-secondary); margin-bottom: 1rem; }
+    .toc-section ol { padding-left: 1.25em; font-family: var(--font-ui); font-size: 0.9rem; line-height: 1.6; }
+    .toc-section li { margin-bottom: 0.25em; }
+    .toc-section ul { padding-left: 1.25em; margin-top: 0.25em; }
+    .toc-section a { color: var(--colour-accent-mid); text-decoration: none; }
+    .toc-section a:hover, .toc-section a:focus { text-decoration: underline; }
+
+    /* Section blocks */
+    .section-block { margin-bottom: 3.5rem; padding-bottom: 3rem; border-bottom: 1px solid var(--colour-border); }
+    .section-block:last-of-type { border-bottom: none; }
+    .section-label { font-family: var(--font-ui); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--colour-accent-muted); display: block; margin-bottom: 0.5rem; }
+
+    h2 { font-family: var(--font-body); font-size: 1.5rem; font-weight: normal; line-height: 1.3; color: var(--colour-text); margin-bottom: 1rem; }
+    h3 { font-family: var(--font-ui); font-size: 1rem; font-weight: 600; color: var(--colour-text); margin-top: 2rem; margin-bottom: 0.5rem; }
+    h4 { font-family: var(--font-ui); font-size: 0.875rem; font-weight: 600; color: var(--colour-text); margin-top: 1.5rem; margin-bottom: 0.4rem; }
+    p { margin-bottom: 1em; }
+    p:last-child { margin-bottom: 0; }
+    ul, ol { padding-left: 1.4em; margin-bottom: 1em; }
+    li { margin-bottom: 0.35em; }
+    strong { font-weight: 600; }
+    a { color: var(--colour-accent-mid); }
+
+    .callout { background: var(--colour-note-bg); border-left: 3px solid var(--colour-note-border); padding: 0.9rem 1.1rem; margin: 1.5rem 0; font-family: var(--font-ui); font-size: 0.875rem; color: var(--colour-text-secondary); line-height: 1.55; border-radius: 0 var(--radius) var(--radius) 0; }
+    .callout strong { color: var(--colour-text); }
+    .highlight-box { background: var(--colour-accent-light); border: 1px solid #bec9cd; border-radius: var(--radius-lg); padding: 1.1rem 1.35rem; margin: 1.75rem 0; font-family: var(--font-ui); font-size: 0.9rem; line-height: 1.6; color: #2b3c42; }
+    .highlight-box strong { color: #303e44; }
+
+    /* Phase blocks */
+    .stage-block { margin: 2rem 0; border-left: 3px solid var(--colour-accent-muted); padding-left: 1.5rem; }
+    .stage-meta { font-family: var(--font-ui); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--colour-accent-muted); margin-bottom: 0.25rem; }
+    .stage-block h3 { margin-top: 0; }
+
+    /* Decision subsections */
+    .decision-subsection { margin: 1.5rem 0; }
+    .decision-subsection h3 { color: var(--colour-text); font-size: 0.9375rem; }
+    .decision-list { font-family: var(--font-ui); font-size: 0.9rem; line-height: 1.7; list-style: none; padding: 0; }
+    .decision-list li { padding: 0.2em 0; border-bottom: 1px solid var(--colour-border); }
+    .decision-list li:last-child { border-bottom: none; }
+    .decision-list strong { color: var(--colour-text); }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-family: var(--font-ui); font-size: 0.875rem; }
+    thead th { background: var(--colour-accent-light); color: var(--colour-accent); font-weight: 600; padding: 0.6rem 0.85rem; text-align: left; border-bottom: 2px solid var(--colour-border); }
+    tbody td { padding: 0.7rem 0.85rem; border-bottom: 1px solid var(--colour-border); vertical-align: top; line-height: 1.5; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:nth-child(even) { background: var(--colour-bg); }
+
+    /* Reflection */
+    .reflection-question { margin: 1.5rem 0; }
+    .reflection-question h3 { font-size: 0.9375rem; }
+    .reflection-question ul { list-style: none; padding: 0; }
+    .reflection-question li { padding: 0.3em 0 0.3em 1.5em; position: relative; font-family: var(--font-ui); font-size: 0.9rem; color: var(--colour-text-secondary); }
+    .reflection-question li::before { content: "🤔"; position: absolute; left: 0; font-size: 0.85rem; }
+
+    .back-to-top { display: inline-block; margin-top: 2rem; font-family: var(--font-ui); font-size: 0.875rem; color: var(--colour-accent-mid); text-decoration: none; }
+    .back-to-top:hover { text-decoration: underline; }
+
+    .page-footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--colour-border); font-family: var(--font-ui); font-size: 0.8125rem; color: var(--colour-text-secondary); line-height: 1.6; }
+
+    /* Citations */
+    .citation-group-heading { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--colour-accent-muted); margin-top: 2rem; margin-bottom: 0.75rem; padding-bottom: 0.35rem; border-bottom: 1px solid var(--colour-border); }
+    .citation-group-heading:first-child { margin-top: 0; }
+    .citation-entry { margin-bottom: 1rem; padding: 0.85rem 1rem; background: var(--colour-surface); border: 1px solid var(--colour-border); border-radius: var(--radius); font-size: 0.875rem; line-height: 1.65; }
+    .citation-entry .citation-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--colour-accent-muted); margin-bottom: 0.3rem; }
+    .citation-entry p { margin: 0; color: var(--colour-text-secondary); }
+    .citation-entry a { color: var(--colour-accent-mid); word-break: break-all; }
+    .citation-entry a:hover { text-decoration: underline; }
+    .citation-entry strong { color: var(--colour-text); }
+  </style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<a class="skip-toc" href="#toc">Skip to table of contents</a>
+
+<header class="site-header">Change Management Through Learning Design — Knowledge Resource</header>
+
+<main id="main-content" class="page-wrapper">
+
+  <div class="page-title-block">
+    <h1>Change Management Through Learning Design</h1>
+    <p class="page-subtitle">A guide to the knowledge foundations, methodology, key design decisions, and organizational outcomes that characterize effective learning-centred change work.</p>
+    <div class="at-banner">
+      <strong>Screen reader and keyboard-optimised version.</strong> This is a fully linear, plain-structure version of this resource designed for use with assistive technologies. All content is presented in reading order with no tabs, accordions, or JavaScript. An <a href="change-management-learning-design.html">interactive version with tabs and expandable sections</a> is also available.
+    </div>
+  </div>
+
+  <!-- TABLE OF CONTENTS -->
+  <nav id="toc" aria-label="Table of contents">
+    <div class="toc-section">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#foundation">Knowledge Foundations</a>
+          <ul>
+            <li><a href="#nine-domains">The nine knowledge domains</a></li>
+            <li><a href="#integration">How the domains work together</a></li>
+            <li><a href="#strategic-vs-training">Strategic learning design versus training delivery</a></li>
+            <li><a href="#three-horizons">The learning designer's role across the change journey</a></li>
+          </ul>
+        </li>
+        <li><a href="#methodology">Methodology</a>
+          <ul>
+            <li><a href="#phase-1">Phase 1: Discovery and needs analysis</a></li>
+            <li><a href="#phase-2">Phase 2: Learning strategy and architecture</a></li>
+            <li><a href="#phase-3">Phase 3: Learning design and development</a></li>
+            <li><a href="#phase-4">Phase 4: Facilitation and delivery</a></li>
+            <li><a href="#phase-5">Phase 5: Reinforcement and transfer</a></li>
+            <li><a href="#phase-6">Phase 6: Evaluation and iteration</a></li>
+          </ul>
+        </li>
+        <li><a href="#decisions">Key Design Decisions</a>
+          <ul>
+            <li><a href="#d-change-type">Change type</a></li>
+            <li><a href="#d-readiness">Learner readiness</a></li>
+            <li><a href="#d-modality">Modality</a></li>
+            <li><a href="#d-timing">Timing in the change cycle</a></li>
+            <li><a href="#d-depth">Depth of design</a></li>
+            <li><a href="#d-measurement">Measurement focus</a></li>
+          </ul>
+        </li>
+        <li><a href="#outcomes">What Effective Change Learning Produces</a>
+          <ul>
+            <li><a href="#short-term">Shorter-term outcomes</a></li>
+            <li><a href="#long-term">Longer-term outcomes</a></li>
+          </ul>
+        </li>
+        <li><a href="#context">The Organizational System Learning Must Navigate</a>
+          <ul>
+            <li><a href="#culture">Organizational culture</a></li>
+            <li><a href="#leadership">Leadership and sponsorship</a></li>
+            <li><a href="#systems">Systems thinking and feedback loops</a></li>
+            <li><a href="#saturation">Change saturation and competing priorities</a></li>
+            <li><a href="#stakeholders">Stakeholder landscape</a></li>
+          </ul>
+        </li>
+        <li><a href="#reflection">Organizational Reflection</a></li>
+        <li><a href="#sources">Sources</a>
+          <ul>
+            <li><a href="#cite-change">Change management frameworks</a></li>
+            <li><a href="#cite-adult">Adult learning theory</a></li>
+            <li><a href="#cite-clt">Cognitive load theory and learning science</a></li>
+            <li><a href="#cite-sdt">Motivation and self-determination theory</a></li>
+            <li><a href="#cite-behav">Behavioral science and behavior change</a></li>
+            <li><a href="#cite-od">Organizational development and systems thinking</a></li>
+            <li><a href="#cite-neuro">Neuroscience of learning and change</a></li>
+            <li><a href="#cite-eval">Evaluation frameworks</a></li>
+            <li><a href="#cite-bok">Professional bodies of knowledge</a></li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+  </nav>
+
+
+  <!-- SECTION 1: KNOWLEDGE FOUNDATIONS -->
+  <div class="section-block" id="foundation">
+    <span class="section-label">Section 1</span>
+    <h2>Knowledge Foundations</h2>
+    <p>Effective change management through learning design draws on nine interconnected bodies of knowledge. The most rigorous practice holds multiple domains in view simultaneously — and produces learning that a training-only approach cannot.</p>
+
+    <h3 id="nine-domains">The nine knowledge domains</h3>
+
+    <h4>1. Change management theory and models</h4>
+    <p>A learning designer must understand the intellectual foundations of change management before designing any learning solution. This includes the Prosci ADKAR model — which maps directly to learning intervention points across Awareness, Desire, Knowledge, Ability, and Reinforcement — as well as Kotter's 8-Step model, Lewin's Unfreeze-Change-Refreeze framework, Bridges' Transition Model (which distinguishes the situational change from the psychological transition), and the Satir Change Model, which helps designers anticipate performance dips and time support accordingly.</p>
+
+    <h4>2. Adult learning theory</h4>
+    <p>Adults are self-directed, experience-driven, and need relevance and immediate application (Knowles). Change often requires shifts in frames of reference, not merely the addition of new information — Mezirow's transformative learning theory provides the grounding for designing learning that challenges existing assumptions and fosters genuine mindset change. Kolb's experiential cycle of experience, reflection, conceptualization, and experimentation gives learning designers a practical structure for deep processing. Social learning theory and spaced practice principles complete the foundation for adult change learning.</p>
+
+    <h4>3. Instructional design principles</h4>
+    <p>The structural knowledge required to architect effective learning solutions. This includes foundational process models (ADDIE, SAM), Bloom's Taxonomy for aligning objectives to appropriate cognitive levels, Merrill's Principles of Instruction, Gagne's Nine Events for sequencing instructional events, Universal Design for Learning for inclusive design, and backward design — which starts from desired organizational outcomes and works backward to content. In change contexts, SAM's iterative approach is especially well suited to fast-moving initiatives.</p>
+
+    <h4>4. Cognitive load theory and learning science</h4>
+    <p>People experiencing change are cognitively and emotionally taxed. Cognitive Load Theory (Sweller, Mayer) reveals that working memory is limited — effective design manages intrinsic load, eliminates extraneous load, and promotes germane load through chunking, multimodal instruction, scaffolding, and clear structure. In change contexts where employees may be managing multiple concurrent initiatives, these principles are not optional refinements — they are foundational to whether learning will register at all. Research shows employees in 2022 were managing an average of ten planned enterprise changes; design must account for this saturation.</p>
+
+    <h4>5. Self-determination theory and motivation</h4>
+    <p>Self-Determination Theory (Deci and Ryan) is the most empirically robust theory of human motivation and directly explains why people engage with — or resist — learning and change. It posits three fundamental psychological needs: autonomy (feeling in control of one's actions), competence (feeling effective), and relatedness (feeling connected). When change learning supports these needs, it builds genuine desire for change rather than surface compliance. SDT helps designers move from telling people what to do to creating environments where people choose to engage.</p>
+
+    <h4>6. Behavioral science and behavior change</h4>
+    <p>Understanding the science of behavior change — beyond learning alone — is critical to designing interventions that shift what people do, not just what they know. The COM-B model (Michie et al.) frames behavior as arising from Capability, Opportunity, and Motivation, and serves as a diagnostic tool for identifying real barriers. Nudge Theory (Thaler and Sunstein) addresses how subtle shifts in choice architecture can influence behavior without restricting freedom. Together, these frameworks help designers move from information delivery to genuine behavior design.</p>
+
+    <h4>7. Organizational development and systems thinking</h4>
+    <p>Learning designers working in change must understand the organizational system they are trying to shift. Culture, structure, leadership, and interdependencies all shape learning effectiveness. Senge's five disciplines — especially systems thinking and mental models — help designers see feedback loops and root causes rather than surface symptoms. Schein's model of organizational culture (artifacts, espoused values, underlying assumptions) reveals why change efforts succeed or fail in ways that training alone cannot address. Learning is always embedded in a system; design must account for that system.</p>
+
+    <h4>8. Neuroscience of learning and change</h4>
+    <p>Neuroscience provides evidence-based insight into how the brain processes change, threat, and new learning. Rock's SCARF model identifies five social domains — Status, Certainty, Autonomy, Relatedness, Fairness — that trigger threat or reward responses, directly affecting openness to change and learning. Immordino-Yang's research demonstrates that emotional engagement can increase learning retention by up to 30%, and that emotions are not incidental to learning — they are foundational to how memory, meaning-making, and behavior change occur. Change triggers threat; effective design activates safety and reward.</p>
+
+    <h4>9. Measurement and evaluation frameworks</h4>
+    <p>Demonstrating that learning is driving the desired change is as important as designing the learning itself. The Kirkpatrick Four-Level Model (Reaction, Learning, Behavior, Results) — and its New World iteration, which works backward from business results — provides the standard evaluation framework. Phillips' ROI Methodology extends this to financial return. The critical skill is connecting learning metrics to change adoption metrics: speed of adoption, ultimate utilization, and proficiency give the clearest picture of whether change is actually landing in the organization.</p>
+
+    <div class="highlight-box" id="integration">
+      <strong>How the domains work together:</strong> Change theory tells you when and why to intervene with learning. Adult learning and cognitive science tell you how to design for real behavior change. Behavioral science and motivation theory tell you why people change — or don't. Organizational development tells you where learning fits in the broader system. Evaluation frameworks tell you whether it worked. The most effective change learning integrates all of these — not as a checklist, but as a coherent design perspective.
+    </div>
+
+    <h3 id="strategic-vs-training">What distinguishes strategic learning design from training delivery</h3>
+    <p>Training delivers content. Strategic learning design diagnoses the change challenge, selects interventions matched to where people actually are, anticipates resistance and cognitive saturation, designs for transfer and reinforcement — and evaluates whether behavior changed, not merely whether learners reacted positively. The gap between "training was completed" and "change actually happened" is precisely where human-centred, evidence-informed learning design is irreplaceable.</p>
+
+    <h3 id="three-horizons">The learning designer's role across the change journey</h3>
+    <p>Before change begins, the learning designer's primary contribution is needs analysis, stakeholder consulting, and readiness assessment. During the change itself, the focus shifts to skill-building, adoption support, and facilitation. After the change, the priority becomes reinforcement, transfer, and embedding new behaviors into daily practice. The most effective learning designers move fluently across all three horizons — and operate at the intersection of learning science, organizational psychology, and strategic consulting.</p>
+  </div>
+
+
+  <!-- SECTION 2: METHODOLOGY -->
+  <div class="section-block" id="methodology">
+    <span class="section-label">Section 2</span>
+    <h2>Methodology</h2>
+    <p>Effective change learning design is structured, iterative, and diagnostically grounded. The six phases below represent a comprehensive approach; in practice, scope and depth vary with context, resources, and organizational need. Understanding the full methodology clarifies what is gained or lost when particular phases are abbreviated.</p>
+
+    <div class="stage-block" id="phase-1">
+      <p class="stage-meta">Phase 1</p>
+      <h3>Discovery and Needs Analysis</h3>
+      <p><em>Diagnosing the real problem before designing the solution</em></p>
+      <p>Before any learning solution is designed, it is essential to understand the nature of the change, the people it affects, and the organizational system it must navigate. What is actually changing — process, technology, behavior, culture, or identity? Where are people in the ADKAR journey? What are the real barriers: knowledge gaps, motivation, capability, opportunity, or a combination? What does success look like, and for whom?</p>
+      <p>A critical skill at this stage is distinguishing learning problems from non-learning problems. Not every performance gap is a knowledge or skill gap. Process barriers, tool failures, motivation deficits, and structural constraints all require different interventions — and misdiagnosing them leads to learning solutions that cannot succeed regardless of how well they are designed.</p>
+      <h4>What this phase produces</h4>
+      <ul>
+        <li>Stakeholder analysis and resistance mapping</li>
+        <li>Root cause analysis distinguishing learning from non-learning barriers</li>
+        <li>Learner population segmentation and readiness assessment</li>
+        <li>Clearly defined learning outcomes tied to change adoption metrics</li>
+        <li>Agreed scope, success criteria, and evaluation approach</li>
+      </ul>
+      <div class="callout"><strong>Note:</strong> Learning solutions designed without thorough needs analysis frequently address the visible symptom of a change challenge rather than its cause. The investment in diagnosis protects every subsequent phase of the work.</div>
+    </div>
+
+    <div class="stage-block" id="phase-2">
+      <p class="stage-meta">Phase 2</p>
+      <h3>Learning Strategy and Architecture</h3>
+      <p><em>Designing the structure before building the content</em></p>
+      <p>Learning strategy defines how the learning journey will be structured across the change timeline — what modalities will be used, in what sequence, for which audiences, and to what end. This is where change theory and learning science are integrated: the ADKAR model tells you what people need at each stage; cognitive load theory, SDT, and behavioral science tell you how to design for it.</p>
+      <p>Modality selection is a strategic decision, not a preference. Asynchronous eLearning and microlearning are well suited to building awareness and foundational knowledge at scale. Live facilitation — virtual or in-person — is better suited to navigating resistance, practicing difficult conversations, and building the psychological safety that deep change requires. Blended approaches, performance support tools, and peer learning structures complement formal learning across the change journey.</p>
+      <h4>What this phase produces</h4>
+      <ul>
+        <li>Learning journey map aligned to the change timeline and ADKAR stages</li>
+        <li>Modality and delivery recommendations with rationale</li>
+        <li>Audience segmentation and differentiated pathways where needed</li>
+        <li>Content scope and sequencing plan</li>
+        <li>Reinforcement and transfer strategy for post-learning application</li>
+      </ul>
+      <div class="callout"><strong>Note:</strong> The learning architecture precedes content development. Organizations that begin by building content before establishing strategy typically produce training that is well-produced but misaligned — covering the right topics in the wrong sequence, for the wrong audiences, without a clear theory of how learning will transfer to behavior.</div>
+    </div>
+
+    <div class="stage-block" id="phase-3">
+      <p class="stage-meta">Phase 3</p>
+      <h3>Learning Design and Development</h3>
+      <p><em>Building learning experiences grounded in evidence</em></p>
+      <p>Effective learning design in change contexts applies evidence-based principles throughout. Cognitive load is managed by chunking complex information into meaningful units, using multimodal instruction to distribute processing across channels, and eliminating content that does not serve the learning objective. Emotional engagement is designed for deliberately — not left to chance — because neuroscience is clear that emotion is foundational to memory formation and behavior change.</p>
+      <p>Scenario-based and experiential learning design gives people practice with the actual decisions and behaviors required by the change, in contexts that feel authentic. Transformative learning design challenges existing assumptions rather than layering new information on top of them — essential when the change requires people to genuinely shift how they think, not just what they do.</p>
+      <h4>What this phase produces</h4>
+      <ul>
+        <li>Learning content built to specification: eLearning modules, facilitation guides, job aids, microlearning, video, and blended resources as required</li>
+        <li>Scenario-based and practice-oriented learning experiences</li>
+        <li>Facilitator preparation and capability-building resources</li>
+        <li>Piloted and iterated content validated against real learner responses</li>
+      </ul>
+      <div class="callout"><strong>Note:</strong> Content that passes a subject-matter expert review is not the same as content that works for learners. Piloting with representative learners — and iterating based on what is discovered — consistently improves quality and transfer in ways that internal review alone cannot.</div>
+    </div>
+
+    <div class="stage-block" id="phase-4">
+      <p class="stage-meta">Phase 4</p>
+      <h3>Facilitation and Delivery</h3>
+      <p><em>Holding space for learning through uncertainty</em></p>
+      <p>Facilitation in change contexts is not neutral content delivery. Learners arrive with their own histories with the organization, with prior change experiences, and with emotional responses to the current change that will be present in the room — whether acknowledged or not. Skilled facilitation creates the psychological safety that allows people to engage with uncertainty, voice resistance, practice new behaviors, and begin to build confidence.</p>
+      <p>This requires the ability to adapt in real time — reading participant energy, slowing down where resistance is high, adjusting pacing when cognitive load is visible, and holding space for emotional responses to change without amplifying or dismissing them. The facilitation design itself must be built to accommodate this range of participant experience.</p>
+      <h4>What this phase produces</h4>
+      <ul>
+        <li>Learning sessions that achieve their behavioral objectives, not merely their completion metrics</li>
+        <li>Participant experience of being heard and respected through the change process</li>
+        <li>Real-time insight into where resistance, confusion, or gaps remain — feeding back into reinforcement design</li>
+      </ul>
+      <div class="callout"><strong>Note:</strong> Facilitation capability is often underestimated as a design variable. A well-designed learning experience delivered by an underprepared facilitator will underperform. Facilitator preparation — including how to hold difficult conversations and navigate emotional responses to change — is an integral part of the learning design, not a separate concern.</div>
+    </div>
+
+    <div class="stage-block" id="phase-5">
+      <p class="stage-meta">Phase 5</p>
+      <h3>Reinforcement and Transfer</h3>
+      <p><em>Embedding new behaviors in daily work</em></p>
+      <p>Learning that is not reinforced after the formal learning experience is rarely sustained. Transfer — the application of new knowledge and behavior in the real work environment — requires deliberate design. This includes on-the-job practice structures, manager reinforcement tools, performance support resources at the point of need, spaced retrieval to embed new knowledge in long-term memory, and recognition of adoption progress.</p>
+      <p>Manager behavior is one of the strongest predictors of learning transfer. Managers who actively reinforce the change, coach toward new behaviors, and model the desired approaches dramatically increase the probability that learning will translate to practice. Designing for this — giving managers the knowledge, tools, and confidence to play this role — is part of the learning designer's responsibility.</p>
+      <h4>What this phase produces</h4>
+      <ul>
+        <li>Performance support tools and job aids for point-of-need application</li>
+        <li>Manager reinforcement guides and coaching resources</li>
+        <li>Spaced practice and retrieval structures built into workflows</li>
+        <li>Adoption tracking connected to real behavior indicators</li>
+      </ul>
+    </div>
+
+    <div class="stage-block" id="phase-6">
+      <p class="stage-meta">Phase 6</p>
+      <h3>Evaluation and Iteration</h3>
+      <p><em>Proving and improving the impact of learning</em></p>
+      <p>Evaluation in change learning design begins at the end of the design process, not at the conclusion of delivery. Starting from the business result required (Kirkpatrick Level 4) and working backward through behavior change (Level 3), learning (Level 2), and learner reaction (Level 1) ensures that every measurement is connected to something that matters to the organization. This backward design for evaluation also shapes the learning design itself — clarifying exactly what behaviors must change, and what learning must occur to produce those behaviors.</p>
+      <p>Leading indicators — early signals of adoption — are particularly valuable in change contexts because they allow adjustment while the change is still in progress. Lagging indicators confirm results but cannot inform course corrections in real time. A strong evaluation strategy uses both.</p>
+      <h4>What this phase produces</h4>
+      <ul>
+        <li>Evaluation data at all four Kirkpatrick levels, connected to change adoption metrics</li>
+        <li>Insight into what is working, for whom, and under what conditions</li>
+        <li>Evidence-based recommendations for adjusting learning design during rollout</li>
+        <li>Documentation of learning's contribution to organizational results</li>
+      </ul>
+      <div class="callout"><strong>Note:</strong> Evaluation is most useful when it is designed before learning is built, not after. The question "how will we know if this worked?" should shape every design decision — from objective writing to content selection to the choice of delivery modality.</div>
+    </div>
+  </div>
+
+
+  <!-- SECTION 3: KEY DESIGN DECISIONS -->
+  <div class="section-block" id="decisions">
+    <span class="section-label">Section 3</span>
+    <h2>Key Design Decisions</h2>
+    <p>No two change learning initiatives look the same. The decisions made about scope, depth, audience, modality, timing, and measurement determine what kind of learning is appropriate and what it will produce. Understanding these dimensions helps set realistic expectations — and produce better-targeted solutions.</p>
+
+    <div class="decision-subsection" id="d-change-type">
+      <h3>Change type: what this change requires of people</h3>
+      <ul class="decision-list">
+        <li><strong>Process or technology change</strong> — primarily requires knowledge and skill-building. People need to understand what has changed and develop practical capability in new ways of working.</li>
+        <li><strong>Cultural or behavioral change</strong> — requires assumptions to shift, not just skills to build. Transformative learning approaches are more effective than instructional ones here.</li>
+        <li><strong>Organizational restructure or identity change</strong> — requires psychological transition support alongside knowledge. Bridges' Transition Model is particularly relevant: the ending must be acknowledged before the new beginning can be embraced.</li>
+      </ul>
+    </div>
+
+    <div class="decision-subsection" id="d-readiness">
+      <h3>Learner readiness: where people are in the ADKAR journey</h3>
+      <ul class="decision-list">
+        <li><strong>Low awareness</strong> — learning must build the case for change before addressing skill. Designing knowledge content for people who don't yet understand why the change is happening will not produce adoption.</li>
+        <li><strong>Awareness without desire</strong> — learning must address motivation and the personal relevance of the change. SDT principles apply directly: autonomy, competence, and relatedness must be designed for.</li>
+        <li><strong>Desire without knowledge or ability</strong> — focused skill-building and structured practice are the priority. People are willing; they need the tools and confidence to succeed.</li>
+      </ul>
+    </div>
+
+    <div class="decision-subsection" id="d-modality">
+      <h3>Modality: which delivery approach fits the learning need</h3>
+      <ul class="decision-list">
+        <li><strong>Asynchronous eLearning or microlearning</strong> — scalable and self-paced; suited to awareness-building and foundational knowledge transfer at scale. Effective for ADKAR stages Awareness and Knowledge.</li>
+        <li><strong>Live facilitation (virtual or in-person)</strong> — essential for practice, dialogue, resistance navigation, and psychological safety. Most effective for ADKAR stages Desire and Ability.</li>
+        <li><strong>Blended approach</strong> — combines modalities strategically across the change journey. Asynchronous for breadth; live for depth. The most effective approach for significant change initiatives.</li>
+      </ul>
+    </div>
+
+    <div class="decision-subsection" id="d-timing">
+      <h3>Timing: when learning occurs relative to the change</h3>
+      <ul class="decision-list">
+        <li><strong>Pre-change</strong> — building awareness, readiness, and foundational knowledge. Reduces the shock of the change and accelerates adoption once it begins.</li>
+        <li><strong>During change</strong> — skill-building, adoption support, and resistance navigation. The most resource-intensive phase; requires close coordination with the change management team.</li>
+        <li><strong>Post-change</strong> — reinforcement, transfer, and embedding new behaviors. Often underfunded relative to its impact on whether change is sustained.</li>
+      </ul>
+    </div>
+
+    <div class="decision-subsection" id="d-depth">
+      <h3>Depth of design: how much design investment is appropriate</h3>
+      <ul class="decision-list">
+        <li><strong>Rapid development</strong> — targeted, lean resources for fast-moving or lower-stakes changes. Effective when the learning need is focused and the audience is narrow.</li>
+        <li><strong>Structured program</strong> — multi-session, multi-modality design for significant change initiatives. Requires more time and resources; produces more durable capability and adoption.</li>
+        <li><strong>Organizational learning system</strong> — embedded, continuous learning infrastructure for transformational change. Required when the change is not a project but a permanent shift in how the organization operates.</li>
+      </ul>
+    </div>
+
+    <div class="decision-subsection" id="d-measurement">
+      <h3>Measurement focus: what evidence of impact matters most</h3>
+      <ul class="decision-list">
+        <li><strong>Completion and reaction data (Kirkpatrick Levels 1–2)</strong> — necessary but not sufficient. Tells you whether learning happened; does not tell you whether behavior changed.</li>
+        <li><strong>Behavior change data (Kirkpatrick Level 3)</strong> — the most direct measure of change adoption. Requires manager observation, structured follow-up, or performance data connected to the change.</li>
+        <li><strong>Organizational results (Kirkpatrick Level 4)</strong> — the ultimate measure of whether the change, supported by learning, achieved what the organization needed. Requires that outcomes be defined at the start of the initiative.</li>
+      </ul>
+    </div>
+
+    <div class="callout"><strong>On cognitive saturation:</strong> One of the most frequently overlooked design variables is the total cognitive load employees are carrying at the time of the change. When people are managing multiple simultaneous initiatives, the design must prioritize ruthlessly — delivering less content more effectively, rather than more content comprehensively. A smaller, well-targeted learning experience that people can actually absorb will always outperform a comprehensive program they cannot.</div>
+  </div>
+
+
+  <!-- SECTION 4: OUTCOMES -->
+  <div class="section-block" id="outcomes">
+    <span class="section-label">Section 4</span>
+    <h2>What Effective Change Learning Produces</h2>
+    <p>Well-designed change learning creates change at two horizons. The shorter-term outcomes are tangible and observable. The longer-term shift is organizational — affecting how the institution navigates change, develops people, and builds its capacity for transformation over time.</p>
+
+    <h3 id="short-term">Shorter-term outcomes: what becomes visible during the change</h3>
+    <p><em>Outcomes typically observable within the change initiative itself</em></p>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Outcome</th>
+          <th scope="col">What this looks like in practice</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Resistance is reduced, not suppressed</strong><br>Learning addresses the real reasons for resistance — uncertainty, loss of competence, threat to autonomy.</td>
+          <td>Resistance converts into productive engagement. People understand why the change is happening, what it means for them, and what they need to do. They begin to build confidence through practice.</td>
+        </tr>
+        <tr>
+          <td><strong>Knowledge and skill gaps close</strong><br>People have what they need to perform effectively in the changed environment.</td>
+          <td>Teams are not just aware of what changed — they have genuine capability in the new ways of working. The transition to new processes, tools, or behaviors is faster and less disruptive.</td>
+        </tr>
+        <tr>
+          <td><strong>Adoption accelerates</strong><br>Speed of adoption, ultimate utilization, and proficiency all improve when learning is designed for the right people, at the right time, with the right approach.</td>
+          <td>The organization reaches its desired state sooner. The productivity dip associated with change is shorter and shallower. Change management success metrics improve.</td>
+        </tr>
+        <tr>
+          <td><strong>Leaders and managers are equipped</strong><br>Sponsors, managers, and team leads have the knowledge and tools to reinforce the change in daily interactions.</td>
+          <td>Manager behavior shifts from passive to active reinforcement. Conversations about the change become more confident and consistent. Employees receive the coaching they need to apply what they have learned.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 id="long-term">Longer-term outcomes: what becomes embedded in the organization</h3>
+    <p><em>Outcomes that develop over repeated change cycles and sustained organizational commitment</em></p>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Outcome</th>
+          <th scope="col">What this looks like in practice</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Change capability grows</strong><br>Organizations that invest in people through change become more skilled at changing.</td>
+          <td>Subsequent transformations are less costly and less disruptive. The organization develops internal expertise in change learning design. Future change initiatives benefit from accumulated knowledge about what works in this organizational context.</td>
+        </tr>
+        <tr>
+          <td><strong>Organizational learning culture deepens</strong><br>When people experience learning that respects their intelligence and builds genuine capability, they trust it as a resource.</td>
+          <td>Engagement with learning initiatives increases. People seek out learning rather than comply with it. Learning is no longer perceived as a compliance activity but as a genuine support for doing their work well through periods of change.</td>
+        </tr>
+        <tr>
+          <td><strong>Business results are demonstrated</strong><br>A rigorous evaluation approach produces evidence — not anecdote — that learning drove the change outcomes the organization needed.</td>
+          <td>L&amp;D is positioned as a strategic partner, not a service provider. Learning investment is justified with data. The organization makes better decisions about where to invest in learning because it has evidence of what works.</td>
+        </tr>
+        <tr>
+          <td><strong>People feel respected through the change</strong><br>Learning designed with genuine regard for learners — their cognitive capacity, emotional reality, and need for autonomy and competence — produces a fundamentally different human experience of change.</td>
+          <td>Employee trust in organizational change processes improves over time. People are more willing to engage with future changes because previous ones were handled with care. The organization's reputation as an employer is strengthened.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout"><strong>On the relationship between learning and change results:</strong> Research consistently demonstrates that organizations with effective change management — including purposeful learning design — are significantly more likely to meet project objectives, stay on schedule, and stay on budget than those without. The investment in learning is not a soft benefit alongside the real work of change. It is a primary driver of whether change succeeds.</div>
+  </div>
+
+
+  <!-- SECTION 5: ORGANIZATIONAL CONTEXT -->
+  <div class="section-block" id="context">
+    <span class="section-label">Section 5</span>
+    <h2>The Organizational System Learning Must Navigate</h2>
+    <p>Learning solutions do not exist in isolation. They operate within organizational systems — cultures, structures, leadership behaviors, and competing priorities — that shape whether learning can do its work. Understanding these dynamics is as important as the quality of the design itself.</p>
+
+    <h3 id="culture">Organizational culture</h3>
+    <p>Schein's model of organizational culture — artifacts (visible structures and practices), espoused values (stated beliefs), and underlying assumptions (unconscious drivers of behavior) — reveals why learning designed for the surface level often fails to change behavior at the deeper level. Change learning must work at all three levels. A training module that addresses the artifact layer will not shift the underlying assumptions that are driving resistance. Designing for cultural change requires engaging the why beneath the what.</p>
+
+    <h3 id="leadership">Leadership and sponsorship</h3>
+    <p>No learning design compensates for absent or misaligned leadership. Active, visible sponsorship of change — leaders who communicate the vision, reinforce new behaviors, and model the change themselves — is the single most important factor in whether organizational change succeeds. The learning designer's role includes preparing leaders to play this role effectively: giving sponsors and managers the understanding, language, and practical tools to support learning transfer in their teams. Manager reinforcement is not a "nice to have" — it is a design requirement.</p>
+
+    <h3 id="systems">Systems thinking and feedback loops</h3>
+    <p>Organizations are systems: changes in one area affect other parts in ways that are not always predictable. Senge's systems thinking disciplines — especially the recognition of feedback loops, unintended consequences, and the difference between symptomatic fixes and structural solutions — are directly applicable to change learning design. When a learning solution fails to produce the expected behavior change, the cause is often not in the content or the delivery. It is in a structural constraint, an incentive misalignment, or a cultural assumption that the learning was not designed to address. Effective designers look for these root causes.</p>
+
+    <h3 id="saturation">Change saturation and competing priorities</h3>
+    <p>In contemporary organizations, change is rarely singular. Employees are typically managing multiple concurrent initiatives, each with its own learning requirements, communication streams, and expectations. This saturation directly affects cognitive capacity for learning and behavior change. Effective change learning design accounts for this context — prioritizing ruthlessly, reducing cognitive load, sequencing learning at the moments when people have the capacity to absorb it, and designing reinforcement that fits into existing workflows rather than adding to them.</p>
+
+    <h3 id="stakeholders">Stakeholder landscape</h3>
+    <p>Change learning initiatives involve multiple stakeholders with different needs, different levels of authority over the change, and different relationships to its outcomes. Executives need strategic framing and evidence of impact. Managers need practical tools to support their teams. Employees need learning that respects their intelligence and addresses their real concerns. Project teams need timely, accurate content. The learning designer must navigate this landscape — consulting, advising, building trust, and communicating design rationale clearly to non-learning audiences — while maintaining the integrity of an evidence-informed approach.</p>
+
+    <div class="callout"><strong>A useful question for any change learning initiative:</strong> If the learning is perfectly designed but the organization's structure, incentives, and leadership behaviors remain unchanged — what will actually change in how people work? If the answer is "not much," the learning design conversation needs to expand to include the organizational conditions that will enable or inhibit transfer. Learning design is most effective when it is part of a coherent change strategy, not a substitute for one.</div>
+  </div>
+
+
+  <!-- SECTION 6: REFLECTION -->
+  <div class="section-block" id="reflection">
+    <span class="section-label">Section 6</span>
+    <h2>Organizational Reflection</h2>
+    <p>The questions below are designed to help you think through your organization's current approach to change management and learning design. They are not a formal assessment — there are no scores or categories. They are intended to surface useful questions and help identify where the most productive focus may be for your context. Working through them with colleagues across different roles often yields more complete and honest responses.</p>
+
+    <div class="reflection-question">
+      <h3>On your current approach to learning design in change</h3>
+      <ul>
+        <li>At what point in a change initiative does learning design currently get involved — and what would be different if that involvement started earlier?</li>
+        <li>How often is a needs analysis conducted before a learning solution is commissioned? When it is not, what tends to happen?</li>
+        <li>What does your organization currently use as evidence that a change learning initiative succeeded — and is that evidence connected to behavior change or adoption, or primarily to completion?</li>
+      </ul>
+    </div>
+
+    <div class="reflection-question">
+      <h3>On understanding the people affected by change</h3>
+      <ul>
+        <li>What do you know about where the people affected by this change actually are in the ADKAR journey — and how did you find that out?</li>
+        <li>Are the real reasons for resistance understood — or are they assumed? What would it take to find out?</li>
+        <li>How does your learning design account for the cognitive load people are already carrying, including from other concurrent change initiatives?</li>
+      </ul>
+    </div>
+
+    <div class="reflection-question">
+      <h3>On reinforcement and transfer</h3>
+      <ul>
+        <li>What happens to the behaviors your learning is designed to build once the formal learning experience ends?</li>
+        <li>Are managers equipped and expected to reinforce the change in their teams — and is this treated as a design requirement, or an afterthought?</li>
+        <li>Does your organization invest in reinforcement and transfer proportionally to its investment in content development? If not, what explains the gap?</li>
+      </ul>
+    </div>
+
+    <div class="reflection-question">
+      <h3>On the organizational system</h3>
+      <ul>
+        <li>If your learning is perfectly designed — are there structural constraints, incentive misalignments, or cultural assumptions that would still prevent the desired behavior change? What are they?</li>
+        <li>Does leadership actively reinforce the change in ways that are visible to employees? Is this treated as a change management requirement or left to individual discretion?</li>
+        <li>What would need to be true about your organization's culture, structure, and governance for learning design to be consistently effective — and how far are you from that now?</li>
+      </ul>
+    </div>
+
+    <p>Organizations that make meaningful progress in this space tend to be those that create space for honest conversations about where the gaps are, not where they would like them to be. The other sections of this resource are intended to provide useful context for those conversations.</p>
+  </div>
+
+
+  <!-- SECTION 7: SOURCES -->
+  <div class="section-block" id="sources">
+    <span class="section-label">Section 7</span>
+    <h2>Sources</h2>
+    <p>The knowledge claims and frameworks in this resource draw on the following bodies of work. Sources are grouped by the domain they primarily support.</p>
+
+    <p class="citation-group-heading" id="cite-change">Change Management Frameworks</p>
+
+    <div class="citation-entry">
+      <p class="citation-label">Individual change model</p>
+      <p><strong>Hiatt, J.</strong> <em>ADKAR: A Model for Change in Business, Government and Our Community.</em> Prosci Learning Center, 2006.</p>
+    </div>
+
+    <div class="citation-entry">
+      <p class="citation-label">Eight-step change process</p>
+      <p><strong>Kotter, J.P.</strong> <em>Leading Change.</em> Harvard Business Review Press, 1996.</p>
+    </div>
+
+    <div class="citation-entry">
+      <p class="citation-label">Transition versus change</p>
+      <p><strong>Bridges, W.</strong> <em>Managing Transitions: Making the Most of Change.</em> 3rd ed., Da Capo Press, 2009.</p>
+    </div>
+
+    <div class="citation-entry">
+      <p class="citation-label">Prosci methodology and research</p>
+      <p><strong>Prosci Inc.</strong> <em>Best Practices in Change Management.</em> Prosci Research, ongoing editions. <a href="https://www.prosci.com/resources/articles/change-management-best-practices" target="_blank" rel="noopener">prosci.com</a></p>
+    </div>
+
+    <p class="citation-group-heading" id="cite-adult">Adult Learning Theory</p>
+
+    <div class="citation-entry">
+      <p class="citation-label">Transformative learning</p>
+      <p><strong>Mezirow, J.</strong> <em>Transformative Dimensions of Adult Learning.</em> Jossey-Bass, 1991.</p>
+    </div>
+
+    <div class="citation-entry">
+      <p class="citation-label">Experiential learning cycle</p>
+      <p><strong>Kolb, D.A.</strong> <em>Experiential Learning: Experience as the Source of Learning and Development.</em> Prentice Hall, 1984.</p>
+    </div>
+
+    <div class="citation-entry">
+      <p class="citation-label">Adult learning principles</p>
+      <p><strong>Knowles, M.S., Holton, E.F., &amp; Swanson, R.A.</strong> <em>The Adult Learner: The Definitive Classic in Adult Education and Human Resource Development.</em> 8th ed., Routledge, 2015.</p>
+    </div>
+
+    <p class="citation-group-heading" id="cite-clt">Cognitive Load Theory and Learning Science</p>
+
+    <div class="citation-entry">
+      <p class="citation-label">Cognitive Load Theory</p>
+      <p><strong>Sweller, J., van Merriënboer, J.J.G., &amp; Paas, F.</strong> "Cognitive Architecture and Instructional Design." <em>Educational Psychology Review,</em> vol. 10, no. 3, 1998, pp. 251–296.</p>
+    </div>
+
+    <div class="citation-entry">
+      <p class="citation-label">Multimedia learning</p>
+      <p><strong>Mayer, R.E.</strong> <em>Multimedia Learning.</em> 2nd ed., Cambridge University Press, 2009.</p>
+    </div>
+
+    <p class="citation-group-heading" id="cite-sdt">Motivation and Self-Determination Theory</p>
+
+    <div class="citation-entry">
+      <p class="citation-label">Self-Determination Theory</p>
+      <p><strong>Deci, E.L. &amp; Ryan, R.M.</strong> <em>Self-Determination and Intrinsic Motivation in Human Behavior.</em> Plenum, 1985. See also <a href="https://selfdeterminationtheory.org" target="_blank" rel="noopener">selfdeterminationtheory.org</a></p>
+    </div>
+
+    <div class="citation-entry">
+      <p class="citation-label">Applied motivation design</p>
+      <p><strong>Pink, D.H.</strong> <em>Drive: The Surprising Truth About What Motivates Us.</em> Riverhead Books, 2009.</p>
+    </div>
+
+    <p class="citation-group-heading" id="cite-behav">Behavioral Science and Behavior Change</p>
+
+    <div class="citation-entry">
+      <p class="citation-label">COM-B model and Behaviour Change Wheel</p>
+      <p><strong>Michie, S., van Stralen, M.M., &amp; West, R.</strong> "The Behaviour Change Wheel: A New Method for Characterising and Designing Behaviour Change Interventions." <em>Implementation Science,</em> vol. 6, no. 42, 2011. <a href="https://behaviourchangewheel.com" target="_blank" rel="noopener">behaviourchangewheel.com</a></p>
+    </div>
+
+    <div class="citation-entry">
+      <p class="citation-label">Nudge Theory</p>
+      <p><strong>Thaler, R.H. &amp; Sunstein, C.R.</strong> <em>Nudge: Improving Decisions About Health, Wealth, and Happiness.</em> Yale University Press, 2008.</p>
+    </div>
+
+    <p class="citation-group-heading" id="cite-od">Organizational Development and Systems Thinking</p>
+
+    <div class="citation-entry">
+      <p class="citation-label">Learning organization and systems thinking</p>
+      <p><strong>Senge, P.M.</strong> <em>The Fifth Discipline: The Art and Practice of the Learning Organization.</em> Doubleday, 1990.</p>
+    </div>
+
+    <div class="citation-entry">
+      <p class="citation-label">Organizational culture</p>
+      <p><strong>Schein, E.H.</strong> <em>Organizational Culture and Leadership.</em> 5th ed., Wiley, 2017.</p>
+    </div>
+
+    <p class="citation-group-heading" id="cite-neuro">Neuroscience of Learning and Change</p>
+
+    <div class="citation-entry">
+      <p class="citation-label">SCARF model and neuroscience of change</p>
+      <p><strong>Rock, D.</strong> <em>Your Brain at Work: Strategies for Overcoming Distraction, Regaining Focus, and Working Smarter All Day Long.</em> HarperCollins, 2009. See also <a href="https://neuroleadership.com" target="_blank" rel="noopener">neuroleadership.com</a></p>
+    </div>
+
+    <div class="citation-entry">
+      <p class="citation-label">Emotion and learning</p>
+      <p><strong>Immordino-Yang, M.H.</strong> <em>Emotions, Learning, and the Brain: Exploring the Educational Implications of Affective Neuroscience.</em> W.W. Norton, 2016.</p>
+    </div>
+
+    <p class="citation-group-heading" id="cite-eval">Evaluation Frameworks</p>
+
+    <div class="citation-entry">
+      <p class="citation-label">Four-level evaluation model</p>
+      <p><strong>Kirkpatrick, J.D. &amp; Kirkpatrick, W.K.</strong> <em>Kirkpatrick's Four Levels of Training Evaluation.</em> ATD Press, 2016. <a href="https://www.kirkpatrickpartners.com" target="_blank" rel="noopener">kirkpatrickpartners.com</a></p>
+    </div>
+
+    <div class="citation-entry">
+      <p class="citation-label">ROI Methodology</p>
+      <p><strong>Phillips, J.J. &amp; Phillips, P.P.</strong> <em>Handbook of Training Evaluation and Measurement Methods.</em> 4th ed., Routledge, 2016.</p>
+    </div>
+
+    <p class="citation-group-heading" id="cite-bok">Professional Bodies of Knowledge</p>
+
+    <div class="citation-entry">
+      <p class="citation-label">Talent development professional framework</p>
+      <p><strong>Association for Talent Development.</strong> <em>ATD Talent Development Capability Model.</em> ATD Press. <a href="https://www.td.org" target="_blank" rel="noopener">td.org</a></p>
+    </div>
+
+    <div class="citation-entry">
+      <p class="citation-label">Change management professional standard</p>
+      <p><strong>Association of Change Management Professionals (ACMP).</strong> <em>Standard for Change Management.</em> ACMP, 2019. <a href="https://www.acmpglobal.org" target="_blank" rel="noopener">acmpglobal.org</a></p>
+    </div>
+
+  </div>
+
+  <a class="back-to-top" href="#toc">&#8593; Back to contents</a>
+
+  <footer class="page-footer">
+    This resource synthesizes established frameworks in change management, learning design, behavioral science, adult learning theory, and organizational development. It is designed to support practitioners and leaders navigating the intersection of organizational change and intentional learning design.<br><br>
+    An <a href="change-management-learning-design.html">interactive version of this resource</a> with tabs and expandable sections is also available.
+  </footer>
+
+</main>
+</body>
+</html>
