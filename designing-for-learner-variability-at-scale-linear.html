@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Designing for Learner Variability at Scale — Knowledge Resource</title>
+  <link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f6f7;
+      --surface-alt: #eaecee;
+      --ink: #303e44;
+      --ink-mid: #4f6068;
+      --ink-light: #7a9098;
+      --accent: #475f6a;
+      --accent-light: #e4eaed;
+      --accent-mid: #7a9aa8;
+      --border: #d5dde1;
+      --border-strong: #b5c5cc;
+      --font: 'Asap', system-ui, sans-serif;
+      --max: 740px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font); background: var(--bg); color: var(--ink); font-size: 16px; line-height: 1.7; }
+
+    /* Skip links */
+    .skip-link { position: absolute; top: -100px; left: 1rem; background: var(--accent); color: #fff; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-size: 0.85rem; z-index: 999; }
+    .skip-link:focus { top: 1rem; }
+
+    /* Header */
+    header { background: var(--bg); border-bottom: 1px solid var(--border); padding: 0 2rem; }
+    .header-inner { max-width: var(--max); margin: 0 auto; padding: 2.25rem 0 2rem; }
+    .site-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+    header h1 { font-size: 1.9rem; font-weight: 700; line-height: 1.2; color: var(--ink); }
+    .header-sub { font-size: 0.95rem; color: var(--ink-mid); margin-top: 0.6rem; line-height: 1.6; }
+    .version-note { background: var(--accent-light); border-left: 3px solid var(--accent); margin-top: 1.25rem; padding: 0.7rem 1rem; font-size: 0.84rem; color: var(--ink-mid); border-radius: 0 4px 4px 0; line-height: 1.6; }
+    .version-note a { color: var(--accent); }
+
+    /* Main layout */
+    main { max-width: var(--max); margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+    /* Table of contents */
+    #toc { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem 1.75rem; margin-bottom: 3rem; }
+    #toc h2 { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 1rem; }
+    #toc ol { padding-left: 1.25rem; }
+    #toc > ol > li { margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 600; color: var(--ink); }
+    #toc > ol > li > a { color: var(--ink); text-decoration: none; }
+    #toc > ol > li > a:hover { text-decoration: underline; color: var(--accent); }
+    #toc ul { padding-left: 1.1rem; margin-top: 0.3rem; list-style: disc; }
+    #toc ul li { margin-bottom: 0.2rem; font-size: 0.85rem; font-weight: 400; }
+    #toc ul li a { color: var(--ink-mid); text-decoration: none; }
+    #toc ul li a:hover { text-decoration: underline; color: var(--accent); }
+
+    /* Section markers */
+    .section-marker { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-light); display: block; margin-bottom: 0.5rem; }
+
+    /* Headings */
+    h2 { font-size: 1.55rem; font-weight: 700; color: var(--ink); margin-bottom: 0.65rem; line-height: 1.25; }
+    h3 { font-size: 1.1rem; font-weight: 600; color: var(--ink); margin: 2rem 0 0.5rem; }
+    h4 { font-size: 0.95rem; font-weight: 600; color: var(--ink); margin: 1.5rem 0 0.4rem; }
+
+    /* Section block */
+    .section-block { border-top: 2px solid var(--border); padding-top: 2.5rem; margin-top: 3rem; }
+    .section-block:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+
+    /* Stage header */
+    .stage-header { display: flex; align-items: baseline; gap: 0.75rem; margin: 2rem 0 0.5rem; padding-bottom: 0.65rem; border-bottom: 1px solid var(--border); }
+    .stage-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); background: var(--accent-light); padding: 0.2rem 0.6rem; border-radius: 999px; flex-shrink: 0; }
+    .stage-header h3 { margin: 0; font-size: 1rem; }
+    .stage-sub { font-size: 0.82rem; color: var(--ink-light); margin-top: 0.2rem; }
+
+    /* Body text */
+    p { font-size: 0.925rem; color: var(--ink-mid); line-height: 1.75; margin-bottom: 0.85rem; }
+    p strong { color: var(--ink); }
+    p:last-child { margin-bottom: 0; }
+
+    /* Lists */
+    ul, ol { padding-left: 1.3rem; margin: 0.6rem 0 1rem; }
+    li { font-size: 0.925rem; color: var(--ink-mid); line-height: 1.65; margin-bottom: 0.3rem; }
+    li strong { color: var(--ink); }
+
+    /* Produces box */
+    .produces { background: var(--surface); border-radius: 6px; padding: 1rem 1.2rem; margin: 1rem 0; }
+    .produces-label { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink-light); display: block; margin-bottom: 0.5rem; }
+    .produces ul { margin: 0; }
+
+    /* Note */
+    .note { font-size: 0.84rem; font-style: italic; color: var(--ink-light); margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+
+    /* Callout */
+    .callout { background: var(--accent-light); border-left: 3px solid var(--accent); padding: 1rem 1.2rem; margin: 1.5rem 0; border-radius: 0 6px 6px 0; }
+    .callout-label { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 0.4rem; }
+    .callout p { font-size: 0.9rem; margin-bottom: 0; }
+
+    /* Decision subsection */
+    .decision-group { margin: 1.75rem 0; }
+    .decision-group h3 { font-size: 0.9rem; font-weight: 700; color: var(--ink); margin: 0 0 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+    .decision-item { margin-bottom: 1rem; }
+    .decision-item h4 { font-size: 0.88rem; font-weight: 600; color: var(--ink); margin: 0 0 0.2rem; }
+    .decision-item p { font-size: 0.875rem; margin-bottom: 0; }
+
+    /* Impact table */
+    .impact-table { width: 100%; border-collapse: collapse; margin: 1.25rem 0; font-size: 0.875rem; }
+    .impact-table th { text-align: left; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-light); padding: 0.6rem 0.85rem; background: var(--surface); border: 1px solid var(--border); }
+    .impact-table td { padding: 0.85rem; border: 1px solid var(--border); vertical-align: top; color: var(--ink-mid); line-height: 1.6; }
+    .impact-table td strong { color: var(--ink); display: block; margin-bottom: 0.2rem; }
+    .impact-table tr:nth-child(even) td { background: var(--surface); }
+
+    /* Reflection questions */
+    .reflection-group { margin: 1.75rem 0; }
+    .reflection-group h3 { font-size: 0.9rem; font-weight: 700; color: var(--ink); margin: 0 0 0.65rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+    .reflection-group ul { list-style: none; padding: 0; margin: 0; }
+    .reflection-group ul li { font-size: 0.9rem; color: var(--ink-mid); line-height: 1.65; padding: 0.6rem 0; border-bottom: 1px dashed var(--border); display: flex; gap: 0.6rem; align-items: flex-start; }
+    .reflection-group ul li:last-child { border-bottom: none; }
+    .reflection-group ul li .q-icon { flex-shrink: 0; font-size: 1rem; margin-top: 0.05rem; }
+
+    /* Citations */
+    .citation-group { margin-bottom: 1.75rem; }
+    .citation-group-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 0.65rem; padding-bottom: 0.35rem; border-bottom: 1px solid var(--border); }
+    .citation-entry { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0.8rem 1rem; margin-bottom: 0.45rem; }
+    .citation-entry .cite-label { font-size: 0.67rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.2rem; display: block; }
+    .citation-entry p { font-size: 0.84rem; margin-bottom: 0; }
+    .citation-entry a { color: var(--accent); text-decoration: none; font-size: 0.81rem; display: block; margin-top: 0.25rem; word-break: break-all; }
+    .citation-entry a:hover { text-decoration: underline; }
+
+    /* Back to top */
+    .back-to-top { display: inline-block; margin-top: 2.5rem; font-size: 0.85rem; color: var(--accent); text-decoration: none; }
+    .back-to-top:hover { text-decoration: underline; }
+
+    /* Footer credit */
+    .page-credit { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.83rem; color: var(--ink-light); line-height: 1.65; }
+    .page-credit a { color: var(--accent); text-decoration: none; }
+    .page-credit a:hover { text-decoration: underline; }
+
+    footer { border-top: 1px solid var(--border); background: var(--surface); padding: 1.5rem 2rem; text-align: center; font-size: 0.78rem; color: var(--ink-light); }
+
+    @media (max-width: 640px) {
+      main { padding: 1.5rem 1rem 4rem; }
+      header { padding: 0 1rem; }
+      header h1 { font-size: 1.5rem; }
+      .impact-table { font-size: 0.82rem; }
+      .impact-table td, .impact-table th { padding: 0.65rem; }
+    }
+  </style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<a href="#toc" class="skip-link" style="left: 12rem;">Skip to table of contents</a>
+
+<header>
+  <div class="header-inner">
+    <div class="site-label">Universal Design for Learning — Knowledge Resource</div>
+    <h1>Designing for Learner Variability at Scale</h1>
+    <p class="header-sub">A guide to the knowledge foundations, design process, key decisions, and professional practice that allow one learning experience to serve the full range of learners — without per-person retrofitting.</p>
+    <p class="version-note"><strong>Screen reader and keyboard-optimised version.</strong> This is a fully linear, plain-structure version of this resource. All content is presented in reading order with no tabs, accordions, or JavaScript. An <a href="designing-for-learner-variability-at-scale.html">interactive version with tabs and expandable sections</a> is also available.</p>
+  </div>
+</header>
+
+<main id="main-content">
+
+  <!-- TABLE OF CONTENTS -->
+  <nav id="toc" aria-label="Table of contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#foundations">Knowledge Foundations</a>
+        <ul>
+          <li><a href="#ten-foundations">The ten knowledge foundations</a></li>
+          <li><a href="#cross-cutting">The cross-cutting thread: learner variability science</a></li>
+          <li><a href="#synthesizing">A synthesizing framework, not a single theory</a></li>
+          <li><a href="#at-scale">Why "at scale" changes the problem</a></li>
+        </ul>
+      </li>
+      <li><a href="#process">Design Process</a>
+        <ul>
+          <li><a href="#stage-1">Stage 1: Define the goal — and separate it from the means</a></li>
+          <li><a href="#stage-2">Stage 2: Analyze learner variability and predictable barriers</a></li>
+          <li><a href="#stage-3">Stage 3: Design assessment and strip construct-irrelevant variance</a></li>
+          <li><a href="#stage-4">Stage 4: Design multiple means across the three principles</a></li>
+          <li><a href="#stage-5">Stage 5: Build accessible, multimodal materials</a></li>
+          <li><a href="#stage-6">Stage 6: Implement, pilot, and gather learner feedback</a></li>
+          <li><a href="#stage-7">Stage 7: Evaluate whether barriers were actually reduced</a></li>
+        </ul>
+      </li>
+      <li><a href="#decisions">Key Decisions That Shape a Project</a></li>
+      <li><a href="#competencies">Core Competencies</a></li>
+      <li><a href="#impact">Outcomes</a>
+        <ul>
+          <li><a href="#short-term">Shorter-term outcomes</a></li>
+          <li><a href="#long-term">Longer-term change</a></li>
+        </ul>
+      </li>
+      <li><a href="#reflection">Organizational Reflection</a></li>
+      <li><a href="#citations">Citations</a></li>
+    </ol>
+  </nav>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 1: FOUNDATIONS
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="foundations">
+    <span class="section-marker">Section 1</span>
+    <h2>Knowledge Foundations</h2>
+
+    <p>Universal Design for Learning is a synthesizing framework, so genuine expertise in designing for variability draws on the feeder disciplines below. The strongest design work holds these in view simultaneously — producing solutions that a single-discipline approach cannot. They are ordered roughly by how load-bearing each is.</p>
+
+    <h3 id="ten-foundations">The ten knowledge foundations</h3>
+
+    <h4>1. Learning Sciences and the Neuroscience of Learning</h4>
+    <p>UDL is built on the premise that learning engages distinct neural networks — affective, recognition, and strategic — which map onto its three principles. Cognitive load theory, working memory, and how the brain processes novel information ground every decision about flexible instruction.</p>
+
+    <h4>2. Adult Learning Theory</h4>
+    <p>Knowles's andragogy and the broader literature on self-directed learning explain how adults differ from younger learners: they bring extensive experience, expect relevance and autonomy, and are often internally motivated. This is the specialization that distinguishes the work from K–12 practice.</p>
+
+    <h4>3. Transformative and Experiential Learning</h4>
+    <p>Mezirow's transformative learning, Kolb's experiential cycle, and Schön's reflective practice describe how adults make meaning, revise assumptions, and learn through experience and reflection — central to designing meaningful engagement and expression options for mature learners.</p>
+
+    <h4>4. Motivation and Self-Determination Science</h4>
+    <p>Deci and Ryan's self-determination theory, Bandura's self-efficacy, and expectancy-value models underpin the engagement principle. Because adult participation is frequently voluntary, autonomy, competence, and relevance are not enrichment — they are conditions for participation at all.</p>
+
+    <h4>5. Disability Studies and Accessibility</h4>
+    <p>UDL grew out of the disability rights movement. The social model of disability, accessibility standards such as WCAG, assistive technology, and accommodation law ground a commitment to removing barriers in the environment rather than locating the deficit in the learner.</p>
+
+    <h4>6. Universal Design (the Parent Philosophy)</h4>
+    <p>Ronald Mace's original Universal Design in architecture and product design — and its seven principles — supply the conceptual DNA: design proactively for the full range of human variation rather than retrofitting after exclusion has already occurred.</p>
+
+    <h4>7. Instructional and Learning Design</h4>
+    <p>Backward design (Understanding by Design), ADDIE, and the principles of curricular alignment translate UDL ideals into actual course architecture — ensuring goals, methods, materials, and assessments cohere rather than fracturing under added flexibility.</p>
+
+    <h4>8. Assessment and Educational Measurement</h4>
+    <p>Validity, authentic assessment, and especially construct-irrelevant variance let a practitioner distinguish when an assessment measures the intended competency versus an incidental barrier — reading speed, tech fluency, or test anxiety. This is the measurement spine of inclusive design.</p>
+
+    <h4>9. Educational Technology and Multimedia Learning</h4>
+    <p>Mayer's cognitive theory of multimedia learning, fluency with learning platforms and authoring tools, and emerging AI tooling make multiple means of representation and expression practical rather than prohibitively labor-intensive at scale.</p>
+
+    <h4>10. Culturally Responsive and Equity-Centered Pedagogy</h4>
+    <p>Work on inclusive pedagogy, intersectionality, and learner identity addresses the social and cultural barriers learners encounter — not just the cognitive ones. The 2024 UDL Guidelines make this dimension explicit, treating identity as part of variability rather than separate from it.</p>
+
+    <h3 id="cross-cutting">The cross-cutting thread: learner variability science</h3>
+
+    <div class="callout">
+      <span class="callout-label">The cross-cutting thread</span>
+      <p>Running through all ten is <strong>learner variability science</strong> — the "science of individuality" associated with Todd Rose — which supplies the empirical argument that the "average learner" is a statistical artifact rather than a real person. A program built for that average works in the middle and fails at both edges. Designing for variability treats range, not the mean, as the realistic default.</p>
+    </div>
+
+    <h3 id="synthesizing">A synthesizing framework, not a single theory</h3>
+
+    <p>No one of these disciplines is sufficient on its own. The neuroscience explains why variability is the norm; disability studies supplies the ethical and historical commitment; measurement theory determines whether a flexible assessment is still valid; instructional design keeps the whole thing coherent as a course. Expertise is the capacity to draw on the right body of knowledge for the decision at hand, and to recognize when a barrier belongs to one discipline rather than another.</p>
+
+    <p><strong>The linchpin skill</strong> that ties them together is goal–means separation: stating a learning goal cleanly so that the goal is fixed but the means of reaching and demonstrating it remain flexible. "Write a persuasive essay" smuggles a method into the goal; "construct and defend a persuasive argument" does not. Most design failures trace back to a goal with a method baked into it — and most of the ten foundations exist, in practice, to inform how that separation is made and acted upon.</p>
+
+    <h3 id="at-scale">Why "at scale" changes the problem</h3>
+
+    <p>Designing for one learner is accommodation. Designing so that one experience serves many learners — across disability, language, prior experience, motivation, and circumstance — is design. The shift from the first to the second is what "at scale" names. It moves inclusion from a reactive, per-person, retrofit cost to a proactive design property, where access is built in once rather than negotiated repeatedly. This is the thesis from which the remaining sections of this resource follow.</p>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 2: PROCESS
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="process">
+    <span class="section-marker">Section 2</span>
+    <h2>Design Process</h2>
+
+    <p>The process is a backward-design cycle adapted for learner variability: it begins with the goal, separates that goal from any particular method, and treats each design as a hypothesis to be tested against whether barriers were actually reduced. The stages below represent a comprehensive approach; in practice, depth is calibrated to context. Understanding the full process clarifies what is gained or lost when stages are abbreviated.</p>
+
+    <!-- Stage 1 -->
+    <div id="stage-1">
+      <div class="stage-header">
+        <span class="stage-label">Stage 1</span>
+        <h3>Define the Goal — and Separate It from the Means</h3>
+      </div>
+      <p class="stage-sub">Stating what must be learned without prescribing how</p>
+      <p>Before any design begins, the learning goal is stated cleanly enough that the competency is fixed while the path to it remains open. This is the most consequential step in the entire process: a goal with a method baked into it ("write an essay," "give a live presentation") quietly excludes capable learners for whom that method is itself the barrier.</p>
+      <p>The work here is distinguishing the construct — the actual capability being developed — from the conventional way it has historically been taught or demonstrated. Done well, it makes every later decision about options easier, because the options follow naturally once the goal is clean.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>Learning goals stated as fixed competencies, free of embedded methods</li>
+          <li>Explicit separation of construct-relevant skill from incidental format</li>
+          <li>Shared agreement with stakeholders on what is, and is not, being measured</li>
+        </ul>
+      </div>
+      <p class="note">Designs that skip this step tend to generate flexibility in the wrong places — adding options around a goal that still contains a hidden barrier.</p>
+    </div>
+
+    <!-- Stage 2 -->
+    <div id="stage-2">
+      <div class="stage-header">
+        <span class="stage-label">Stage 2</span>
+        <h3>Analyze Learner Variability and Predictable Barriers</h3>
+      </div>
+      <p class="stage-sub">Mapping the range before designing for it</p>
+      <p>This stage characterizes the actual range of learners — across prior experience, language, sensory and motor access, attention, motivation, and circumstance — rather than designing for an imagined typical participant. It draws on human-centered research methods: interviews, observation, and review of existing performance data.</p>
+      <p>The analytical core is distinguishing construct-relevant difficulty — the desirable struggle that <em>is</em> the learning — from construct-irrelevant barriers that block some learners for reasons unrelated to the goal. Removing the second without flattening the first is a matter of expert judgment, not a checklist.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>A profile of the learner range, not a single persona</li>
+          <li>An inventory of predictable barriers, sorted by which are construct-relevant</li>
+          <li>Evidence about where current designs already fail at the edges</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Stage 3 -->
+    <div id="stage-3">
+      <div class="stage-header">
+        <span class="stage-label">Stage 3</span>
+        <h3>Design Assessment and Strip Construct-Irrelevant Variance</h3>
+      </div>
+      <p class="stage-sub">Deciding how mastery will be demonstrated — validly</p>
+      <p>In backward design, assessment is settled before activities. Here the question is how learners will demonstrate the fixed competency through varied means, while the assessment continues to measure the intended construct and nothing incidental. Construct-irrelevant variance — when scores are influenced by factors irrelevant to the construct — is the central threat to validity this stage exists to remove.</p>
+      <p>Flexible, authentic assessment widens the means of demonstration without widening what is being measured. An assessment that quietly rewards reading speed or tech fluency produces invalid signals about who can actually do the work.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>Assessment options aligned to the goal, with the construct held constant</li>
+          <li>A documented rationale for why each option measures the same competency</li>
+          <li>Rubrics that evaluate the construct rather than the format chosen</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Stage 4 -->
+    <div id="stage-4">
+      <div class="stage-header">
+        <span class="stage-label">Stage 4</span>
+        <h3>Design Multiple Means Across the Three Principles</h3>
+      </div>
+      <p class="stage-sub">Building flexible pathways in from the start</p>
+      <p>With the goal and assessment fixed, the design provides multiple means of engagement (the "why" of learning), representation (the "what"), and action and expression (the "how"). Options are placed deliberately where the barrier analysis showed they were needed — not scattered for their own sake.</p>
+      <p>A key judgment here is knowing how many options is enough. Unlimited choice imposes its own cognitive load, so the work is offering meaningful alternatives at the points of real friction while keeping the path navigable. The three principles provide the structure; cognitive load theory provides the restraint.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>A learning architecture with options mapped to identified barriers</li>
+          <li>Engagement, representation, and expression alternatives that share one goal</li>
+          <li>A storyboard or prototype for stakeholder and learner review</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Stage 5 -->
+    <div id="stage-5">
+      <div class="stage-header">
+        <span class="stage-label">Stage 5</span>
+        <h3>Build Accessible, Multimodal Materials</h3>
+      </div>
+      <p class="stage-sub">Making the design real without reintroducing barriers</p>
+      <p>Development produces the actual materials: multimodal content, accessible documents and media, and platform builds. Accessibility is built in, not retrofitted — alt text, caption quality, keyboard navigability, color contrast, and flexible pacing are part of construction rather than a later remediation pass.</p>
+      <p>Standards such as WCAG function as the floor, not the ceiling: conformance is necessary but does not by itself guarantee that anyone is actually included. Sound multimedia design principles govern how representations are built across modalities so that flexibility aids rather than overwhelms.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>Standards-conformant, multimodal learning materials</li>
+          <li>Accessible media — captions, alt text, contrast-compliant visuals, navigable structure</li>
+          <li>Production approaches that make added options sustainable rather than one-off</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Stage 6 -->
+    <div id="stage-6">
+      <div class="stage-header">
+        <span class="stage-label">Stage 6</span>
+        <h3>Implement, Pilot, and Gather Learner Feedback</h3>
+      </div>
+      <p class="stage-sub">Testing the design with the people it is for</p>
+      <p>The design meets real learners — ideally first in a pilot — and feedback is gathered from across the range, with particular attention to those at the edges the original analysis identified. Involving learners who experience the barriers directly consistently improves relevance and reduces post-launch revision.</p>
+      <p>This stage treats co-design as a method rather than a courtesy: the people whose access is most often overlooked are the ones best positioned to reveal where a design still falls short.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>Pilot findings on where options were used and where barriers persisted</li>
+          <li>Learner feedback weighted toward the edges of the range</li>
+          <li>A prioritized list of refinements before full release</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Stage 7 -->
+    <div id="stage-7">
+      <div class="stage-header">
+        <span class="stage-label">Stage 7</span>
+        <h3>Evaluate Whether Barriers Were Actually Reduced</h3>
+      </div>
+      <p class="stage-sub">Treating each design as a hypothesis to be tested</p>
+      <p>UDL is a cyclical process, not a one-time build. Evaluation asks the question the whole effort exists to answer: did the options that were built actually reduce barriers, and for whom? Evidence comes from completion and performance patterns across the learner range, the uptake of provided options, and direct learner report — not from the assertion that a design is inclusive.</p>
+      <p>Findings feed back into the goal and barrier analysis, and the cycle repeats. Ending on evidence rather than aspiration is what distinguishes rigorous practice from good intentions.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>Evidence on barrier reduction disaggregated across the learner range</li>
+          <li>Analysis of which options were used, and which went unused</li>
+          <li>A prioritized iteration plan that returns to Stage 1</li>
+        </ul>
+      </div>
+      <p class="note">Calling a design "inclusive" without disaggregated evidence is the most common way the work decays into a compliance claim. The measurement loop is what keeps it honest.</p>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 3: KEY DECISIONS
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="decisions">
+    <span class="section-marker">Section 3</span>
+    <h2>Key Decisions That Shape a Project</h2>
+
+    <p>No two projects are identical. Decisions about how the goal is framed, when access is built, how options are bounded, and how validity is protected determine whether a design genuinely reaches the full range — or only appears to. These dimensions also shape how the work is structured collaboratively with the organization.</p>
+
+    <div class="decision-group">
+      <h3>Goal–means separation: have we separated the competency from the method?</h3>
+      <p>The most consequential decision in the work. A goal that embeds a method ("write," "present live") quietly excludes learners for whom that method is the barrier. Stating the goal as a fixed competency with flexible means is what makes every downstream option coherent rather than arbitrary.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Proactive vs. retrofit: are we building access in, or accommodating after?</h3>
+      <p>The reactive model — wait for disclosure, then retrofit — is slow, stigmatizing, costly, and legally exposed. Designing access in from the start reduces the number of retrofits ever needed. This reframe, from accommodation to proactive design, is the defining move of the field.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Modality and multimodality: which options reduce barriers, and which just add noise?</h3>
+      <p>Multiple representations and pathways serve different learners — but each must earn its place against a barrier identified in analysis. Options added for their own sake increase cognitive load without increasing access. Modality follows the analysis; it does not precede it.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Learner co-design: are the people who experience the barriers in the room?</h3>
+      <p>Co-design with learners — especially those whose access is most often overlooked — improves relevance and surfaces barriers a design team cannot see from the outside. It is particularly valuable when designing for communities not well represented among the designers or subject matter experts.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Assessment validity: is the assessment measuring the competency or an incidental barrier?</h3>
+      <p>Flexible assessment must still measure the intended construct. Construct-irrelevant variance — scores shaped by reading speed, tech fluency, or anxiety — produces invalid signals about who can do the work. Protecting validity while widening the means of demonstration is core expert judgment.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Scale economics: how do we add options without multiplying production cost?</h3>
+      <p>Flexibility has historically meant more production labor, which is why personalization is often cut as unaffordable. UDL as the design logic — paired with current tooling, including AI — is what makes multiple representations and pathways economical rather than prohibitive at scale.</p>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">On options vs. overload</span>
+      <p>More choice is not automatically more inclusive. Unlimited options create their own cognitive load and can leave learners worse off than a single clear path. The expert discipline is offering meaningful alternatives precisely where the barrier analysis showed friction — and resisting the temptation to add options everywhere else. Flexibility is a scalpel, not a volume dial.</p>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 4: COMPETENCIES
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="competencies">
+    <span class="section-marker">Section 4</span>
+    <h2>Core Competencies</h2>
+
+    <p>Where the foundations describe what an expert knows, competencies describe what an expert can reliably do — knowledge, skill, and disposition fused into demonstrable practice. They are not equally weighted: the design competencies are the heart of the craft, and everything else exists to serve them.</p>
+
+    <h3>Framework fluency</h3>
+    <p>Using the UDL framework rather than reciting it — the three principles, the current guidelines and considerations, and crucially the rationale behind them. An expert can explain to a skeptical subject matter expert why designing for variability is the realistic default rather than an accommodation afterthought, and can locate precisely where in an experience a given barrier occurs.</p>
+
+    <h3>Goal–means separation</h3>
+    <p>The linchpin skill of the discipline: stating a learning goal so the competency is fixed but the means of reaching and demonstrating it stay flexible. Most design failures trace to a goal with a method baked into it. A designer who has internalized this tends to generate the right options, assessments, and barriers-to-remove almost as downstream consequences.</p>
+
+    <h3>Barrier identification</h3>
+    <p>Distinguishing construct-relevant difficulty — the desirable struggle that is the learning — from construct-irrelevant barriers that block some learners for reasons unrelated to the goal. Removing the second without flattening the first is genuine expert judgment, not a checklist exercise.</p>
+
+    <h3>Proactive option design and alignment</h3>
+    <p>Building flexible pathways and multiple means in from the start — and knowing how many options is enough, since unlimited choice creates its own cognitive load. Backward design keeps goals, assessments, methods, and materials coherent so that added flexibility does not fracture the experience.</p>
+
+    <h3>Accessible, multimodal production</h3>
+    <p>Actually making accessible, multimodal materials: meeting accessibility standards (alt text, captions, accessible documents and navigation), designing representation across modalities using sound multimedia principles, and fluency with the relevant tools — the platform, authoring software, assistive technologies, and increasingly AI tools that make flexibility scalable.</p>
+
+    <h3>Engagement and facilitation, tuned for adults</h3>
+    <p>Designing for motivation — autonomy, relevance, competence, and value — in a way that respects what adult learners bring: substantial prior experience, the expectation of self-direction, and usually voluntary participation. The engagement principle does the most work with adults and is the one most often underdeveloped in practice.</p>
+
+    <h3>Valid, authentic assessment and evaluation</h3>
+    <p>Two distinct abilities: designing flexible, authentic assessment that lets learners demonstrate mastery through varied means while still measuring the intended construct; and evaluating one's own designs — gathering evidence on whether the options built actually reduced barriers, then iterating. Every design is treated as a hypothesis to be tested.</p>
+
+    <h3>Collaboration, advocacy, and reflective practice</h3>
+    <p>Expertise rarely operates solo. This includes co-design with subject matter experts, accessibility staff, and learners themselves; advocacy and change leadership, since adopting UDL is usually an institutional shift that must be coached and championed; and reflective practice anchored in a real equity commitment, so the work does not decay into a compliance checklist.</p>
+
+    <div class="callout">
+      <span class="callout-label">The predictive competency</span>
+      <p>If one competency most reliably predicts the rest, it is goal–means separation. A designer who has truly internalized it tends to produce the right options and the right assessments as natural consequences. A designer who has not will generate a great deal of activity that does not add up to reduced barriers.</p>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 5: OUTCOMES
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="impact">
+    <span class="section-marker">Section 5</span>
+    <h2>Outcomes</h2>
+
+    <p>Rigorous design for learner variability creates change at two horizons. The shorter-term outcomes are tangible and measurable within a program. The longer-term shift changes how an organization builds and sustains access over time.</p>
+
+    <h3 id="short-term">Shorter-term outcomes: what becomes visible and actionable</h3>
+
+    <table class="impact-table" aria-label="Shorter-term outcomes of designing for learner variability">
+      <thead>
+        <tr>
+          <th scope="col">Outcome</th>
+          <th scope="col">What this looks like in practice</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>The design works at the edges, not just the middle</strong>A program built for the range rather than the average.</td>
+          <td>Learners previously served poorly or not at all are reached — without a separate accommodation process for each one.</td>
+        </tr>
+        <tr>
+          <td><strong>Assessments produce valid signals</strong>Construct-irrelevant variance is removed from how mastery is measured.</td>
+          <td>Results reflect the actual competency rather than reading speed, tech fluency, or anxiety — improving downstream decisions about who can do the work.</td>
+        </tr>
+        <tr>
+          <td><strong>Fewer retrofits are required</strong>Access is designed in from the start rather than added on request.</td>
+          <td>The volume of reactive, per-person accommodations falls — lowering cost, delay, and the stigma attached to disclosure.</td>
+        </tr>
+        <tr>
+          <td><strong>Evidence replaces assertion</strong>Disaggregated data on barrier reduction is gathered as part of the design.</td>
+          <td>A team can show that a design is inclusive rather than claim it — and can see precisely where it is not yet.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 id="long-term">Longer-term change: what becomes embedded in practice</h3>
+
+    <table class="impact-table" aria-label="Longer-term outcomes of sustained design for learner variability">
+      <thead>
+        <tr>
+          <th scope="col">Outcome</th>
+          <th scope="col">What this looks like in practice</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Inclusion becomes a design property, not a service</strong>Access is engineered into the experience once rather than negotiated repeatedly.</td>
+          <td>The economics and the ethics of the work both shift — access stops being a per-learner transaction.</td>
+        </tr>
+        <tr>
+          <td><strong>Personalization becomes affordable at scale</strong>UDL as the design logic, paired with current tooling.</td>
+          <td>Multiple pathways are economical rather than prohibitive, so flexibility survives budget scrutiny instead of being cut first.</td>
+        </tr>
+        <tr>
+          <td><strong>A culture of iteration takes hold</strong>Each design is treated as a tested hypothesis.</td>
+          <td>The organization measures barrier reduction and refines, rather than declaring a build finished and inclusive.</td>
+        </tr>
+        <tr>
+          <td><strong>Equity moves beyond compliance</strong>Standards are treated as the floor and design as the real work.</td>
+          <td>Social, cultural, and identity barriers are addressed alongside cognitive ones — rather than clearing legal review while including no one new.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <span class="callout-label">On the limits of the claim</span>
+      <p>Designing for variability reduces the barriers that live in the learning environment. It does not, by itself, resolve barriers rooted in resourcing, policy, or structural inequity beyond the design. Rigorous practice distinguishes clearly between what flexible design can accomplish and what requires change elsewhere — and is honest about the difference rather than overstating the reach of the work.</p>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 6: REFLECTION
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="reflection">
+    <span class="section-marker">Section 6</span>
+    <h2>Organizational Reflection</h2>
+
+    <p>The questions below are intended to help surface useful considerations about how your organization currently designs for learner variability. They are not a formal assessment. Take your time with them — the most useful answers are honest ones, not aspirational ones. Working through these with colleagues who hold different roles and perspectives tends to be more productive than working through them alone.</p>
+
+    <div class="reflection-group">
+      <h3>On how you write goals</h3>
+      <ul>
+        <li><span class="q-icon">→</span> When you read your current learning goals, how often do they specify a method ("write," "present live") rather than the underlying competency?</li>
+        <li><span class="q-icon">→</span> Where might a goal be quietly excluding capable learners because the method it names is itself a barrier for some of them?</li>
+        <li><span class="q-icon">→</span> What would it take, in your process, to settle the competency before anyone decides how it will be taught or demonstrated?</li>
+      </ul>
+    </div>
+
+    <div class="reflection-group">
+      <h3>On how you build access</h3>
+      <ul>
+        <li><span class="q-icon">→</span> At what point in your design and development process does accessibility currently get considered — and what happens as a result?</li>
+        <li><span class="q-icon">→</span> Where does access tend to be handled reactively, by request, rather than designed in from the start?</li>
+        <li><span class="q-icon">→</span> Are there learner groups whose experience of your programs you know relatively little about — and what would it take to understand it better?</li>
+      </ul>
+    </div>
+
+    <div class="reflection-group">
+      <h3>On assessment validity</h3>
+      <ul>
+        <li><span class="q-icon">→</span> Which of your assessments might be measuring something incidental — reading speed, tech fluency, test anxiety — rather than the competency they claim to measure?</li>
+        <li><span class="q-icon">→</span> Where do you offer flexibility in how mastery is demonstrated, and how do you know each option still measures the same construct?</li>
+        <li><span class="q-icon">→</span> What desirable struggle is genuinely part of the learning, and must therefore be preserved rather than designed away?</li>
+      </ul>
+    </div>
+
+    <div class="reflection-group">
+      <h3>On evidence of barrier reduction</h3>
+      <ul>
+        <li><span class="q-icon">→</span> How does your organization currently know whether a design actually reduced barriers — and for whom?</li>
+        <li><span class="q-icon">→</span> Where do you describe programs as inclusive without evidence specific to barrier reduction across the learner range?</li>
+        <li><span class="q-icon">→</span> What would a realistic next step look like — given current resources, constraints, and the people who have the authority to move things forward?</li>
+      </ul>
+    </div>
+
+    <p>The organizations that make meaningful progress on inclusive design tend to be those that create space for honest conversations about where the barriers actually are — not where they would like them to be.</p>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 7: CITATIONS
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="citations">
+    <span class="section-marker">Section 7</span>
+    <h2>Citations</h2>
+
+    <p>The knowledge claims, frameworks, and evidence in this resource draw on established scholarship and professional practice. Sources are grouped by the foundation they primarily support, and all are independently verifiable.</p>
+
+    <div class="citation-group">
+      <div class="citation-group-label">UDL Framework (Anchor)</div>
+      <div class="citation-entry">
+        <span class="cite-label">Current guidelines</span>
+        <p><strong>CAST.</strong> Universal Design for Learning Guidelines, Version 3.0. Wakefield, MA: CAST, 2024. Released July 30, 2024; the current version of the three principles and their considerations.</p>
+        <a href="https://udlguidelines.cast.org/" target="_blank" rel="noopener">udlguidelines.cast.org</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Theory and practice</span>
+        <p><strong>Meyer, A., Rose, D. H., &amp; Gordon, D.</strong> Universal Design for Learning: Theory and Practice. Wakefield, MA: CAST Professional Publishing, 2014.</p>
+        <a href="https://udltheorypractice.cast.org/" target="_blank" rel="noopener">udltheorypractice.cast.org</a>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Learning Sciences &amp; Cognitive Load</div>
+      <div class="citation-entry">
+        <span class="cite-label">Cognitive load theory</span>
+        <p><strong>Sweller, J.</strong> "Cognitive Load During Problem Solving: Effects on Learning." Cognitive Science, 12(2), 257–285, 1988.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Multimedia learning</span>
+        <p><strong>Mayer, R. E.</strong> Multimedia Learning. 2nd ed. Cambridge University Press, 2009.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Learner Variability Science</div>
+      <div class="citation-entry">
+        <span class="cite-label">The science of individuality</span>
+        <p><strong>Rose, T.</strong> The End of Average: How We Succeed in a World That Values Sameness. HarperOne, 2016. Source for the argument that the "average learner" is a statistical artifact.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Adult Learning Theory</div>
+      <div class="citation-entry">
+        <span class="cite-label">Andragogy</span>
+        <p><strong>Knowles, M. S., Holton, E. F., &amp; Swanson, R. A.</strong> The Adult Learner: The Definitive Classic in Adult Education and Human Resource Development. 8th ed. Routledge, 2015.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Transformative &amp; Experiential Learning</div>
+      <div class="citation-entry">
+        <span class="cite-label">Transformative learning</span>
+        <p><strong>Mezirow, J.</strong> Transformative Dimensions of Adult Learning. Jossey-Bass, 1991.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Experiential learning</span>
+        <p><strong>Kolb, D. A.</strong> Experiential Learning: Experience as the Source of Learning and Development. Prentice Hall, 1984.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Reflective practice</span>
+        <p><strong>Schön, D. A.</strong> The Reflective Practitioner: How Professionals Think in Action. Basic Books, 1983.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Motivation &amp; Self-Determination</div>
+      <div class="citation-entry">
+        <span class="cite-label">Self-determination theory</span>
+        <p><strong>Deci, E. L., &amp; Ryan, R. M.</strong> Intrinsic Motivation and Self-Determination in Human Behavior. Plenum Press, 1985.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Self-efficacy</span>
+        <p><strong>Bandura, A.</strong> Self-Efficacy: The Exercise of Control. W. H. Freeman, 1997.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Disability Studies &amp; Accessibility</div>
+      <div class="citation-entry">
+        <span class="cite-label">Technical standard</span>
+        <p><strong>World Wide Web Consortium (W3C).</strong> Web Content Accessibility Guidelines (WCAG) 2.2. W3C Recommendation, October 2023.</p>
+        <a href="https://www.w3.org/TR/WCAG22/" target="_blank" rel="noopener">w3.org/TR/WCAG22/</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Disability justice</span>
+        <p><strong>Sins Invalid.</strong> Skin, Tooth, and Bone — The Basis of Movement Is Our People: A Disability Justice Primer. 2nd ed. Sins Invalid, 2019. Source for the principles of disability justice (Patty Berne et al.).</p>
+        <a href="https://www.sinsinvalid.org/" target="_blank" rel="noopener">sinsinvalid.org</a>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Universal Design (Parent Philosophy)</div>
+      <div class="citation-entry">
+        <span class="cite-label">The seven principles</span>
+        <p><strong>Connell, B. R., Jones, M., Mace, R., Mueller, J., Mullick, A., Ostroff, E., Sanford, J., Steinfeld, E., Story, M., &amp; Vanderheiden, G.</strong> The Principles of Universal Design, Version 2.0. Center for Universal Design, North Carolina State University, 1997.</p>
+        <a href="https://design.ncsu.edu/research/center-for-universal-design/" target="_blank" rel="noopener">design.ncsu.edu/research/center-for-universal-design</a>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Instructional &amp; Learning Design</div>
+      <div class="citation-entry">
+        <span class="cite-label">Backward design</span>
+        <p><strong>Wiggins, G., &amp; McTighe, J.</strong> Understanding by Design. 2nd ed. ASCD, 2005. Source for backward design and constructive alignment.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Assessment &amp; Educational Measurement</div>
+      <div class="citation-entry">
+        <span class="cite-label">Validity &amp; construct-irrelevant variance</span>
+        <p><strong>Messick, S.</strong> "Validity." In R. L. Linn (Ed.), Educational Measurement, 3rd ed., pp. 13–103. American Council on Education / Macmillan, 1989. Foundational source for construct-irrelevant variance as a threat to validity.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Culturally Responsive &amp; Equity-Centered Pedagogy</div>
+      <div class="citation-entry">
+        <span class="cite-label">Culturally responsive teaching</span>
+        <p><strong>Gay, G.</strong> Culturally Responsive Teaching: Theory, Research, and Practice. 3rd ed. Teachers College Press, 2018.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Culturally relevant pedagogy</span>
+        <p><strong>Ladson-Billings, G.</strong> "Toward a Theory of Culturally Relevant Pedagogy." American Educational Research Journal, 32(3), 465–491, 1995.</p>
+      </div>
+    </div>
+  </section>
+
+  <a href="#toc" class="back-to-top">&#8593; Back to contents</a>
+
+  <div class="page-credit">
+    This resource draws on established scholarship in the learning sciences, adult learning, disability studies, accessibility, universal design, educational measurement, and culturally responsive pedagogy. It does not constitute professional consulting advice. An <a href="designing-for-learner-variability-at-scale.html">interactive version with tabs and expandable sections</a> is also available.
+  </div>
+
+</main>
+
+<footer>
+  Designing for Learner Variability at Scale — Knowledge Resource
+</footer>
+
+</body>
+</html>
