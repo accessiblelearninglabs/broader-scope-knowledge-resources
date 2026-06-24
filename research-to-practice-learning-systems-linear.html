@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Understanding Research-to-Practice Learning Systems — Knowledge Resource</title>
+  <link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f6f7;
+      --surface-alt: #eaecee;
+      --ink: #303e44;
+      --ink-mid: #4f6068;
+      --ink-light: #7a9098;
+      --accent: #475f6a;
+      --accent-light: #e4eaed;
+      --accent-mid: #7a9aa8;
+      --border: #d5dde1;
+      --border-strong: #b5c5cc;
+      --font: 'Asap', system-ui, sans-serif;
+      --max: 740px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font); background: var(--bg); color: var(--ink); font-size: 16px; line-height: 1.7; }
+
+    /* Skip links */
+    .skip-link { position: absolute; top: -100px; left: 1rem; background: var(--accent); color: #fff; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-size: 0.85rem; z-index: 999; }
+    .skip-link:focus { top: 1rem; }
+
+    /* Header */
+    header { background: var(--bg); border-bottom: 1px solid var(--border); padding: 0 2rem; }
+    .header-inner { max-width: var(--max); margin: 0 auto; padding: 2.25rem 0 2rem; }
+    .site-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+    header h1 { font-size: 1.9rem; font-weight: 700; line-height: 1.2; color: var(--ink); }
+    .header-sub { font-size: 0.95rem; color: var(--ink-mid); margin-top: 0.6rem; line-height: 1.6; }
+    .version-note { background: var(--accent-light); border-left: 3px solid var(--accent); margin-top: 1.25rem; padding: 0.7rem 1rem; font-size: 0.84rem; color: var(--ink-mid); border-radius: 0 4px 4px 0; line-height: 1.6; }
+    .version-note a { color: var(--accent); }
+
+    /* Main layout */
+    main { max-width: var(--max); margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+    /* Table of contents */
+    #toc { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem 1.75rem; margin-bottom: 3rem; }
+    #toc h2 { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 1rem; }
+    #toc ol { padding-left: 1.25rem; }
+    #toc > ol > li { margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 600; color: var(--ink); }
+    #toc > ol > li > a { color: var(--ink); text-decoration: none; }
+    #toc > ol > li > a:hover { text-decoration: underline; color: var(--accent); }
+    #toc ul { padding-left: 1.1rem; margin-top: 0.3rem; list-style: disc; }
+    #toc ul li { margin-bottom: 0.2rem; font-size: 0.85rem; font-weight: 400; }
+    #toc ul li a { color: var(--ink-mid); text-decoration: none; }
+    #toc ul li a:hover { text-decoration: underline; color: var(--accent); }
+
+    /* Section markers */
+    .section-marker { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-light); display: block; margin-bottom: 0.5rem; }
+
+    /* Headings */
+    h2 { font-size: 1.55rem; font-weight: 700; color: var(--ink); margin-bottom: 0.65rem; line-height: 1.25; }
+    h3 { font-size: 1.1rem; font-weight: 600; color: var(--ink); margin: 2rem 0 0.5rem; }
+    h4 { font-size: 0.95rem; font-weight: 600; color: var(--ink); margin: 1.5rem 0 0.4rem; }
+
+    /* Section block */
+    .section-block { border-top: 2px solid var(--border); padding-top: 2.5rem; margin-top: 3rem; }
+    .section-block:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+
+    /* Stage header */
+    .stage-header { display: flex; align-items: baseline; gap: 0.75rem; margin: 2rem 0 0.5rem; padding-bottom: 0.65rem; border-bottom: 1px solid var(--border); }
+    .stage-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); background: var(--accent-light); padding: 0.2rem 0.6rem; border-radius: 999px; flex-shrink: 0; }
+    .stage-header h3 { margin: 0; font-size: 1rem; }
+    .stage-sub { font-size: 0.82rem; color: var(--ink-light); margin-top: 0.2rem; }
+
+    /* Body text */
+    p { font-size: 0.925rem; color: var(--ink-mid); line-height: 1.75; margin-bottom: 0.85rem; }
+    p strong { color: var(--ink); }
+    p:last-child { margin-bottom: 0; }
+
+    /* Lists */
+    ul, ol { padding-left: 1.3rem; margin: 0.6rem 0 1rem; }
+    li { font-size: 0.925rem; color: var(--ink-mid); line-height: 1.65; margin-bottom: 0.3rem; }
+    li strong { color: var(--ink); }
+
+    /* Produces box */
+    .produces { background: var(--surface); border-radius: 6px; padding: 1rem 1.2rem; margin: 1rem 0; }
+    .produces-label { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink-light); display: block; margin-bottom: 0.5rem; }
+    .produces ul { margin: 0; }
+
+    /* Note */
+    .note { font-size: 0.84rem; font-style: italic; color: var(--ink-light); margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+
+    /* Callout */
+    .callout { background: var(--accent-light); border-left: 3px solid var(--accent); padding: 1rem 1.2rem; margin: 1.5rem 0; border-radius: 0 6px 6px 0; }
+    .callout-label { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 0.4rem; }
+    .callout p { font-size: 0.9rem; margin-bottom: 0; }
+
+    /* Decision subsection */
+    .decision-group { margin: 1.75rem 0; }
+    .decision-group h3 { font-size: 0.9rem; font-weight: 700; color: var(--ink); margin: 0 0 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+    .decision-item { margin-bottom: 1rem; }
+    .decision-item h4 { font-size: 0.88rem; font-weight: 600; color: var(--ink); margin: 0 0 0.2rem; }
+    .decision-item p { font-size: 0.875rem; margin-bottom: 0; }
+
+    /* Impact table */
+    .impact-table { width: 100%; border-collapse: collapse; margin: 1.25rem 0; font-size: 0.875rem; }
+    .impact-table th { text-align: left; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-light); padding: 0.6rem 0.85rem; background: var(--surface); border: 1px solid var(--border); }
+    .impact-table td { padding: 0.85rem; border: 1px solid var(--border); vertical-align: top; color: var(--ink-mid); line-height: 1.6; }
+    .impact-table td strong { color: var(--ink); display: block; margin-bottom: 0.2rem; }
+    .impact-table tr:nth-child(even) td { background: var(--surface); }
+
+    /* Reflection questions */
+    .reflection-group { margin: 1.75rem 0; }
+    .reflection-group h3 { font-size: 0.9rem; font-weight: 700; color: var(--ink); margin: 0 0 0.65rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+    .reflection-group ul { list-style: none; padding: 0; margin: 0; }
+    .reflection-group ul li { font-size: 0.9rem; color: var(--ink-mid); line-height: 1.65; padding: 0.6rem 0; border-bottom: 1px dashed var(--border); display: flex; gap: 0.6rem; align-items: flex-start; }
+    .reflection-group ul li:last-child { border-bottom: none; }
+    .reflection-group ul li .q-icon { flex-shrink: 0; font-size: 1rem; margin-top: 0.05rem; }
+
+    /* Citations */
+    .citation-group { margin-bottom: 1.75rem; }
+    .citation-group-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 0.65rem; padding-bottom: 0.35rem; border-bottom: 1px solid var(--border); }
+    .citation-entry { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0.8rem 1rem; margin-bottom: 0.45rem; }
+    .citation-entry .cite-label { font-size: 0.67rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.2rem; display: block; }
+    .citation-entry p { font-size: 0.84rem; margin-bottom: 0; }
+    .citation-entry a { color: var(--accent); text-decoration: none; font-size: 0.81rem; display: block; margin-top: 0.25rem; word-break: break-all; }
+    .citation-entry a:hover { text-decoration: underline; }
+
+    /* Back to top */
+    .back-to-top { display: inline-block; margin-top: 2.5rem; font-size: 0.85rem; color: var(--accent); text-decoration: none; }
+    .back-to-top:hover { text-decoration: underline; }
+
+    /* Footer credit */
+    .page-credit { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.83rem; color: var(--ink-light); line-height: 1.65; }
+    .page-credit a { color: var(--accent); text-decoration: none; }
+    .page-credit a:hover { text-decoration: underline; }
+
+    footer { border-top: 1px solid var(--border); background: var(--surface); padding: 1.5rem 2rem; text-align: center; font-size: 0.78rem; color: var(--ink-light); }
+
+    @media (max-width: 640px) {
+      main { padding: 1.5rem 1rem 4rem; }
+      header { padding: 0 1rem; }
+      header h1 { font-size: 1.5rem; }
+      .impact-table { font-size: 0.82rem; }
+      .impact-table td, .impact-table th { padding: 0.65rem; }
+    }
+  </style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<a href="#toc" class="skip-link" style="left: 12rem;">Skip to table of contents</a>
+
+<header>
+  <div class="header-inner">
+    <div class="site-label">Knowledge Mobilization — Knowledge Resource</div>
+    <h1>Understanding Research-to-Practice Learning Systems</h1>
+    <p class="header-sub">A guide to the knowledge foundations, design process, key decisions, and professional practice that characterise the work of designing how organisations absorb evidence and act on it.</p>
+    <p class="version-note"><strong>Screen reader and keyboard-optimised version.</strong> This is a fully linear, plain-structure version of this resource. All content is presented in reading order with no tabs, accordions, or JavaScript. An <a href="research-to-practice-learning-systems.html">interactive version with tabs and expandable sections</a> is also available.</p>
+  </div>
+</header>
+
+<main id="main-content">
+
+  <!-- TABLE OF CONTENTS -->
+  <nav id="toc" aria-label="Table of contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#foundations">Knowledge Foundations</a>
+        <ul>
+          <li><a href="#ten-foundations">The ten bodies of knowledge</a></li>
+          <li><a href="#architecture">A four-part architecture</a></li>
+          <li><a href="#systems-architecture">Systems architecture vs. content production</a></li>
+          <li><a href="#collaborative-approach">A collaborative, context-specific approach</a></li>
+        </ul>
+      </li>
+      <li><a href="#process">Design Process</a>
+        <ul>
+          <li><a href="#stage-1">Stage 1: Context and readiness analysis</a></li>
+          <li><a href="#stage-2">Stage 2: Evidence identification and synthesis</a></li>
+          <li><a href="#stage-3">Stage 3: Knowledge-user engagement and co-design</a></li>
+          <li><a href="#stage-4">Stage 4: Barrier and facilitator diagnosis</a></li>
+          <li><a href="#stage-5">Stage 5: Learning system design and strategy selection</a></li>
+          <li><a href="#stage-6">Stage 6: Implementation and active facilitation</a></li>
+          <li><a href="#stage-7">Stage 7: Evaluation, sustainment, and scale-up</a></li>
+        </ul>
+      </li>
+      <li><a href="#decisions">Key Decisions That Shape a System</a></li>
+      <li><a href="#competencies">Core Competencies</a></li>
+      <li><a href="#impact">Outcomes</a>
+        <ul>
+          <li><a href="#short-term">Shorter-term outcomes</a></li>
+          <li><a href="#long-term">Longer-term change</a></li>
+        </ul>
+      </li>
+      <li><a href="#reflection">Organisational Reflection</a></li>
+      <li><a href="#citations">Citations</a></li>
+    </ol>
+  </nav>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 1: FOUNDATIONS
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="foundations">
+    <span class="section-marker">Section 1</span>
+    <h2>Knowledge Foundations</h2>
+
+    <p>Expertise in research-to-practice learning systems draws on a coherent set of knowledge domains. Together they span the theory of how evidence moves, the conditions that enable or block uptake, and the design intelligence required to build systems that sustain and scale. The strongest work holds all of them in view simultaneously — producing solutions that a content-focused approach cannot.</p>
+
+    <h3 id="ten-foundations">The ten bodies of knowledge</h3>
+
+    <h4>1. Research Translation Theory — how evidence becomes practice</h4>
+    <p>The theoretical models of how research moves into use — diffusion of innovations, the knowledge-to-action cycle, the EPIS framework, and push/pull/exchange distinctions — are the conceptual map for any research-to-practice system. They locate which part of the gap an intervention targets and what must be true for adoption to occur.</p>
+
+    <h4>2. Implementation Science — getting evidence into sustained use</h4>
+    <p>Where translation theory maps how evidence moves, implementation science supplies the empirical evidence about what actually works inside real organisations. Determinant frameworks (CFIR, i-PARIHS, EPIS), implementation drivers, stages of implementation, and sustainment theory shape how interventions are sequenced and how readiness is assessed.</p>
+
+    <h4>3. Instructional and Learning Design — designing for knowledge application</h4>
+    <p>Moving evidence into practice requires people to build competence and change behaviour, not merely receive information. Adult learning theory, cognitive load theory, spaced retrieval, and competency-based design keep decisions about format, sequencing, and assessment evidence-informed rather than habitual.</p>
+
+    <h4>4. Organisational Learning Systems — how organisations absorb knowledge</h4>
+    <p>Research-to-practice is an organisational change process, not only an individual one. Absorptive capacity, single- and double-loop learning, psychological safety, and communities of practice inform the design of team- and system-level learning structures alongside individual development.</p>
+
+    <h4>5. Evidence Appraisal and Synthesis — packaging the right evidence</h4>
+    <p>Before practice can change, practitioners need credible, usable evidence. Critical appraisal establishes what a body of evidence can and cannot claim; systematic, rapid, and scoping review methods integrate findings; and grading systems (GRADE, GRADE-CERQual) make confidence transparent. This determines what enters the system.</p>
+
+    <h4>6. Behaviour Change Science — moving beyond knowledge to action</h4>
+    <p>The gap between knowing and doing is where most research-to-practice efforts fail. The COM-B model and Behaviour Change Wheel, habit formation, and social-norms research ensure designs address motivation and opportunity alongside capability — the three conditions required for behaviour to change.</p>
+
+    <h4>7. Stakeholder and Context Analysis — reading the system before designing in it</h4>
+    <p>Research-to-practice systems sit inside political, cultural, and organisational environments. Stakeholder and power mapping, political economy analysis, readiness assessment, and equity analysis reveal what the system can realistically change, who must be involved, and where leverage exists. Context analysis is a design act, not a preliminary step.</p>
+
+    <h4>8. Evaluation and Learning Measurement — knowing whether the system works</h4>
+    <p>Evaluation is designed in from the start, across knowledge, competence, behaviour, and outcome. Kirkpatrick/Phillips levels, developmental and realist evaluation, contribution analysis, and theories of change define what success looks like at each stage and let the system learn from its own performance.</p>
+
+    <h4>9. Co-production and Participatory Design — designing with, not for, knowledge users</h4>
+    <p>The strongest evidence points to integrated, participatory approaches. Integrated knowledge translation, community-based participatory research, co-design facilitation, and OCAP principles determine who is in the room when the system is designed and how their knowledge shapes what gets built.</p>
+
+    <h4>10. Systems and Sustainability Design — building for scale and longevity</h4>
+    <p>One-off interventions rarely change practice at scale. Scale-up and spread frameworks (AIDED, ExpandNet), sustainability planning, network design, and governance design move the conversation from a training programme to a system for sustained evidence use — the defining shift in this field.</p>
+
+    <div class="callout">
+      <span class="callout-label" id="architecture">A four-part architecture</span>
+      <p>The ten domains organise into four clusters. <strong>Foundations (01–03)</strong> supply the theory of how evidence moves, how organisations change, and how people learn. <strong>Enabling conditions (04–06)</strong> establish what must be true for research to become practice. <strong>Design intelligence (07–09)</strong> are the capacities that distinguish systems-level designers from course builders. <strong>Architecture (10)</strong> is what sustains and scales the whole. Rigorous practice holds all four in view simultaneously.</p>
+    </div>
+
+    <h3 id="systems-architecture">Systems architecture vs. content production</h3>
+
+    <p>The defining move in this field is from producing a training programme to designing a system for sustained evidence use. The most consequential work happens before any content is created: locating where in the research-to-practice pipeline the gap actually sits, diagnosing whether it is a knowledge problem or a problem of motivation, opportunity, or organisational capacity, and mapping the conditions that will support or defeat uptake.</p>
+
+    <p><strong>Decades of implementation research</strong> converge on a consistent finding: the conditions that receive an intervention — leadership, facilitation, organisational readiness, and reinforcement — predict sustained practice change more strongly than the quality of the learning event itself. Effective design therefore addresses both the intervention and the context that receives it.</p>
+
+    <p>The field also draws a distinction that practice often blurs. Dissemination is not implementation; a well-written brief that no one acts on has not changed practice. Knowledge translation models — <strong>push, pull, and exchange</strong> — clarify that the most durable results come from sustained exchange between those who produce evidence and those who use it, rather than from one-directional transfer.</p>
+
+    <h3 id="collaborative-approach">A collaborative, context-specific approach</h3>
+
+    <p>Every organisation brings a distinct culture, history, and set of constraints. Integrated knowledge translation — designing with knowledge users rather than for them — is the dominant evidence-based approach in health and public-sector knowledge mobilization, and increasingly a condition of funding. Working alongside those who hold both the research and the practice knowledge means asking the right diagnostic questions, building shared ownership of the problem, and translating understanding into a system that develops real capability rather than familiarity.</p>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 2: PROCESS
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="process">
+    <span class="section-marker">Section 2</span>
+    <h2>Design Process</h2>
+
+    <p>The process is structured, iterative, and context-sensitive, and it follows the logic of the knowledge-to-action cycle and the phases of implementation. The stages below represent a comprehensive approach; in practice, scope and depth are calibrated to each organisation's capacity and constraints. Understanding the full process clarifies what is gained or lost when particular stages are abbreviated.</p>
+
+    <!-- Stage 1 -->
+    <div id="stage-1">
+      <div class="stage-header">
+        <span class="stage-label">Stage 1</span>
+        <h3>Context and Readiness Analysis</h3>
+      </div>
+      <p class="stage-sub">Reading the system before designing in it</p>
+      <p>Before any intervention is designed, the organisational, political, and cultural context is analysed — the practice setting, the stakeholders, and the gap between current and evidence-based practice. This corresponds to the Exploration phase of EPIS: it asks whether the organisation is ready to adopt, where decision-making authority sits, and what has been tried before.</p>
+      <p>Readiness assessment, stakeholder and power mapping, and political economy analysis surface the determinants — drawn from frameworks such as CFIR and i-PARIHS — that will help or hinder uptake. Context analysis is itself a design act: it defines what the system can realistically change.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>Documented context and readiness assessment</li>
+          <li>Stakeholder and power map</li>
+          <li>Determinant analysis — barriers and facilitators — using an established framework</li>
+        </ul>
+      </div>
+      <p class="note">Interventions designed without context analysis frequently fail not because the evidence is weak, but because the receiving system was never assessed.</p>
+    </div>
+
+    <!-- Stage 2 -->
+    <div id="stage-2">
+      <div class="stage-header">
+        <span class="stage-label">Stage 2</span>
+        <h3>Evidence Identification and Synthesis</h3>
+      </div>
+      <p class="stage-sub">Selecting and packaging what practice should change toward</p>
+      <p>The evidence base for the practice change is identified, appraised, and synthesised — this determines what goes into the system. Critical appraisal establishes what a given body of evidence can and cannot claim; synthesis methods (systematic, rapid, and scoping reviews) integrate findings across studies.</p>
+      <p>Confidence in the evidence is graded transparently — GRADE for quantitative findings, GRADE-CERQual for qualitative syntheses — so that knowledge users can weigh it appropriately. The synthesis is then translated into usable knowledge products rather than left in academic form.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>Appraised, synthesised evidence with graded confidence</li>
+          <li>Plain-language knowledge products matched to user needs</li>
+          <li>A clear articulation of what practice should change toward</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Stage 3 -->
+    <div id="stage-3">
+      <div class="stage-header">
+        <span class="stage-label">Stage 3</span>
+        <h3>Knowledge-User Engagement and Co-Design</h3>
+      </div>
+      <p class="stage-sub">Designing with the people who will use the system</p>
+      <p>Knowledge users — practitioners, decision-makers, and affected communities — are engaged as co-designers rather than recipients. Integrated knowledge translation and co-design facilitation bring practice knowledge and lived experience into the design alongside research evidence.</p>
+      <p>In Indigenous and equity-centred contexts, this stage is governed by principles such as OCAP and approaches such as two-eyed seeing, with explicit attention to power. Who is in the room here determines whose knowledge shapes what is built — and strongly predicts whether the result is adopted.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>Co-design partnership and engagement plan</li>
+          <li>Design decisions informed by practitioner and community knowledge</li>
+          <li>Documented participation suitable for funder reporting</li>
+        </ul>
+      </div>
+      <p class="note">Most health research funders now require integrated knowledge translation; participatory design is an evidence-based practice, not a courtesy.</p>
+    </div>
+
+    <!-- Stage 4 -->
+    <div id="stage-4">
+      <div class="stage-header">
+        <span class="stage-label">Stage 4</span>
+        <h3>Barrier and Facilitator Diagnosis</h3>
+      </div>
+      <p class="stage-sub">Diagnosing what stands between evidence and routine use</p>
+      <p>The specific barriers and facilitators to the practice change are diagnosed at individual, team, and system levels. The COM-B model asks whether the gap is one of capability, opportunity, or motivation — each of which calls for a different response.</p>
+      <p>This diagnosis distinguishes a genuine knowledge or skill deficit from a problem of motivation, resources, workflow, or organisational structure. Designing a learning intervention for a problem that learning cannot solve is the most common — and most expensive — failure mode in the field.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>Behavioural diagnosis across capability, opportunity, and motivation</li>
+          <li>Mapped barriers and facilitators by level</li>
+          <li>Confirmation that a learning intervention is the appropriate response — or identification of what else must change</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Stage 5 -->
+    <div id="stage-5">
+      <div class="stage-header">
+        <span class="stage-label">Stage 5</span>
+        <h3>Learning System Design and Strategy Selection</h3>
+      </div>
+      <p class="stage-sub">Translating the diagnosis into an intervention and its supports</p>
+      <p>The diagnosis is translated into a coherent design: the learning intervention itself plus the implementation strategies and infrastructure that surround it. Behaviour change techniques are selected to match the COM-B diagnosis, while learning design decisions — sequencing, modality, depth of practice, assessment — are made on cognitive-load and adult-learning principles.</p>
+      <p>Implementation drivers — selection, training, coaching, data systems, and facilitative leadership — are designed alongside the intervention so that good design does not collapse for lack of support. Decisions about fidelity and permitted adaptation are made explicit before launch.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>Intervention design with rationale linked to the diagnosis</li>
+          <li>Selected implementation strategies and supporting infrastructure</li>
+          <li>Explicit fidelity-and-adaptation guidance</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Stage 6 -->
+    <div id="stage-6">
+      <div class="stage-header">
+        <span class="stage-label">Stage 6</span>
+        <h3>Implementation and Active Facilitation</h3>
+      </div>
+      <p class="stage-sub">Moving the design into routine practice</p>
+      <p>The system is put into use, with facilitation as the active ingredient. In i-PARIHS terms, facilitation is what binds evidence and context together; in practice this means coaching, problem-solving, and removing obstacles as they emerge — not delivering content and withdrawing.</p>
+      <p>Implementation is sequenced to the organisation's stage: an organisation in early implementation is supported differently from one approaching full adoption. Use, fidelity, and emerging adaptations are monitored so the design can be adjusted in real time.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>Active implementation with facilitation support</li>
+          <li>Monitoring of uptake, fidelity, and adaptation</li>
+          <li>Real-time adjustments, documented</li>
+        </ul>
+      </div>
+      <p class="note">Implementation is non-linear. Treating it as a single launch event rather than a supported, staged process is a frequent cause of early abandonment.</p>
+    </div>
+
+    <!-- Stage 7 -->
+    <div id="stage-7">
+      <div class="stage-header">
+        <span class="stage-label">Stage 7</span>
+        <h3>Evaluation, Sustainment, and Scale-Up</h3>
+      </div>
+      <p class="stage-sub">Assessing impact and designing for longevity</p>
+      <p>Evaluation — planned from the outset — assesses the system across levels: reaction, knowledge and competence, behaviour and practice change, and organisational or population outcomes. Developmental and realist evaluation and contribution analysis suit the complex, multi-causal conditions in which practice change occurs, asking not only whether it worked but what worked, for whom, and why.</p>
+      <p>A sustainment plan addresses how the practice is maintained, resourced, and embedded — through internal champions, policy and funding embedding, and governance — rather than treated as a completed project. Where the evidence and results warrant it, scale-up frameworks guide principled spread to new settings.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>Multi-level evaluation plan and findings</li>
+          <li>Sustainment plan covering champions, embedding, and governance</li>
+          <li>Scale-up strategy where warranted</li>
+        </ul>
+      </div>
+      <p class="note">Sustainment and scale depend on infrastructure established early. Evaluating only at the reaction level — the most common practice — cannot demonstrate whether evidence actually changed practice.</p>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 3: KEY DECISIONS
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="decisions">
+    <span class="section-marker">Section 3</span>
+    <h2>Key Decisions That Shape a System</h2>
+
+    <p>No two systems are identical. Decisions about where the gap sits, which frameworks structure the work, how knowledge moves, and how success is measured determine what kind of system is appropriate — and what it will produce. These dimensions also shape how the work is structured collaboratively with the organisation.</p>
+
+    <div class="decision-group">
+      <h3>Pipeline position: which part of the research-to-practice gap does this address?</h3>
+      <p>Not every gap sits in the same place. An intervention can target awareness, capability, adoption, or sustainment — and the design differs at each. Locating the gap precisely prevents the common error of building an awareness campaign for what is in fact a sustainment problem.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Determinant framework: which framework structures the diagnosis?</h3>
+      <p>CFIR offers a comprehensive determinant taxonomy; i-PARIHS centres facilitation as the active ingredient; EPIS organises the work into phases. The choice shapes what is assessed and how the intervention is structured. Mature practice often draws on more than one.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Push, pull, or exchange: how does evidence move through this system?</h3>
+      <p>Push disseminates evidence outward; pull responds to user demand; exchange builds sustained two-way relationships. The evidence favours exchange for durable practice change, while resource and relationship constraints shape what is feasible in a given context.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Fidelity vs. adaptation: what must be protected, and what may flex?</h3>
+      <p>Effective practices have core components that drive their effect and peripheral elements that can be localised. Deciding this explicitly — rather than by default — protects effectiveness while allowing the contextual fit that adoption requires.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Knowledge-user involvement: are users co-designing, or receiving?</h3>
+      <p>Integrated knowledge translation involves users as co-creators from the start. It consistently improves relevance and uptake and is increasingly a funder requirement — particularly where the system serves communities whose experience is not well represented among researchers.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Evaluation depth: what will count as success, and how is it measured?</h3>
+      <p>Demonstrating practice change — not just reach or satisfaction — requires measurement infrastructure established before launch. Distinguishing reach, uptake, practice change, and outcomes early lets the system show value on evidence rather than advocacy.</p>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">On rapid vs. comprehensive approaches</span>
+      <p>Rapid, time-bounded designs are appropriate when constraints — a policy window, an urgent decision — are real and acknowledged. The risk is treating an abbreviated process as equivalent to a rigorous one. A well-scoped design that names its own limitations produces better outcomes than an under-resourced one that does not.</p>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 4: COMPETENCIES
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="competencies">
+    <span class="section-marker">Section 4</span>
+    <h2>Core Competencies</h2>
+
+    <p>The following domains form the professional foundation of research-to-practice work. They are not sequential — they function as an ecology, with practitioners drawing on several at once depending on role and context. Two patterns are worth naming: the relational competencies are consistently underweighted in training yet most determine whether knowledge is used, and reflective practice underpins everything.</p>
+
+    <h3>Research literacy</h3>
+    <p>Finding, critically reading, and contextualising evidence across disciplines: evaluating study design and methodological quality across quantitative and qualitative traditions, synthesising findings, translating across adjacent fields, and applying research-ethics frameworks including Indigenous data principles. This is the foundation for deciding what evidence a system should carry.</p>
+
+    <h3>Knowledge translation</h3>
+    <p>Turning findings into forms that practitioners, policymakers, and communities can act on without distorting them: audience analysis, plain-language writing at appropriate reading levels, message framing grounded in communication and narrative theory, and the design of knowledge products matched to how users actually seek and use information.</p>
+
+    <h3>Stakeholder engagement</h3>
+    <p>The relational core of the work: developing and sustaining authentic partnerships, facilitating participatory processes that build shared commitment, co-producing with knowledge users as genuine collaborators, and engaging respectfully across cultural, linguistic, and sectoral difference — including Indigenous knowledge systems and decolonising approaches.</p>
+
+    <h3>Implementation support</h3>
+    <p>Understanding how change actually happens in organisations and systems: applying implementation-science frameworks to assess readiness and plan scale-up, building individual and organisational capacity, supporting principled adaptation without losing core effectiveness, and designing for long-term sustainment through champions, policy, and funding.</p>
+
+    <h3>Policy and systems influence</h3>
+    <p>Navigating decision-making contexts: understanding how legislative, regulatory, and institutional decisions are made and where evidence enters them, mapping systemic interdependencies and leverage points, timing and positioning evidence for decision moments, and holding the ethical boundary between evidence-based advocacy and research integrity.</p>
+
+    <h3>Evaluation and learning</h3>
+    <p>Knowing whether the work makes a difference and learning from it iteratively: measuring reach, uptake, and outcomes; using developmental evaluation as a real-time learning tool in complex initiatives; closing the loop between what is learned and what is done next; and sustaining reflective practice — critically examining one's own assumptions, power, and effectiveness.</p>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 5: OUTCOMES
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="impact">
+    <span class="section-marker">Section 5</span>
+    <h2>Outcomes</h2>
+
+    <p>Rigorous research-to-practice design creates change at two horizons. The shorter-term outcomes are tangible and measurable. The longer-term shift affects how an organisation builds and sustains its capacity to move evidence into practice over time.</p>
+
+    <h3 id="short-term">Shorter-term outcomes: what becomes visible and actionable</h3>
+
+    <table class="impact-table" aria-label="Shorter-term outcomes of a research-to-practice learning system">
+      <thead>
+        <tr>
+          <th scope="col">Outcome</th>
+          <th scope="col">What this looks like in practice</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>The gap is located precisely</strong>A clear account of where in the research-to-practice pipeline the problem sits, and whether it is a matter of capability, opportunity, or motivation.</td>
+          <td>Teams move from a general request for "training" to a specific diagnosis they can design against.</td>
+        </tr>
+        <tr>
+          <td><strong>Usable evidence reaches practitioners</strong>Appraised, synthesised evidence is translated into products matched to real decision contexts.</td>
+          <td>Credible knowledge is available at the point of use rather than locked in academic form.</td>
+        </tr>
+        <tr>
+          <td><strong>Knowledge users share ownership</strong>Co-design builds shared understanding of the problem and commitment to the solution.</td>
+          <td>The resistance that meets interventions designed at people rather than with them is reduced.</td>
+        </tr>
+        <tr>
+          <td><strong>Practice change is observable and measured</strong>Evaluation is designed in from the start, across behaviour and practice as well as reach.</td>
+          <td>Practice change can be detected and reported, not merely assumed.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 id="long-term">Longer-term change: what becomes embedded in practice</h3>
+
+    <table class="impact-table" aria-label="Longer-term outcomes of sustained research-to-practice design practice">
+      <thead>
+        <tr>
+          <th scope="col">Outcome</th>
+          <th scope="col">What this looks like in practice</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Evidence use becomes a system, not an event</strong>The organisation develops standing capacity to move research into practice.</td>
+          <td>The work no longer depends on individual champions or one-off campaigns.</td>
+        </tr>
+        <tr>
+          <td><strong>Absorptive capacity grows</strong>Teams build the structures and culture — psychological safety, communities of practice, double-loop learning — that let them absorb evidence.</td>
+          <td>Each new piece of evidence is taken up faster than the last.</td>
+        </tr>
+        <tr>
+          <td><strong>Sustainment is designed in</strong>Champions, governance, and policy embedding are built into the design rather than added afterward.</td>
+          <td>Implemented practices shift from fragile pilots to durable, resourced parts of how the organisation works.</td>
+        </tr>
+        <tr>
+          <td><strong>Impact can be demonstrated to funders</strong>The system can show, on evidence rather than advocacy, that the investment changed practice or policy.</td>
+          <td>The organisation meets the accountability requirements increasingly attached to funding.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <span class="callout-label">On evidence and context</span>
+      <p>Implementation research consistently finds that the conditions receiving an intervention — leadership, facilitation, readiness, and reinforcement — predict sustained practice change more strongly than the intervention itself. A research-to-practice system is therefore designed as much for the context as for the content.</p>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 6: REFLECTION
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="reflection">
+    <span class="section-marker">Section 6</span>
+    <h2>Organisational Reflection</h2>
+
+    <p>The questions below are intended to help surface useful considerations about how your organisation currently moves evidence into practice. They are not a formal assessment. Take your time with them — the most useful answers are honest ones, not aspirational ones. Working through these with colleagues who hold different roles and perspectives tends to be more productive than working through them alone.</p>
+
+    <div class="reflection-group">
+      <h3>On how evidence moves into practice</h3>
+      <ul>
+        <li><span class="q-icon">→</span> How does evidence currently move into practice in your organisation — and is there a deliberate process, or does it depend on who happens to circulate something?</li>
+        <li><span class="q-icon">→</span> Where do you tend to reach for dissemination — a summary, a briefing, a training session — when the actual problem is one of sustained implementation?</li>
+        <li><span class="q-icon">→</span> At what point in the pipeline — awareness, capability, adoption, or sustainment — do your efforts most often stall?</li>
+      </ul>
+    </div>
+
+    <div class="reflection-group">
+      <h3>On diagnosing barriers before designing</h3>
+      <ul>
+        <li><span class="q-icon">→</span> Before designing an intervention, how do you currently establish whether the barrier is one of capability, opportunity, or motivation?</li>
+        <li><span class="q-icon">→</span> Where might your organisation be designing learning for a problem that learning alone cannot solve — one rooted in workflow, incentives, or structure?</li>
+        <li><span class="q-icon">→</span> Which implementation-science framework, if any, currently structures how you assess readiness and barriers — and how consistently is it applied?</li>
+      </ul>
+    </div>
+
+    <div class="reflection-group">
+      <h3>On involving knowledge users</h3>
+      <ul>
+        <li><span class="q-icon">→</span> To what extent are the people who will use a system involved in designing it — and at what point does that involvement begin?</li>
+        <li><span class="q-icon">→</span> Are there knowledge users or communities whose experience is not well represented among those who design your interventions — and what would it take to bring them in as co-designers?</li>
+        <li><span class="q-icon">→</span> Where co-design is required by funders or commitments, how genuinely participatory is the process, and how is that participation documented?</li>
+      </ul>
+    </div>
+
+    <div class="reflection-group">
+      <h3>On evaluation and sustainment</h3>
+      <ul>
+        <li><span class="q-icon">→</span> How do you currently measure the impact of your knowledge mobilization work — and how much of that measurement stops at activity or satisfaction rather than practice change?</li>
+        <li><span class="q-icon">→</span> What do you actually know about whether evidence has changed practice on the ground — and how did you find that out?</li>
+        <li><span class="q-icon">→</span> What would a realistic next step toward sustainment or scale look like, given your current resources, constraints, and the people with the authority to move things forward?</li>
+      </ul>
+    </div>
+
+    <p>The organisations that make meaningful progress on evidence use tend to be those that create space for honest conversations about where the gaps actually are — not where they would like them to be.</p>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 7: CITATIONS
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="citations">
+    <span class="section-marker">Section 7</span>
+    <h2>Citations</h2>
+
+    <p>The knowledge claims, frameworks, and evidence in this resource draw on established scholarship and professional practice. Sources are grouped by the body of knowledge they primarily support, and each is given in full so that it can be independently verified.</p>
+
+    <div class="citation-group">
+      <div class="citation-group-label">01 · Research Translation Theory</div>
+      <div class="citation-entry">
+        <span class="cite-label">Diffusion of innovations</span>
+        <p><strong>Rogers, E. M.</strong> Diffusion of Innovations. New York: Free Press of Glencoe, 1962 (5th ed., Free Press, 2003). Foundational source for adoption curves and the diffusion of new practices.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Knowledge-to-action cycle</span>
+        <p><strong>Graham, I. D., Logan, J., Harrison, M. B., Straus, S. E., Tetroe, J., Caswell, W., &amp; Robinson, N.</strong> "Lost in Knowledge Translation: Time for a Map?" Journal of Continuing Education in the Health Professions, 26(1), 13–24, 2006.</p>
+        <a href="https://doi.org/10.1002/chp.47" target="_blank" rel="noopener">doi.org/10.1002/chp.47</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Linkage and exchange</span>
+        <p><strong>Lomas, J.</strong> "Using 'Linkage and Exchange' to Move Research into Policy at a Canadian Foundation." Health Affairs, 19(3), 236–240, 2000. Source for the push/pull/exchange distinction.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">02 · Implementation Science</div>
+      <div class="citation-entry">
+        <span class="cite-label">Determinant framework (CFIR)</span>
+        <p><strong>Damschroder, L. J., Aron, D. C., Keith, R. E., Kirsh, S. R., Alexander, J. A., &amp; Lowery, J. C.</strong> "Fostering Implementation of Health Services Research Findings into Practice: A Consolidated Framework for Advancing Implementation Science." Implementation Science, 4, 50, 2009.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Phase-based framework (EPIS)</span>
+        <p><strong>Aarons, G. A., Hurlburt, M., &amp; Horwitz, S. M.</strong> "Advancing a Conceptual Model of Evidence-Based Practice Implementation in Public Service Sectors." Administration and Policy in Mental Health and Mental Health Services Research, 38(1), 4–23, 2011.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Facilitation framework (i-PARIHS)</span>
+        <p><strong>Harvey, G., &amp; Kitson, A.</strong> "PARIHS Revisited: From Heuristic to Integrated Framework for the Successful Implementation of Knowledge into Practice." Implementation Science, 11, 33, 2016.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Theory overview</span>
+        <p><strong>Nilsen, P.</strong> "Making Sense of Implementation Theories, Models and Frameworks." Implementation Science, 10, 53, 2015.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">03 · Instructional and Learning Design</div>
+      <div class="citation-entry">
+        <span class="cite-label">Cognitive load theory</span>
+        <p><strong>Sweller, J.</strong> "Cognitive Load During Problem Solving: Effects on Learning." Cognitive Science, 12(2), 257–285, 1988.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Transformative adult learning</span>
+        <p><strong>Mezirow, J.</strong> Transformative Dimensions of Adult Learning. San Francisco: Jossey-Bass, 1991.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">04 · Organisational Learning Systems</div>
+      <div class="citation-entry">
+        <span class="cite-label">Absorptive capacity</span>
+        <p><strong>Zahra, S. A., &amp; George, G.</strong> "Absorptive Capacity: A Review, Reconceptualization, and Extension." Academy of Management Review, 27(2), 185–203, 2002.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Psychological safety</span>
+        <p><strong>Edmondson, A.</strong> "Psychological Safety and Learning Behavior in Work Teams." Administrative Science Quarterly, 44(2), 350–383, 1999.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Communities of practice</span>
+        <p><strong>Wenger, E.</strong> Communities of Practice: Learning, Meaning, and Identity. Cambridge: Cambridge University Press, 1998.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">05 · Evidence Appraisal and Synthesis</div>
+      <div class="citation-entry">
+        <span class="cite-label">Grading quantitative evidence (GRADE)</span>
+        <p><strong>Guyatt, G. H., Oxman, A. D., Vist, G. E., Kunz, R., Falck-Ytter, Y., Alonso-Coello, P., &amp; Schünemann, H. J.</strong> (for the GRADE Working Group). "GRADE: An Emerging Consensus on Rating Quality of Evidence and Strength of Recommendations." BMJ, 336(7650), 924–926, 2008.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Grading qualitative evidence (CERQual)</span>
+        <p><strong>Lewin, S., Glenton, C., Munthe-Kaas, H., Carlsen, B., Colvin, C. J., Gülmezoglu, M., Noyes, J., Booth, A., Garside, R., &amp; Rashidian, A.</strong> "Using Qualitative Evidence in Decision Making for Health and Social Interventions (GRADE-CERQual)." PLoS Medicine, 12(10), e1001895, 2015.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Scoping review methodology</span>
+        <p><strong>Arksey, H., &amp; O'Malley, L.</strong> "Scoping Studies: Towards a Methodological Framework." International Journal of Social Research Methodology, 8(1), 19–32, 2005.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">06 · Behaviour Change Science</div>
+      <div class="citation-entry">
+        <span class="cite-label">COM-B and the Behaviour Change Wheel</span>
+        <p><strong>Michie, S., van Stralen, M. M., &amp; West, R.</strong> "The Behaviour Change Wheel: A New Method for Characterising and Designing Behaviour Change Interventions." Implementation Science, 6, 42, 2011.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Habit formation</span>
+        <p><strong>Lally, P., van Jaarsveld, C. H. M., Potts, H. W. W., &amp; Wardle, J.</strong> "How Are Habits Formed: Modelling Habit Formation in the Real World." European Journal of Social Psychology, 40(6), 998–1009, 2010.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">07 · Stakeholder and Context Analysis</div>
+      <div class="citation-entry">
+        <span class="cite-label">Stakeholder and power mapping</span>
+        <p><strong>Eden, C., &amp; Ackermann, F.</strong> Making Strategy: The Journey of Strategic Management. London: Sage, 1998.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Equity analysis</span>
+        <p><strong>O'Neill, J., Tugwell, P., Welch, V., Pardo Pardo, J., Waters, E., &amp; White, H.</strong> "Applying an Equity Lens to Interventions: Using PROGRESS Ensures Consideration of Socially Stratifying Factors to Illuminate Inequities in Health." Journal of Clinical Epidemiology, 67(1), 56–64, 2014.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">08 · Evaluation and Learning Measurement</div>
+      <div class="citation-entry">
+        <span class="cite-label">Four-level evaluation</span>
+        <p><strong>Kirkpatrick, D. L., &amp; Kirkpatrick, J. D.</strong> Evaluating Training Programs: The Four Levels. 3rd ed. San Francisco: Berrett-Koehler, 2006.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Developmental evaluation</span>
+        <p><strong>Patton, M. Q.</strong> Developmental Evaluation: Applying Complexity Concepts to Enhance Innovation and Use. New York: Guilford Press, 2011.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Realist evaluation</span>
+        <p><strong>Pawson, R., &amp; Tilley, N.</strong> Realistic Evaluation. London: Sage, 1997. Source for "what works, for whom, in what circumstances, and why."</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">09 · Co-production and Participatory Design</div>
+      <div class="citation-entry">
+        <span class="cite-label">Integrated knowledge translation</span>
+        <p><strong>Berta, W., Kothari, A., Boyko, J., &amp; Urquhart, R.</strong> "Integrated Knowledge Translation (IKT) in Health Care: A Scoping Review." Implementation Science, 11, 38, 2016.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Experience-based co-design</span>
+        <p><strong>Bate, P., &amp; Robert, G.</strong> "Experience-Based Design: From Redesigning the System Around the Patient to Co-Designing Services with the Patient." Quality and Safety in Health Care, 15(5), 307–310, 2006.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Indigenous data principles (OCAP)</span>
+        <p><strong>Schnarch, B.</strong> "Ownership, Control, Access, and Possession (OCAP) or Self-Determination Applied to Research." International Journal of Indigenous Health, 1(1), 80–95, 2004.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">10 · Systems and Sustainability Design</div>
+      <div class="citation-entry">
+        <span class="cite-label">Scale-up framework (AIDED)</span>
+        <p><strong>Bradley, E. H., Curry, L. A., Taylor, L. A., Pallas, S. W., Talbert-Slagle, K., Yuan, C., et al., &amp; Pérez-Escamilla, R.</strong> "A Model for Scale Up of Family Health Innovations in Low-Income and Middle-Income Settings: A Mixed Methods Study." BMJ Open, 2(4), e000987, 2012.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Sustainability of evidence-based practice</span>
+        <p><strong>Shelton, R. C., Cooper, B. R., &amp; Wiltsey Stirman, S.</strong> "The Sustainability of Evidence-Based Interventions and Practices in Public Health and Health Care." Annual Review of Public Health, 39, 55–76, 2018.</p>
+      </div>
+    </div>
+  </section>
+
+  <a href="#toc" class="back-to-top">&#8593; Back to contents</a>
+
+  <div class="page-credit">
+    This resource draws on established scholarship in research translation, implementation science, evidence synthesis, behaviour change, participatory design, and evaluation. It does not constitute professional consulting advice. An <a href="research-to-practice-learning-systems.html">interactive version with tabs and expandable sections</a> is also available.
+  </div>
+
+</main>
+
+<footer>
+  Research-to-Practice Learning Systems — Knowledge Resource
+</footer>
+
+</body>
+</html>
