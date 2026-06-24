@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eliminating Construct-Irrelevant Barriers in Assessment — Knowledge Resource</title>
+  <link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f6f7;
+      --surface-alt: #eaecee;
+      --ink: #303e44;
+      --ink-mid: #4f6068;
+      --ink-light: #7a9098;
+      --accent: #475f6a;
+      --accent-light: #e4eaed;
+      --accent-mid: #7a9aa8;
+      --border: #d5dde1;
+      --border-strong: #b5c5cc;
+      --font: 'Asap', system-ui, sans-serif;
+      --max: 740px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font); background: var(--bg); color: var(--ink); font-size: 16px; line-height: 1.7; }
+
+    /* Skip links */
+    .skip-link { position: absolute; top: -100px; left: 1rem; background: var(--accent); color: #fff; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-size: 0.85rem; z-index: 999; }
+    .skip-link:focus { top: 1rem; }
+
+    /* Header */
+    header { background: var(--bg); border-bottom: 1px solid var(--border); padding: 0 2rem; }
+    .header-inner { max-width: var(--max); margin: 0 auto; padding: 2.25rem 0 2rem; }
+    .site-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+    header h1 { font-size: 1.9rem; font-weight: 700; line-height: 1.2; color: var(--ink); }
+    .header-sub { font-size: 0.95rem; color: var(--ink-mid); margin-top: 0.6rem; line-height: 1.6; }
+    .version-note { background: var(--accent-light); border-left: 3px solid var(--accent); margin-top: 1.25rem; padding: 0.7rem 1rem; font-size: 0.84rem; color: var(--ink-mid); border-radius: 0 4px 4px 0; line-height: 1.6; }
+    .version-note a { color: var(--accent); }
+
+    /* Main layout */
+    main { max-width: var(--max); margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+    /* Table of contents */
+    #toc { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem 1.75rem; margin-bottom: 3rem; }
+    #toc h2 { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 1rem; }
+    #toc ol { padding-left: 1.25rem; }
+    #toc > ol > li { margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 600; color: var(--ink); }
+    #toc > ol > li > a { color: var(--ink); text-decoration: none; }
+    #toc > ol > li > a:hover { text-decoration: underline; color: var(--accent); }
+    #toc ul { padding-left: 1.1rem; margin-top: 0.3rem; list-style: disc; }
+    #toc ul li { margin-bottom: 0.2rem; font-size: 0.85rem; font-weight: 400; }
+    #toc ul li a { color: var(--ink-mid); text-decoration: none; }
+    #toc ul li a:hover { text-decoration: underline; color: var(--accent); }
+
+    /* Section markers */
+    .section-marker { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-light); display: block; margin-bottom: 0.5rem; }
+
+    /* Headings */
+    h2 { font-size: 1.55rem; font-weight: 700; color: var(--ink); margin-bottom: 0.65rem; line-height: 1.25; }
+    h3 { font-size: 1.1rem; font-weight: 600; color: var(--ink); margin: 2rem 0 0.5rem; }
+    h4 { font-size: 0.95rem; font-weight: 600; color: var(--ink); margin: 1.5rem 0 0.4rem; }
+
+    /* Section block */
+    .section-block { border-top: 2px solid var(--border); padding-top: 2.5rem; margin-top: 3rem; }
+    .section-block:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+
+    /* Stage header */
+    .stage-header { display: flex; align-items: baseline; gap: 0.75rem; margin: 2rem 0 0.5rem; padding-bottom: 0.65rem; border-bottom: 1px solid var(--border); }
+    .stage-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); background: var(--accent-light); padding: 0.2rem 0.6rem; border-radius: 999px; flex-shrink: 0; }
+    .stage-header h3 { margin: 0; font-size: 1rem; }
+    .stage-sub { font-size: 0.82rem; color: var(--ink-light); margin-top: 0.2rem; }
+
+    /* Body text */
+    p { font-size: 0.925rem; color: var(--ink-mid); line-height: 1.75; margin-bottom: 0.85rem; }
+    p strong { color: var(--ink); }
+    p:last-child { margin-bottom: 0; }
+
+    /* Lists */
+    ul, ol { padding-left: 1.3rem; margin: 0.6rem 0 1rem; }
+    li { font-size: 0.925rem; color: var(--ink-mid); line-height: 1.65; margin-bottom: 0.3rem; }
+    li strong { color: var(--ink); }
+
+    /* Produces box */
+    .produces { background: var(--surface); border-radius: 6px; padding: 1rem 1.2rem; margin: 1rem 0; }
+    .produces-label { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink-light); display: block; margin-bottom: 0.5rem; }
+    .produces ul { margin: 0; }
+
+    /* Note */
+    .note { font-size: 0.84rem; font-style: italic; color: var(--ink-light); margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+
+    /* Callout */
+    .callout { background: var(--accent-light); border-left: 3px solid var(--accent); padding: 1rem 1.2rem; margin: 1.5rem 0; border-radius: 0 6px 6px 0; }
+    .callout-label { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 0.4rem; }
+    .callout p { font-size: 0.9rem; margin-bottom: 0; }
+
+    /* Decision subsection */
+    .decision-group { margin: 1.75rem 0; }
+    .decision-group h3 { font-size: 0.9rem; font-weight: 700; color: var(--ink); margin: 0 0 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+    .decision-item { margin-bottom: 1rem; }
+    .decision-item h4 { font-size: 0.88rem; font-weight: 600; color: var(--ink); margin: 0 0 0.2rem; }
+    .decision-item p { font-size: 0.875rem; margin-bottom: 0; }
+
+    /* Impact table */
+    .impact-table { width: 100%; border-collapse: collapse; margin: 1.25rem 0; font-size: 0.875rem; }
+    .impact-table th { text-align: left; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-light); padding: 0.6rem 0.85rem; background: var(--surface); border: 1px solid var(--border); }
+    .impact-table td { padding: 0.85rem; border: 1px solid var(--border); vertical-align: top; color: var(--ink-mid); line-height: 1.6; }
+    .impact-table td strong { color: var(--ink); display: block; margin-bottom: 0.2rem; }
+    .impact-table tr:nth-child(even) td { background: var(--surface); }
+
+    /* Reflection questions */
+    .reflection-group { margin: 1.75rem 0; }
+    .reflection-group h3 { font-size: 0.9rem; font-weight: 700; color: var(--ink); margin: 0 0 0.65rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+    .reflection-group ul { list-style: none; padding: 0; margin: 0; }
+    .reflection-group ul li { font-size: 0.9rem; color: var(--ink-mid); line-height: 1.65; padding: 0.6rem 0; border-bottom: 1px dashed var(--border); display: flex; gap: 0.6rem; align-items: flex-start; }
+    .reflection-group ul li:last-child { border-bottom: none; }
+    .reflection-group ul li .q-icon { flex-shrink: 0; font-size: 1rem; margin-top: 0.05rem; }
+
+    /* Citations */
+    .citation-group { margin-bottom: 1.75rem; }
+    .citation-group-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 0.65rem; padding-bottom: 0.35rem; border-bottom: 1px solid var(--border); }
+    .citation-entry { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0.8rem 1rem; margin-bottom: 0.45rem; }
+    .citation-entry .cite-label { font-size: 0.67rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.2rem; display: block; }
+    .citation-entry p { font-size: 0.84rem; margin-bottom: 0; }
+    .citation-entry a { color: var(--accent); text-decoration: none; font-size: 0.81rem; display: block; margin-top: 0.25rem; word-break: break-all; }
+    .citation-entry a:hover { text-decoration: underline; }
+
+    /* Back to top */
+    .back-to-top { display: inline-block; margin-top: 2.5rem; font-size: 0.85rem; color: var(--accent); text-decoration: none; }
+    .back-to-top:hover { text-decoration: underline; }
+
+    /* Footer credit */
+    .page-credit { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.83rem; color: var(--ink-light); line-height: 1.65; }
+    .page-credit a { color: var(--accent); text-decoration: none; }
+    .page-credit a:hover { text-decoration: underline; }
+
+    footer { border-top: 1px solid var(--border); background: var(--surface); padding: 1.5rem 2rem; text-align: center; font-size: 0.78rem; color: var(--ink-light); }
+
+    @media (max-width: 640px) {
+      main { padding: 1.5rem 1rem 4rem; }
+      header { padding: 0 1rem; }
+      header h1 { font-size: 1.5rem; }
+      .impact-table { font-size: 0.82rem; }
+      .impact-table td, .impact-table th { padding: 0.65rem; }
+    }
+  </style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<a href="#toc" class="skip-link" style="left: 12rem;">Skip to table of contents</a>
+
+<header>
+  <div class="header-inner">
+    <div class="site-label">Inclusive Assessment — Knowledge Resource</div>
+    <h1>Eliminating Construct-Irrelevant Barriers in Assessment</h1>
+    <p class="header-sub">A guide to the knowledge foundations, working process, key decisions, and professional practice that allow an assessment to measure what it claims to measure — and nothing else.</p>
+    <p class="version-note"><strong>Screen reader and keyboard-optimised version.</strong> This is a fully linear, plain-structure version of this resource. All content is presented in reading order with no tabs, accordions, or JavaScript. An <a href="eliminating-construct-irrelevant-barriers-in-assessment.html">interactive version with tabs and expandable sections</a> is also available.</p>
+  </div>
+</header>
+
+<main id="main-content">
+
+  <!-- TABLE OF CONTENTS -->
+  <nav id="toc" aria-label="Table of contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#foundations">Knowledge Foundations</a>
+        <ul>
+          <li><a href="#eight-foundations">The eight knowledge foundations</a></li>
+          <li><a href="#two-further">Two further foundations</a></li>
+          <li><a href="#removing-barriers">Removing barriers is not lowering the bar</a></li>
+          <li><a href="#why-stakes">Why the stakes sharpen the work</a></li>
+        </ul>
+      </li>
+      <li><a href="#process">Working Process</a>
+        <ul>
+          <li><a href="#stage-1">Stage 1: Specify the construct</a></li>
+          <li><a href="#stage-2">Stage 2: Map intended vs. incidental demands</a></li>
+          <li><a href="#stage-3">Stage 3: Design for multiple means</a></li>
+          <li><a href="#stage-4">Stage 4: Bias, language, and accessibility review</a></li>
+          <li><a href="#stage-5">Stage 5: Pilot and analyze (including DIF)</a></li>
+          <li><a href="#stage-6">Stage 6: Accommodation and policy alignment</a></li>
+          <li><a href="#stage-7">Stage 7: Build the validity argument</a></li>
+        </ul>
+      </li>
+      <li><a href="#decisions">Key Decisions That Shape the Work</a></li>
+      <li><a href="#competencies">Core Competencies</a></li>
+      <li><a href="#impact">Outcomes</a>
+        <ul>
+          <li><a href="#short-term">Shorter-term outcomes</a></li>
+          <li><a href="#long-term">Longer-term change</a></li>
+        </ul>
+      </li>
+      <li><a href="#reflection">Practice Reflection</a></li>
+      <li><a href="#citations">Citations</a></li>
+    </ol>
+  </nav>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 1: FOUNDATIONS
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="foundations">
+    <span class="section-marker">Section 1</span>
+    <h2>Knowledge Foundations</h2>
+
+    <p>Construct-irrelevant variance — score variation driven by factors extraneous to the trait being measured — is one of the two classic threats to validity. Diagnosing and removing it draws on several interconnected bodies of knowledge. The strongest assessment work holds all of these in view at once.</p>
+
+    <h3 id="eight-foundations">The eight knowledge foundations</h3>
+
+    <h4>1. Educational and Psychological Measurement</h4>
+    <p>The home discipline. Validity is treated as an ongoing, evidence-based judgment about a particular interpretation and use of scores — not a fixed property of a test. Within this frame, construct-irrelevant variance (CIV) is the central threat: when scores are shaped by factors outside the construct, the inference drawn from them is weakened.</p>
+
+    <h4>2. Construct Theory and Test Design</h4>
+    <p>CIV can only be diagnosed against a clearly specified construct. Defining the trait — reading comprehension, clinical reasoning, statistical literacy — before building items is what makes it possible to say which demands legitimately belong to the measurement and which are incidental. The working rule: define the construct first, operationalize second, validate the interpretation third.</p>
+
+    <h4>3. Psychometrics and Differential Item Functioning</h4>
+    <p>Reliability, item analysis, and Differential Item Functioning (DIF) supply the empirical machinery for detecting when an item behaves differently across groups for reasons unrelated to ability. Methods including the Mantel–Haenszel procedure, logistic regression, and item response theory flag items for review — a key source of evidence that an assessment is functioning fairly.</p>
+
+    <h4>4. Universal Design for Learning</h4>
+    <p>The parent framework. Multiple means of action and expression directly counter CIV by separating the skill being assessed from the medium used to demonstrate it — so that an assessment of reasoning does not inadvertently become an assessment of writing, typing, or timed recall. Barriers are anticipated in the design rather than addressed after the fact.</p>
+
+    <h4>5. Disability Studies and Accessibility</h4>
+    <p>Assistive technology, the distinction between reactive accommodation and proactive design, and standards such as WCAG. Many classic sources of CIV — timing pressure, rigid format, unnecessary sensory or motor demands — are accessibility barriers in another guise. Designing them out benefits far more learners than those who would have requested an accommodation.</p>
+
+    <h4>6. Authentic and Performance Assessment</h4>
+    <p>Real-world, application-based tasks reduce some of the artificial barriers that standardized formats introduce, while keeping the focus on what is actually meant to be measured. Their design requires equal rigour: authenticity does not relax the need for clear constructs, consistent scoring, and defensible inferences.</p>
+
+    <h4>7. Cognitive Load Theory</h4>
+    <p>A practical lens for separating load that is intrinsic to the construct from extraneous load imposed by confusing instructions, cluttered stimuli, or irrelevant complexity. Extraneous load is a frequent and largely invisible source of CIV: it lowers scores for reasons that have nothing to do with the trait under measurement.</p>
+
+    <h4>8. Culturally Responsive and Equity-Centered Assessment</h4>
+    <p>Language demands, cultural assumptions embedded in prompts, and structured bias review. This body of work asks whether a task measures the intended construct fairly across linguistic and cultural backgrounds — or whether it quietly rewards familiarity with the test-maker's world.</p>
+
+    <h3 id="two-further">Two further foundations</h3>
+
+    <p>Two bodies of knowledge run underneath the work rather than sitting beside it. <strong>Accommodation law and policy</strong> — the ADA and Section 508 in the United States, and Canadian equivalents such as the Accessible Canada Act and provincial statutes — set the legal floor and shape what a defensible assessment must look like. <strong>Backward design and constructive alignment</strong> ensure the assessment maps to the stated learning goal in the first place; misalignment is itself a structural form of construct-irrelevant variance.</p>
+
+    <h3 id="removing-barriers">Removing barriers is not lowering the bar</h3>
+
+    <p>The most common misconception in this area is that removing construct-irrelevant barriers makes an assessment easier or less rigorous. The opposite is true. When a barrier unrelated to the construct is removed — a needless reading load on a mathematics item, a time limit that measures speed rather than competence, a culturally specific reference that advantages some test-takers — the score becomes a <strong>more</strong> accurate reflection of the trait being measured. Validity increases. What changes is precision, not standards.</p>
+
+    <p><strong>The construct is the boundary that makes the whole judgment possible.</strong> Without a clear definition of what is and is not part of what is being measured, there is no principled way to distinguish a legitimate demand from an incidental one. This is why construct specification is treated here as the first and most consequential step, not a formality. Diagnosis of CIV is only as good as the construct definition it is measured against.</p>
+
+    <h3 id="why-stakes">Why the stakes sharpen the work</h3>
+
+    <p>The cost of construct-irrelevant variance scales with the consequence of the decision it informs. In a low-stakes formative check, an imprecise score is a minor inconvenience. In a high-stakes or credentialing context, construct-irrelevant variance becomes a threat to the validity of the credential itself — the very thing the assessment exists to protect. In that setting, psychometric analysis, DIF review, and accommodation-law fluency move from useful refinements to defensibility-critical practice. The same principles apply across contexts; the tolerance for error is what differs.</p>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 2: PROCESS
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="process">
+    <span class="section-marker">Section 2</span>
+    <h2>Working Process</h2>
+
+    <p>Identifying and removing construct-irrelevant variance is a structured, evidence-building process rather than a single review step. The stages below represent a comprehensive approach; in practice, depth is calibrated to the stakes of the assessment. Understanding the full process clarifies what is gained or lost when a stage is abbreviated.</p>
+
+    <!-- Stage 1 -->
+    <div id="stage-1">
+      <div class="stage-header">
+        <span class="stage-label">Stage 1</span>
+        <h3>Specify the Construct</h3>
+      </div>
+      <p class="stage-sub">Naming exactly what is — and is not — being measured</p>
+      <p>Before any item is written, the construct is defined with enough precision that its boundary is visible: which knowledge, skills, or abilities belong to it, and which adjacent demands do not. A test of statistical reasoning, for example, must decide whether reading load, arithmetic fluency, or software proficiency are part of the target — or incidental to it.</p>
+      <p>This definition is the reference point against which every later judgment about construct-irrelevant variance is made. Where the construct is left implicit, CIV cannot be diagnosed reliably, because there is no agreed standard for what counts as extraneous.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>A written construct definition with explicit inclusions and exclusions</li>
+          <li>A statement of the intended interpretation and use of scores</li>
+          <li>Shared agreement among stakeholders on the boundary of the construct</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Stage 2 -->
+    <div id="stage-2">
+      <div class="stage-header">
+        <span class="stage-label">Stage 2</span>
+        <h3>Map Intended vs. Incidental Demands</h3>
+      </div>
+      <p class="stage-sub">Separating the construct from the way it is delivered</p>
+      <p>Every task imposes demands. This stage inventories them and sorts each one as either intrinsic to the construct or incidental to it. Incidental demands are the candidate sources of construct-irrelevant variance: reading level above the construct's requirement, time pressure unrelated to the skill, fine-motor or sensory demands, cultural or contextual references, and extraneous cognitive load created by item design.</p>
+      <p>Cognitive load theory is useful here for distinguishing the complexity that genuinely belongs to the construct from complexity introduced by presentation. The aim is not to eliminate difficulty, but to ensure that difficulty comes from the trait being measured.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>A demand map classifying each task requirement as intended or incidental</li>
+          <li>A prioritized list of likely CIV sources to address in design</li>
+          <li>Design constraints carried forward into item and task construction</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Stage 3 -->
+    <div id="stage-3">
+      <div class="stage-header">
+        <span class="stage-label">Stage 3</span>
+        <h3>Design for Multiple Means</h3>
+      </div>
+      <p class="stage-sub">Building tasks that isolate the construct</p>
+      <p>Items and tasks are constructed to measure the construct while minimizing the incidental demands identified in the previous stage. Universal Design for Learning's principle of multiple means of action and expression is applied directly: where the medium of response is not part of the construct, learners are offered more than one way to demonstrate the same competence, with all options mapped to a single construct-aligned rubric.</p>
+      <p>Plain-language construction, uncluttered stimuli, and flexible timing reduce extraneous load. Authentic and performance tasks are introduced where they measure the construct more directly than a standardized format would.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>Draft items and tasks with incidental demands designed out</li>
+          <li>Where appropriate, multiple response options mapped to one rubric</li>
+          <li>A scoring approach aligned to the construct rather than to format</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Stage 4 -->
+    <div id="stage-4">
+      <div class="stage-header">
+        <span class="stage-label">Stage 4</span>
+        <h3>Bias, Language, and Accessibility Review</h3>
+      </div>
+      <p class="stage-sub">Structured human judgment before piloting</p>
+      <p>Draft materials undergo structured review for cultural assumptions, unnecessary language complexity, and accessibility barriers. Sensitivity and fairness review examines whether prompts assume background knowledge unrelated to the construct. Accessibility review checks digital materials against established standards and confirms compatibility with assistive technology.</p>
+      <p>This review is qualitative and anticipatory. It catches barriers that statistical analysis alone will not surface — particularly those affecting groups too small to register reliably in later item statistics.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>A documented bias and sensitivity review with recommended revisions</li>
+          <li>An accessibility audit covering format, language, and assistive-technology compatibility</li>
+          <li>Revised materials ready for piloting</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Stage 5 -->
+    <div id="stage-5">
+      <div class="stage-header">
+        <span class="stage-label">Stage 5</span>
+        <h3>Pilot and Analyze (Including DIF)</h3>
+      </div>
+      <p class="stage-sub">Empirical evidence that items behave fairly</p>
+      <p>Items are piloted with a representative sample and examined through item analysis, reliability estimation, and Differential Item Functioning analysis. DIF compares performance across groups matched on overall ability, flagging items that function differently for reasons unrelated to the trait being measured — the empirical signature of construct-irrelevant variance at the item level.</p>
+      <p>A flagged item is not automatically discarded. Statistical flags are reviewed qualitatively to determine whether the difference reflects genuine bias or a defensible feature of the construct, and items are revised or removed on that combined evidence.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>Item statistics, reliability estimates, and DIF results</li>
+          <li>A documented adjudication of each flagged item</li>
+          <li>A revised item set with sources of CIV removed or justified</li>
+        </ul>
+      </div>
+      <p class="note">DIF detection is sensitive to sample size; small or unevenly distributed groups can obscure real bias. Statistical results are strongest when paired with the qualitative review from the previous stage.</p>
+    </div>
+
+    <!-- Stage 6 -->
+    <div id="stage-6">
+      <div class="stage-header">
+        <span class="stage-label">Stage 6</span>
+        <h3>Accommodation and Policy Alignment</h3>
+      </div>
+      <p class="stage-sub">Proactive design first, defensible accommodation second</p>
+      <p>Proactive design removes the need for many accommodations, but not all. Remaining needs are met through a documented accommodation process aligned with the applicable legal floor — the ADA and Section 508 in the United States, and the Accessible Canada Act and provincial statutes such as the Accessible British Columbia Act and Ontario's accessibility legislation in Canada.</p>
+      <p>The distinction matters: accommodations adjust the conditions of administration without altering the construct, whereas a modification that changes the construct changes the meaning of the score. Keeping that line clear is what makes both the design and the accommodation defensible.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>A documented accommodation process consistent with applicable law</li>
+          <li>A clear record of which adjustments preserve the construct and which would alter it</li>
+          <li>Policy alignment suitable for review by an accrediting or governing body</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Stage 7 -->
+    <div id="stage-7">
+      <div class="stage-header">
+        <span class="stage-label">Stage 7</span>
+        <h3>Build the Validity Argument</h3>
+      </div>
+      <p class="stage-sub">Assembling the evidence into a defensible case</p>
+      <p>The evidence gathered across the process is assembled into an argument for the specific interpretation and use of scores. Following the contemporary, argument-based view of validity, this draws on multiple sources: content relevance, response processes, internal structure, relationships to other variables, and the consequences of use. The treatment of construct-irrelevant variance is documented as part of that argument.</p>
+      <p>Validation is treated as ongoing rather than a one-time certification. As populations, contexts, and uses change, the argument is revisited — which is also what allows an accrediting body to use the same evidence for its own quality assurance.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>A validity argument linking evidence to the intended interpretation and use</li>
+          <li>Documentation of how CIV was identified, addressed, and monitored</li>
+          <li>A basis for periodic revalidation as conditions change</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 3: KEY DECISIONS
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="decisions">
+    <span class="section-marker">Section 3</span>
+    <h2>Key Decisions That Shape the Work</h2>
+
+    <p>No two assessments call for identical treatment. Decisions about purpose, construct boundary, format, and evidence determine how much construct-irrelevant variance can be tolerated — and how much effort its removal warrants. These dimensions are best settled collaboratively, early.</p>
+
+    <div class="decision-group">
+      <h3>Purpose and stakes: what decision will this score inform?</h3>
+      <p>A formative check and a credentialing exam tolerate very different levels of imprecision. The stakes of the decision set the standard for how rigorously construct-irrelevant variance must be identified and removed — and how much validity evidence the use requires.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Construct boundary: what exactly is — and isn't — being measured?</h3>
+      <p>This is the decision that makes every other one possible. Until the construct's boundary is explicit, there is no principled way to call any demand extraneous. Time invested here prevents the most expensive errors later.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Format and medium: does the format add demands unrelated to the construct?</h3>
+      <p>Multiple-choice, essay, oral, portfolio, and performance formats each carry their own incidental demands. The right format is the one that measures the construct most directly for this population — not the one that is most convenient to score.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Single vs. multiple means: can learners demonstrate the construct in more than one way?</h3>
+      <p>Where the medium of response is not part of the construct, offering multiple means of expression — mapped to one rubric — removes a major source of CIV. Where the medium is the construct, flexibility would change what is being measured.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Population and context: who takes this, and what variability do they bring?</h3>
+      <p>Linguistic, cultural, and access variability in the test-taking population determines which barriers are most consequential. The wider and less knowable the population, the more proactive design must do the work that reactive accommodation cannot.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Evidence and defensibility: how much validity evidence does this use require?</h3>
+      <p>Higher-stakes uses call for deeper evidence: DIF analysis, documented bias review, and a complete validity argument. Deciding this early shapes the pilot design and determines whether the assessment can withstand external scrutiny.</p>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">On proportionality</span>
+      <p>The effort spent removing construct-irrelevant variance should be proportional to the stakes of the decision and the breadth of the population. A modest formative assessment does not require a full psychometric programme. A credential that travels across languages, jurisdictions, and health systems does — because there, an invalid score is not a single bad decision but a threat to the credential's meaning.</p>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 4: COMPETENCIES
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="competencies">
+    <span class="section-marker">Section 4</span>
+    <h2>Core Competencies</h2>
+
+    <p>The competencies below form the professional foundation of this work — spanning definition, design, analysis, and defensibility across formative, high-stakes, and credentialing contexts.</p>
+
+    <h3>Construct specification</h3>
+    <p>Defining a construct with enough precision that its boundary is operationally clear — distinguishing the trait to be measured from adjacent demands. This is the competence on which the reliable diagnosis of construct-irrelevant variance depends.</p>
+
+    <h3>Validity argumentation</h3>
+    <p>Treating validity as an evidence-based judgment about a specific interpretation and use, and assembling content, response-process, internal-structure, external, and consequential evidence into a coherent, defensible argument.</p>
+
+    <h3>Item and task design</h3>
+    <p>Constructing items and performance tasks that elicit the intended construct while designing out incidental demands — applying plain-language principles, uncluttered presentation, and, where appropriate, multiple means of expression mapped to a single rubric.</p>
+
+    <h3>Psychometric analysis</h3>
+    <p>Conducting item analysis, estimating reliability, and applying Differential Item Functioning methods — Mantel–Haenszel, logistic regression, and item-response-theory approaches — together with the qualitative review needed to interpret flagged items responsibly.</p>
+
+    <h3>Accessibility and UDL application</h3>
+    <p>Anticipating learner variability in the design itself: applying Universal Design for Learning, meeting recognized accessibility standards, and ensuring compatibility with assistive technology so that barriers are removed before they require accommodation.</p>
+
+    <h3>Bias and sensitivity review</h3>
+    <p>Leading structured review of cultural assumptions, language demands, and contextual references to ensure tasks measure the construct fairly across linguistic and cultural backgrounds rather than rewarding familiarity with a particular world.</p>
+
+    <h3>Accommodation law and policy fluency</h3>
+    <p>Working knowledge of the applicable legal floor — the ADA and Section 508, and Canadian frameworks including the Accessible Canada Act and provincial statutes — and the judgment to distinguish accommodations that preserve the construct from modifications that alter it.</p>
+
+    <h3>Curricular alignment</h3>
+    <p>Using backward design and constructive alignment to ensure the assessment actually maps to the stated learning goal. Misalignment is itself a structural form of construct-irrelevant variance, and correcting it is often the highest-value intervention available.</p>
+
+    <h3>Equity-centered practice and collaboration</h3>
+    <p>Designing assessment to surface and remove barriers rather than to sort, and working alongside subject-matter experts, faculty, and the communities being assessed — including co-design and the disaggregation of results to detect disparities and guide revision.</p>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 5: OUTCOMES
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="impact">
+    <span class="section-marker">Section 5</span>
+    <h2>Outcomes</h2>
+
+    <p>Removing construct-irrelevant variance creates value at two horizons. The shorter-term outcomes are concrete and measurable. The longer-term shift affects how an institution's results — and its credentials — hold up under scrutiny.</p>
+
+    <h3 id="short-term">Shorter-term outcomes: what becomes visible and actionable</h3>
+
+    <table class="impact-table" aria-label="Shorter-term outcomes of eliminating construct-irrelevant barriers">
+      <thead>
+        <tr>
+          <th scope="col">Outcome</th>
+          <th scope="col">What this looks like in practice</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>The construct is clearly bounded</strong>A written definition makes explicit what is and is not being measured.</td>
+          <td>"This feels unfair" becomes a specific, addressable claim about a named, incidental demand.</td>
+        </tr>
+        <tr>
+          <td><strong>Barriers are named and removed</strong>Incidental demands — reading load, timing, format, cultural reference — are designed out.</td>
+          <td>Scores reflect the trait being measured rather than the way the task happened to be delivered.</td>
+        </tr>
+        <tr>
+          <td><strong>Scores mean what they claim</strong>With extraneous variance reduced, the inference drawn from a score is better supported.</td>
+          <td>Validity improves precisely because precision improves — without lowering the standard.</td>
+        </tr>
+        <tr>
+          <td><strong>Flagged items are resolved on evidence</strong>Items that function differently across groups are surfaced through DIF and reviewed.</td>
+          <td>Item-level bias is revised or justified deliberately, rather than left to chance or to complaint.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 id="long-term">Longer-term change: what becomes embedded in practice</h3>
+
+    <table class="impact-table" aria-label="Longer-term outcomes of sustained barrier-free assessment practice">
+      <thead>
+        <tr>
+          <th scope="col">Outcome</th>
+          <th scope="col">What this looks like in practice</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Decisions and credentials are defensible</strong>A documented validity argument allows results to withstand scrutiny.</td>
+          <td>Learners, accreditors, and governing bodies can see that the assessment measures what it claims.</td>
+        </tr>
+        <tr>
+          <td><strong>Equity is built in, not bolted on</strong>Proactive design removes barriers for the whole population.</td>
+          <td>Fewer individuals are routed through a reactive accommodation process that cannot scale.</td>
+        </tr>
+        <tr>
+          <td><strong>A standing capacity to review develops</strong>Construct definitions, demand maps, and analysis routines become reusable.</td>
+          <td>Each new assessment starts further along than the last, rather than from scratch.</td>
+        </tr>
+        <tr>
+          <td><strong>Results earn trust across stakeholders</strong>Scores are seen to measure the intended construct fairly.</td>
+          <td>The assessment's authority rests on evidence rather than assertion.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <span class="callout-label">On validity and consequence</span>
+      <p>Construct-irrelevant variance is not only a technical concern. Because scores inform decisions about people, the consequences of an invalid inference are borne by the test-taker. Treating the removal of extraneous barriers as a core design responsibility — rather than a remediation step — is what aligns measurement rigour with fairness.</p>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 6: REFLECTION
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="reflection">
+    <span class="section-marker">Section 6</span>
+    <h2>Practice Reflection</h2>
+
+    <p>The questions below are intended to help surface useful considerations about how your current assessments handle construct-irrelevant variance. They are not a formal assessment. Take your time with them — the most useful answers are honest ones, not aspirational ones. Working through these with colleagues who hold different roles — faculty, psychometricians, accessibility specialists — tends to be more productive than working through them alone.</p>
+
+    <div class="reflection-group">
+      <h3>On defining what you measure</h3>
+      <ul>
+        <li><span class="q-icon" aria-hidden="true">→</span> For your most consequential assessment, is the construct written down with explicit inclusions and exclusions — or does it live implicitly in the items?</li>
+        <li><span class="q-icon" aria-hidden="true">→</span> Where might an assessment be measuring something narrower, broader, or simply different from what it claims to measure?</li>
+        <li><span class="q-icon" aria-hidden="true">→</span> How well does each assessment actually map to the stated learning goal it is meant to evidence?</li>
+      </ul>
+    </div>
+
+    <div class="reflection-group">
+      <h3>On incidental demands and access</h3>
+      <ul>
+        <li><span class="q-icon" aria-hidden="true">→</span> Which demands in your tasks — reading load, timing, format, cultural reference — are intrinsic to the construct, and which are incidental to it?</li>
+        <li><span class="q-icon" aria-hidden="true">→</span> At what point does accessibility currently get considered: in the design, during review, or only when an individual requests an accommodation?</li>
+        <li><span class="q-icon" aria-hidden="true">→</span> Where could a single proactive design change remove a barrier for many learners at once?</li>
+      </ul>
+    </div>
+
+    <div class="reflection-group">
+      <h3>On evidence of fairness</h3>
+      <ul>
+        <li><span class="q-icon" aria-hidden="true">→</span> What evidence do you currently gather that items function fairly across groups — and is item-level analysis part of it?</li>
+        <li><span class="q-icon" aria-hidden="true">→</span> When an item is flagged as performing differently across groups, how is that adjudicated, and by whom?</li>
+        <li><span class="q-icon" aria-hidden="true">→</span> Are results ever disaggregated to detect disparities, and do those findings feed back into design?</li>
+      </ul>
+    </div>
+
+    <div class="reflection-group">
+      <h3>On stakes and defensibility</h3>
+      <ul>
+        <li><span class="q-icon" aria-hidden="true">→</span> For each assessment, what decision does the score inform — and is the effort spent removing construct-irrelevant variance proportional to that stake?</li>
+        <li><span class="q-icon" aria-hidden="true">→</span> If an external body asked you to justify a score's meaning, what evidence could you currently assemble?</li>
+        <li><span class="q-icon" aria-hidden="true">→</span> What would a realistic next step look like — given current resources, constraints, and the people who have the authority to move things forward?</li>
+      </ul>
+    </div>
+
+    <p>The teams that make meaningful progress on fairness in assessment tend to be those that create space for honest conversations about where scores might be measuring the wrong thing — not where they would like to believe they are.</p>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 7: CITATIONS
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="citations">
+    <span class="section-marker">Section 7</span>
+    <h2>Citations</h2>
+
+    <p>The knowledge claims, frameworks, and evidence in this resource draw on established scholarship, professional standards, and law. Sources are grouped by the area of the resource they primarily support, and are listed so that each can be independently verified.</p>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Validity &amp; Construct-Irrelevant Variance</div>
+      <div class="citation-entry">
+        <span class="cite-label">Foundational source</span>
+        <p><strong>Messick, S.</strong> "Validity." In R. L. Linn (Ed.), Educational Measurement (3rd ed., pp. 13–103). American Council on Education / Macmillan, 1989. Origin of construct-irrelevant variance and construct underrepresentation as the two principal threats to construct validity.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Unified view of validity</span>
+        <p><strong>Messick, S.</strong> "Validity of Psychological Assessment." American Psychologist, 50(9), 741–749, 1995.</p>
+        <a href="https://doi.org/10.1037/0003-066X.50.9.741" target="_blank" rel="noopener">doi.org/10.1037/0003-066X.50.9.741</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Professional standard</span>
+        <p><strong>AERA, APA, &amp; NCME.</strong> Standards for Educational and Psychological Testing. American Educational Research Association, 2014. Authoritative reference for validity, fairness, and the treatment of construct-irrelevant variance.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Construct Theory &amp; Argument-Based Validation</div>
+      <div class="citation-entry">
+        <span class="cite-label">Argument-based validity</span>
+        <p><strong>Kane, M. T.</strong> "Validating the Interpretations and Uses of Test Scores." Journal of Educational Measurement, 50(1), 1–73, 2013.</p>
+        <a href="https://doi.org/10.1111/jedm.12000" target="_blank" rel="noopener">doi.org/10.1111/jedm.12000</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Construct validity foundations</span>
+        <p><strong>Cronbach, L. J., &amp; Meehl, P. E.</strong> "Construct Validity in Psychological Tests." Psychological Bulletin, 52(4), 281–302, 1955.</p>
+        <a href="https://doi.org/10.1037/h0040957" target="_blank" rel="noopener">doi.org/10.1037/h0040957</a>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Psychometrics &amp; Differential Item Functioning</div>
+      <div class="citation-entry">
+        <span class="cite-label">Mantel–Haenszel procedure</span>
+        <p><strong>Holland, P. W., &amp; Thayer, D. T.</strong> "Differential Item Performance and the Mantel–Haenszel Procedure." In H. Wainer &amp; H. I. Braun (Eds.), Test Validity (pp. 129–145). Lawrence Erlbaum, 1988.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">DIF reference volume</span>
+        <p><strong>Holland, P. W., &amp; Wainer, H. (Eds.).</strong> Differential Item Functioning. Lawrence Erlbaum, 1993. Standard reference for DIF theory and methods.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Universal Design for Learning</div>
+      <div class="citation-entry">
+        <span class="cite-label">Design framework</span>
+        <p><strong>CAST.</strong> Universal Design for Learning Guidelines, Version 2.2. CAST, 2018. Source for multiple means of action and expression as applied to assessment.</p>
+        <a href="https://udlguidelines.cast.org/" target="_blank" rel="noopener">udlguidelines.cast.org</a>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Accessibility Standards</div>
+      <div class="citation-entry">
+        <span class="cite-label">Primary technical standard</span>
+        <p><strong>World Wide Web Consortium (W3C).</strong> Web Content Accessibility Guidelines (WCAG) 2.1. W3C Recommendation, June 2018.</p>
+        <a href="https://www.w3.org/TR/WCAG21/" target="_blank" rel="noopener">w3.org/TR/WCAG21/</a>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Cognitive Load Theory</div>
+      <div class="citation-entry">
+        <span class="cite-label">Foundational theory</span>
+        <p><strong>Sweller, J.</strong> "Cognitive Load During Problem Solving: Effects on Learning." Cognitive Science, 12(2), 257–285, 1988.</p>
+        <a href="https://doi.org/10.1207/s15516709cog1202_4" target="_blank" rel="noopener">doi.org/10.1207/s15516709cog1202_4</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Comprehensive treatment</span>
+        <p><strong>Sweller, J., Ayres, P., &amp; Kalyuga, S.</strong> Cognitive Load Theory. Springer, 2011. Source for the intrinsic / extraneous / germane load distinction applied to item design.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Authentic &amp; Performance Assessment</div>
+      <div class="citation-entry">
+        <span class="cite-label">Authentic assessment</span>
+        <p><strong>Wiggins, G.</strong> Educative Assessment: Designing Assessments to Inform and Improve Student Performance. Jossey-Bass, 1998.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Culturally Responsive &amp; Equity-Centered Assessment</div>
+      <div class="citation-entry">
+        <span class="cite-label">Culturally responsive assessment</span>
+        <p><strong>Montenegro, E., &amp; Jankowski, N. A.</strong> Equity and Assessment: Moving Towards Culturally Responsive Assessment. Occasional Paper No. 29. National Institute for Learning Outcomes Assessment (NILOA), 2017.</p>
+        <a href="https://files.eric.ed.gov/fulltext/ED574461.pdf" target="_blank" rel="noopener">files.eric.ed.gov/fulltext/ED574461.pdf</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Embedding equity in practice</span>
+        <p><strong>Montenegro, E., &amp; Jankowski, N. A.</strong> A New Decade for Assessment: Embedding Equity into Assessment Praxis. Occasional Paper No. 42. National Institute for Learning Outcomes Assessment (NILOA), 2020.</p>
+        <a href="https://files.eric.ed.gov/fulltext/ED608774.pdf" target="_blank" rel="noopener">files.eric.ed.gov/fulltext/ED608774.pdf</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Justice-oriented validity</span>
+        <p><strong>Randall, J.</strong> "Color-Neutral Is Not a Thing: Redefining Construct Definition and Representation Through a Justice-Oriented Critical Antiracist Lens." Educational Measurement: Issues and Practice, 40(4), 82–90, 2021.</p>
+        <a href="https://doi.org/10.1111/emip.12429" target="_blank" rel="noopener">doi.org/10.1111/emip.12429</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Antiracist writing assessment</span>
+        <p><strong>Inoue, A. B.</strong> Antiracist Writing Assessment Ecologies: Teaching and Assessing Writing for a Socially Just Future. The WAC Clearinghouse / Parlor Press, 2015. Open access.</p>
+        <a href="https://wac.colostate.edu/books/perspectives/inoue/" target="_blank" rel="noopener">wac.colostate.edu/books/perspectives/inoue/</a>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Accommodation Law &amp; Policy</div>
+      <div class="citation-entry">
+        <span class="cite-label">Canada — federal</span>
+        <p><strong>Parliament of Canada.</strong> Accessible Canada Act, S.C. 2019, c. 10. Establishes the goal of a barrier-free Canada and the federal duty to identify and remove barriers.</p>
+        <a href="https://laws-lois.justice.gc.ca/eng/acts/A-0.6/" target="_blank" rel="noopener">laws-lois.justice.gc.ca/eng/acts/A-0.6/</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Canada — British Columbia</span>
+        <p><strong>Legislative Assembly of British Columbia.</strong> Accessible British Columbia Act, S.B.C. 2021, c. 19.</p>
+        <a href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/21019" target="_blank" rel="noopener">bclaws.gov.bc.ca — SBC 2021 c. 19</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">United States — civil rights</span>
+        <p><strong>Americans with Disabilities Act of 1990</strong>, as amended (42 U.S.C. § 12101 et seq.), and <strong>Section 508 of the Rehabilitation Act</strong> (29 U.S.C. § 794d), governing accessibility of information and technology.</p>
+        <a href="https://www.ada.gov/" target="_blank" rel="noopener">ada.gov</a>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Backward Design &amp; Constructive Alignment</div>
+      <div class="citation-entry">
+        <span class="cite-label">Backward design</span>
+        <p><strong>Wiggins, G., &amp; McTighe, J.</strong> Understanding by Design. 2nd ed. ASCD, 2005. Source for backward design and alignment of assessment to stated goals.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Constructive alignment</span>
+        <p><strong>Biggs, J.</strong> "Enhancing Teaching Through Constructive Alignment." Higher Education, 32(3), 347–364, 1996.</p>
+        <a href="https://doi.org/10.1007/BF00138871" target="_blank" rel="noopener">doi.org/10.1007/BF00138871</a>
+      </div>
+    </div>
+  </section>
+
+  <a href="#toc" class="back-to-top">&#8593; Back to contents</a>
+
+  <div class="page-credit">
+    This resource draws on established scholarship in educational measurement, construct validity, psychometrics, accessibility, and equity-centered assessment. It does not constitute legal or professional consulting advice. An <a href="eliminating-construct-irrelevant-barriers-in-assessment.html">interactive version with tabs and expandable sections</a> is also available.
+  </div>
+
+</main>
+
+<footer>
+  Eliminating Construct-Irrelevant Barriers in Assessment — Knowledge Resource
+</footer>
+
+</body>
+</html>
