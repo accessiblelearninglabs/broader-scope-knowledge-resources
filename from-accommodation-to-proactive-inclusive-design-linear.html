@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>From Accommodation to Proactive Inclusive Design — Knowledge Resource</title>
+  <link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f6f7;
+      --surface-alt: #eaecee;
+      --ink: #303e44;
+      --ink-mid: #4f6068;
+      --ink-light: #7a9098;
+      --accent: #475f6a;
+      --accent-light: #e4eaed;
+      --accent-mid: #7a9aa8;
+      --border: #d5dde1;
+      --border-strong: #b5c5cc;
+      --font: 'Asap', system-ui, sans-serif;
+      --max: 740px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font); background: var(--bg); color: var(--ink); font-size: 16px; line-height: 1.7; }
+
+    /* Skip links */
+    .skip-link { position: absolute; top: -100px; left: 1rem; background: var(--accent); color: #fff; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-size: 0.85rem; z-index: 999; }
+    .skip-link:focus { top: 1rem; }
+
+    /* Header */
+    header { background: var(--bg); border-bottom: 1px solid var(--border); padding: 0 2rem; }
+    .header-inner { max-width: var(--max); margin: 0 auto; padding: 2.25rem 0 2rem; }
+    .site-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+    header h1 { font-size: 1.9rem; font-weight: 700; line-height: 1.2; color: var(--ink); }
+    .header-sub { font-size: 0.95rem; color: var(--ink-mid); margin-top: 0.6rem; line-height: 1.6; }
+    .version-note { background: var(--accent-light); border-left: 3px solid var(--accent); margin-top: 1.25rem; padding: 0.7rem 1rem; font-size: 0.84rem; color: var(--ink-mid); border-radius: 0 4px 4px 0; line-height: 1.6; }
+    .version-note a { color: var(--accent); }
+
+    /* Main layout */
+    main { max-width: var(--max); margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+    /* Table of contents */
+    #toc { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem 1.75rem; margin-bottom: 3rem; }
+    #toc h2 { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 1rem; }
+    #toc ol { padding-left: 1.25rem; }
+    #toc > ol > li { margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 600; color: var(--ink); }
+    #toc > ol > li > a { color: var(--ink); text-decoration: none; }
+    #toc > ol > li > a:hover { text-decoration: underline; color: var(--accent); }
+    #toc ul { padding-left: 1.1rem; margin-top: 0.3rem; list-style: disc; }
+    #toc ul li { margin-bottom: 0.2rem; font-size: 0.85rem; font-weight: 400; }
+    #toc ul li a { color: var(--ink-mid); text-decoration: none; }
+    #toc ul li a:hover { text-decoration: underline; color: var(--accent); }
+
+    /* Section markers */
+    .section-marker { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-light); display: block; margin-bottom: 0.5rem; }
+
+    /* Headings */
+    h2 { font-size: 1.55rem; font-weight: 700; color: var(--ink); margin-bottom: 0.65rem; line-height: 1.25; }
+    h3 { font-size: 1.1rem; font-weight: 600; color: var(--ink); margin: 2rem 0 0.5rem; }
+    h4 { font-size: 0.95rem; font-weight: 600; color: var(--ink); margin: 1.5rem 0 0.4rem; }
+
+    /* Section block */
+    .section-block { border-top: 2px solid var(--border); padding-top: 2.5rem; margin-top: 3rem; }
+    .section-block:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+
+    /* Stage header */
+    .stage-header { display: flex; align-items: baseline; gap: 0.75rem; margin: 2rem 0 0.5rem; padding-bottom: 0.65rem; border-bottom: 1px solid var(--border); }
+    .stage-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); background: var(--accent-light); padding: 0.2rem 0.6rem; border-radius: 999px; flex-shrink: 0; }
+    .stage-header h3 { margin: 0; font-size: 1rem; }
+    .stage-sub { font-size: 0.82rem; color: var(--ink-light); margin-top: 0.2rem; }
+
+    /* Body text */
+    p { font-size: 0.925rem; color: var(--ink-mid); line-height: 1.75; margin-bottom: 0.85rem; }
+    p strong { color: var(--ink); }
+    p:last-child { margin-bottom: 0; }
+
+    /* Lists */
+    ul, ol { padding-left: 1.3rem; margin: 0.6rem 0 1rem; }
+    li { font-size: 0.925rem; color: var(--ink-mid); line-height: 1.65; margin-bottom: 0.3rem; }
+    li strong { color: var(--ink); }
+
+    /* Produces box */
+    .produces { background: var(--surface); border-radius: 6px; padding: 1rem 1.2rem; margin: 1rem 0; }
+    .produces-label { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink-light); display: block; margin-bottom: 0.5rem; }
+    .produces ul { margin: 0; }
+
+    /* Note */
+    .note { font-size: 0.84rem; font-style: italic; color: var(--ink-light); margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+
+    /* Callout */
+    .callout { background: var(--accent-light); border-left: 3px solid var(--accent); padding: 1rem 1.2rem; margin: 1.5rem 0; border-radius: 0 6px 6px 0; }
+    .callout-label { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 0.4rem; }
+    .callout p { font-size: 0.9rem; margin-bottom: 0; }
+
+    /* Decision subsection */
+    .decision-group { margin: 1.75rem 0; }
+    .decision-group h3 { font-size: 0.9rem; font-weight: 700; color: var(--ink); margin: 0 0 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+    .decision-item { margin-bottom: 1rem; }
+    .decision-item h4 { font-size: 0.88rem; font-weight: 600; color: var(--ink); margin: 0 0 0.2rem; }
+    .decision-item p { font-size: 0.875rem; margin-bottom: 0; }
+
+    /* Impact table */
+    .impact-table { width: 100%; border-collapse: collapse; margin: 1.25rem 0; font-size: 0.875rem; }
+    .impact-table th { text-align: left; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-light); padding: 0.6rem 0.85rem; background: var(--surface); border: 1px solid var(--border); }
+    .impact-table td { padding: 0.85rem; border: 1px solid var(--border); vertical-align: top; color: var(--ink-mid); line-height: 1.6; }
+    .impact-table td strong { color: var(--ink); display: block; margin-bottom: 0.2rem; }
+    .impact-table tr:nth-child(even) td { background: var(--surface); }
+
+    /* Reflection questions */
+    .reflection-group { margin: 1.75rem 0; }
+    .reflection-group h3 { font-size: 0.9rem; font-weight: 700; color: var(--ink); margin: 0 0 0.65rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+    .reflection-group ul { list-style: none; padding: 0; margin: 0; }
+    .reflection-group ul li { font-size: 0.9rem; color: var(--ink-mid); line-height: 1.65; padding: 0.6rem 0; border-bottom: 1px dashed var(--border); display: flex; gap: 0.6rem; align-items: flex-start; }
+    .reflection-group ul li:last-child { border-bottom: none; }
+    .reflection-group ul li .q-icon { flex-shrink: 0; font-size: 1rem; margin-top: 0.05rem; }
+
+    /* Citations */
+    .citation-group { margin-bottom: 1.75rem; }
+    .citation-group-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 0.65rem; padding-bottom: 0.35rem; border-bottom: 1px solid var(--border); }
+    .citation-entry { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0.8rem 1rem; margin-bottom: 0.45rem; }
+    .citation-entry .cite-label { font-size: 0.67rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.2rem; display: block; }
+    .citation-entry p { font-size: 0.84rem; margin-bottom: 0; }
+    .citation-entry a { color: var(--accent); text-decoration: none; font-size: 0.81rem; display: block; margin-top: 0.25rem; word-break: break-all; }
+    .citation-entry a:hover { text-decoration: underline; }
+
+    /* Back to top */
+    .back-to-top { display: inline-block; margin-top: 2.5rem; font-size: 0.85rem; color: var(--accent); text-decoration: none; }
+    .back-to-top:hover { text-decoration: underline; }
+
+    /* Footer credit */
+    .page-credit { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.83rem; color: var(--ink-light); line-height: 1.65; }
+    .page-credit a { color: var(--accent); text-decoration: none; }
+    .page-credit a:hover { text-decoration: underline; }
+
+    footer { border-top: 1px solid var(--border); background: var(--surface); padding: 1.5rem 2rem; text-align: center; font-size: 0.78rem; color: var(--ink-light); }
+
+    @media (max-width: 640px) {
+      main { padding: 1.5rem 1rem 4rem; }
+      header { padding: 0 1rem; }
+      header h1 { font-size: 1.5rem; }
+      .impact-table { font-size: 0.82rem; }
+      .impact-table td, .impact-table th { padding: 0.65rem; }
+    }
+  </style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<a href="#toc" class="skip-link" style="left: 12rem;">Skip to table of contents</a>
+
+<header>
+  <div class="header-inner">
+    <div class="site-label">Inclusive Design &amp; Disability — Knowledge Resource</div>
+    <h1>From Accommodation to Proactive Inclusive Design</h1>
+    <p class="header-sub">A guide to the knowledge foundations, the shift in operating model, key decisions, and professional practice involved in moving from reactive, individual accommodation toward access that is designed in from the start.</p>
+    <p class="version-note"><strong>Screen reader and keyboard-optimised version.</strong> This is a fully linear, plain-structure version of this resource. All content is presented in reading order with no tabs, accordions, or JavaScript. An <a href="from-accommodation-to-proactive-inclusive-design.html">interactive version with tabs and expandable sections</a> is also available.</p>
+  </div>
+</header>
+
+<main id="main-content">
+
+  <!-- TABLE OF CONTENTS -->
+  <nav id="toc" aria-label="Table of contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#foundations">Knowledge Foundations</a>
+        <ul>
+          <li><a href="#six-foundations">The six knowledge foundations</a></li>
+          <li><a href="#the-reframe">The reframe at the centre</a></li>
+          <li><a href="#collaborative-practice">A collaborative, context-specific practice</a></li>
+        </ul>
+      </li>
+      <li><a href="#process">The Shift in Practice</a>
+        <ul>
+          <li><a href="#stage-1">Stage 1: Define the goal, separate from the means</a></li>
+          <li><a href="#stage-2">Stage 2: Audit for avoidable barriers</a></li>
+          <li><a href="#stage-3">Stage 3: Design proactive options</a></li>
+          <li><a href="#stage-4">Stage 4: Build technical accessibility</a></li>
+          <li><a href="#stage-5">Stage 5: Retain a robust accommodation pathway</a></li>
+          <li><a href="#stage-6">Stage 6: Evaluate, involve, and iterate</a></li>
+        </ul>
+      </li>
+      <li><a href="#decisions">Key Decisions That Shape the Shift</a></li>
+      <li><a href="#competencies">Core Competencies</a></li>
+      <li><a href="#impact">Outcomes</a>
+        <ul>
+          <li><a href="#short-term">Shorter-term outcomes</a></li>
+          <li><a href="#long-term">Longer-term change</a></li>
+        </ul>
+      </li>
+      <li><a href="#reflection">Practice Reflection</a></li>
+      <li><a href="#citations">Citations</a></li>
+    </ol>
+  </nav>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 1: FOUNDATIONS
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="foundations">
+    <span class="section-marker">Section 1</span>
+    <h2>Knowledge Foundations</h2>
+
+    <p>The move from accommodation to proactive inclusive design is a translation from disability studies into design method. The strongest practice holds these interconnected bodies of knowledge in view at once — producing access that an individual-by-individual approach cannot achieve at scale.</p>
+
+    <h3 id="six-foundations">The six knowledge foundations</h3>
+
+    <h4>1. The Social Model of Disability</h4>
+    <p>The home discipline of this reframe. The social model distinguishes impairment — an individual attribute — from disability, understood as the disadvantage produced when environments, attitudes, and institutions fail to anticipate human variation. Locating the barrier in the environment, rather than the person, is what justifies redesigning the environment instead of "fixing" or accommodating the individual.</p>
+
+    <h4>2. Universal Design</h4>
+    <p>The parent design philosophy. Ronald Mace and colleagues formalised seven principles for designing environments and products usable by the widest range of people without adaptation. Universal Design supplies the method that turns the social model from a critique into a buildable practice — designing for variation from the outset rather than retrofitting one request at a time.</p>
+
+    <h4>3. Accommodation Law and Policy</h4>
+    <p>In the Canadian context, the Accessible Canada Act and the Accessible British Columbia Act, together with the duty to accommodate to the point of undue hardship under human rights law. These set the legal floor. Notably, both the federal statute and the leading jurisprudence favour a proactive, systemic approach to barrier removal over case-by-case adjustment.</p>
+
+    <h4>4. Assistive Technology and Accessibility Standards</h4>
+    <p>Screen readers, captioning, speech-to-text, and the broader assistive-technology ecosystem, paired with the Web Content Accessibility Guidelines (WCAG). Knowing what access actually requires technically is what separates proactive design as an aspiration from proactive design as a specification that can be built, tested, and verified.</p>
+
+    <h4>5. Disability Justice</h4>
+    <p>Articulated by the collective Sins Invalid, disability justice extends beyond compliance toward equity through ten principles — among them intersectionality, interdependence, and the leadership of those most impacted. It supplies the critique that the disclosure-and-retrofit model can itself be a harm, and centres the participation of disabled people in design decisions that concern them.</p>
+
+    <h4>6. Cultural Responsiveness</h4>
+    <p>Disability intersects with race, language, and class. Proactive inclusive design that anticipates only disability-related barriers can quietly re-centre a default learner. Responsible practice anticipates cultural and linguistic barriers alongside disability-related ones, so that designing once for everyone genuinely means everyone.</p>
+
+    <div class="callout">
+      <span class="callout-label">A practical hierarchy</span>
+      <p>Use the social model to locate the barrier. Use Universal Design to redesign the environment around it. Use assistive technology and WCAG to make access technically real. Use law and policy to establish the floor the work is meant to exceed. Use disability justice to keep equity, not mere compliance, as the aim. Rigorous practice holds all of these in view simultaneously.</p>
+    </div>
+
+    <h3 id="the-reframe">The reframe at the centre</h3>
+
+    <p>One concept runs through the entire foundation: accommodation and proactive inclusive design are different operating models, not simply different levels of effort. Accommodation removes a barrier for one person, after the fact, once they have identified themselves and requested it. Inclusive design removes the barrier once, in advance, for everyone who would have encountered it. The distinction is structural, and recognising it is the load-bearing move of this entire area of practice.</p>
+
+    <p><strong>The reactive model carries costs that are easy to overlook.</strong> It depends on disclosure — the individual must name a private matter to a person with authority over them — and the empirical literature consistently associates that requirement with anticipated stigma, reduced confidence, and, for many, a decision not to ask at all. It introduces delay between need and access. It places the labour of securing access on the person who is already navigating the barrier. Access secured this way is also, by design, exceptional rather than ordinary, which can mark its recipient as receiving "special treatment." Proactive design removes the barrier before disclosure is ever required, which removes these costs along with it.</p>
+
+    <p><strong>The shift is also defensible in legal and economic terms.</strong> In its leading decision on the duty to accommodate, the Supreme Court of Canada observed that bolting accommodation onto a standard that remains otherwise unexamined can leave systemic discrimination intact, and directed attention instead to whether the standard itself could be designed differently. In parallel, accessibility built into a process or product from the outset is generally far less costly than retrofitting it later — a pattern documented across the built environment and digital domains alike. The case for proactive design does not rest on goodwill alone; it is supported by law, by cost, and by the documented experience of the people the reactive model asks to carry its burden.</p>
+
+    <h3 id="collaborative-practice">A collaborative, context-specific practice</h3>
+
+    <p>Proactive inclusive design is developed with people, not merely for them. The principle of the leadership of those most impacted is not only an ethical commitment but a practical one: the people who encounter barriers are best positioned to identify them, and their early involvement reduces the rework that follows when barriers surface only after launch. A robust accommodation pathway is retained regardless — proactive design reduces the volume and stakes of individual requests, but it does not eliminate the need for them. The aim is a system in which most access is ordinary and built in, and individual accommodation becomes the exception rather than the rule.</p>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 2: THE SHIFT IN PRACTICE
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="process">
+    <span class="section-marker">Section 2</span>
+    <h2>The Shift in Practice</h2>
+
+    <p>Proactive design is a claim about process — about the points in a design workflow where access is either built in early or bolted on late. The stages below describe where that work happens. In practice, depth is calibrated to each project's scope and constraints; understanding the full sequence clarifies what is gained or lost when a stage is abbreviated.</p>
+
+    <!-- Stage 1 -->
+    <div id="stage-1">
+      <div class="stage-header">
+        <span class="stage-label">Stage 1</span>
+        <h3>Define the Goal, Separate from the Means</h3>
+      </div>
+      <p class="stage-sub">Stating what must be achieved without smuggling in how</p>
+      <p>The linchpin of inclusive design is stating the goal cleanly, so that the objective is fixed but the means of reaching and demonstrating it remain flexible. A goal that bakes in a single method — a particular format, modality, or pace — creates a barrier for anyone who could meet the objective another way. Separating the two is what makes flexible pathways possible later.</p>
+      <p>This is also where construct clarity begins: naming precisely what is being developed or assessed, so that incidental demands can be distinguished from essential ones in the next stage.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>Goals stated independently of any single method of completion</li>
+          <li>A clear account of what is essential to the objective and what is incidental</li>
+          <li>The basis for offering multiple means without compromising the standard</li>
+        </ul>
+      </div>
+      <p class="note">A goal with a method baked into it is the most common origin of an avoidable barrier — and the hardest to see, because it looks like the task itself.</p>
+    </div>
+
+    <!-- Stage 2 -->
+    <div id="stage-2">
+      <div class="stage-header">
+        <span class="stage-label">Stage 2</span>
+        <h3>Audit for Avoidable Barriers</h3>
+      </div>
+      <p class="stage-sub">Distinguishing essential difficulty from incidental obstacle</p>
+      <p>With the goal clearly stated, the design can be examined for barriers that have nothing to do with the objective but block some people anyway — a demand on timing, sensory channel, format, or unstated prior knowledge. The judgment is to remove these incidental barriers without flattening the difficulty that is the learning or the legitimate requirement.</p>
+      <p>Many classic accessibility barriers are these incidental demands in disguise. Surfacing them in advance is what allows them to be designed out rather than accommodated around, one request at a time.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>An inventory of barriers separated into essential and incidental</li>
+          <li>Decisions about which barriers to remove by redesign</li>
+          <li>A record of what remains essential, and why</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Stage 3 -->
+    <div id="stage-3">
+      <div class="stage-header">
+        <span class="stage-label">Stage 3</span>
+        <h3>Design Proactive Options</h3>
+      </div>
+      <p class="stage-sub">Building flexible pathways in from the start</p>
+      <p>Where a barrier cannot simply be removed, flexible means are built in: multiple ways to engage, to take in information, and to demonstrate achievement. This is Universal Design for Learning applied to the workflow — the operational translation of "design for variation" into specific, anticipated options.</p>
+      <p>Expert judgment here includes knowing how many options is enough. Unlimited choice introduces its own cognitive load; the aim is a small set of well-chosen pathways that cover the predictable range of need, not an unbounded menu.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>Anticipated options for engagement, representation, and expression</li>
+          <li>Pathways that serve the predictable range of variation without disclosure</li>
+          <li>A defensible rationale for where flexibility is, and is not, offered</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Stage 4 -->
+    <div id="stage-4">
+      <div class="stage-header">
+        <span class="stage-label">Stage 4</span>
+        <h3>Build Technical Accessibility</h3>
+      </div>
+      <p class="stage-sub">Making access real, testable, and verified</p>
+      <p>Proactive options only deliver access if they are technically sound. This stage applies WCAG to digital materials — text alternatives, captions, keyboard operability, sufficient contrast, accessible documents and navigation — and confirms compatibility with the assistive technologies people actually use.</p>
+      <p>Automated tools are useful but partial; they detect a minority of real barriers, and human testing, ideally with assistive-technology users, remains essential. Technical accessibility is what keeps "built-in access" from being a claim that does not survive contact with a screen reader.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>Materials and interfaces that meet a defined accessibility standard</li>
+          <li>Verification through both automated checks and human testing</li>
+          <li>Documented conformance that can be maintained over time</li>
+        </ul>
+      </div>
+      <p class="note">Access asserted but never tested with assistive technology is a frequent failure point — the gap between a compliance checklist and a usable experience.</p>
+    </div>
+
+    <!-- Stage 5 -->
+    <div id="stage-5">
+      <div class="stage-header">
+        <span class="stage-label">Stage 5</span>
+        <h3>Retain a Robust Accommodation Pathway</h3>
+      </div>
+      <p class="stage-sub">Designing the exception, not eliminating it</p>
+      <p>Proactive design reduces the volume and the stakes of individual requests; it does not remove the legal duty to accommodate, nor the reality that some needs are particular and unpredictable. A well-functioning system keeps a clear, low-friction, dignified accommodation pathway available — and treats it as a complement to inclusive design, not a substitute for it.</p>
+      <p>Where requests are still made, the experience of making them matters: minimal documentation demands, privacy protected, and timelines that do not impose delay as a hidden cost. The better the proactive design, the rarer and lighter these requests become.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>A documented, accessible accommodation process that meets legal obligations</li>
+          <li>Reduced reliance on that process as built-in access expands</li>
+          <li>Safeguards for privacy, dignity, and timeliness in any request</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Stage 6 -->
+    <div id="stage-6">
+      <div class="stage-header">
+        <span class="stage-label">Stage 6</span>
+        <h3>Evaluate, Involve, and Iterate</h3>
+      </div>
+      <p class="stage-sub">Confirming access works, with the people it serves</p>
+      <p>The final stage tests whether the design actually removed barriers in practice, and feeds what is learned back into the next cycle. The most reliable signal comes from the people most affected: their involvement in review and testing surfaces barriers that a design team may not anticipate, consistent with the principle of leadership from those most impacted.</p>
+      <p>Useful indicators include whether accommodation requests decline as built-in access improves, and whether they decline because the need was met proactively rather than because the pathway became harder to use. The distinction matters.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>Evidence of whether barriers were removed in real use</li>
+          <li>Findings drawn from the participation of disabled users</li>
+          <li>Improvements carried into the next design cycle</li>
+        </ul>
+      </div>
+      <p class="note">A falling number of requests is only good news if access rose to meet it. Read alongside experience, not in isolation.</p>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 3: KEY DECISIONS
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="decisions">
+    <span class="section-marker">Section 3</span>
+    <h2>Key Decisions That Shape the Shift</h2>
+
+    <p>Moving an organization or a program from a reactive to a proactive posture involves a set of recurring decisions. Each determines how far the shift goes — and whether built-in access becomes the default or remains an aspiration layered over an unchanged process.</p>
+
+    <div class="decision-group">
+      <h3>Default posture: does access wait to be requested, or is it anticipated?</h3>
+      <p>The defining choice. A reactive default places the work of securing access on the individual, after disclosure. A proactive default anticipates predictable variation and builds for it in advance. Most of the value in this area of practice follows from where the default sits — everything else operationalises it.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Where access enters: is access part of design, or added afterward?</h3>
+      <p>Access designed in at the goal-and-structure stage is cheaper, more durable, and more seamless than access retrofitted after a product is built. The point at which access enters the workflow is, in practice, the point at which it becomes either ordinary or exceptional.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Dependence on disclosure: must a person identify themselves to gain access?</h3>
+      <p>Access that requires disclosure carries a documented burden: anticipated stigma, and for many, a decision not to ask. Reducing the access that is gated behind disclosure — by building it in for everyone — directly reduces that burden. This is where the equity case and the design case meet.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Standardization vs. particularity: how much is designed once, and how much remains individual?</h3>
+      <p>Proactive design handles the predictable range once, for all. It does not pretend to anticipate every particular need. The judgment is to design broadly enough that individual requests become rare, while keeping a strong pathway for the genuinely particular case.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Cost timing: is the cost paid up front, or repeatedly later?</h3>
+      <p>Retrofitting recurs — each request carries its own cost in time, labour, and delay. Designing in is paid once. The economic argument is not that access is free, but that paying for it proactively is generally lower and more predictable than paying for it reactively, again and again.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Who leads the design: are disabled people involved in decisions that affect them?</h3>
+      <p>The leadership of those most impacted is both a principle and a method. Early involvement of disabled users surfaces barriers a design team may miss and improves the relevance of the result. Designing for people without them tends to produce access that looks complete and is not.</p>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">On proactive design and the accommodation duty</span>
+      <p>Proactive inclusive design and the legal duty to accommodate are complementary, not competing. The duty sets a floor that always applies; proactive design is how an organization rises above it and reduces how often the duty must be invoked. A program that designs access in still maintains its accommodation pathway — it simply needs it less often, and for narrower cases.</p>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 4: COMPETENCIES
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="competencies">
+    <span class="section-marker">Section 4</span>
+    <h2>Core Competencies</h2>
+
+    <p>Where the foundations describe what a practitioner knows, competencies describe what a practitioner can reliably do. These cluster around translating disability-studies insight into design decisions, building access technically, and stewarding the human and legal dimensions of the work.</p>
+
+    <h3>Barrier identification</h3>
+    <p>Distinguishing the essential difficulty that is the point of a task from the incidental barrier that blocks some people for reasons unrelated to it. Removing the second without flattening the first is a genuine matter of expert judgment, and it is the skill on which proactive design depends.</p>
+
+    <h3>Goal–means separation</h3>
+    <p>Stating an objective so that it is fixed while the means of reaching and demonstrating it stay flexible. Most avoidable barriers trace back to a goal with a single method built into it; separating the two is what makes multiple pathways possible without lowering the standard.</p>
+
+    <h3>Proactive option design</h3>
+    <p>Building flexible means in from the start — and knowing when enough is enough, since unbounded choice creates its own cognitive load. The aim is a deliberate, well-chosen set of pathways that cover the predictable range of variation without disclosure.</p>
+
+    <h3>Technical accessibility production</h3>
+    <p>Producing materials and interfaces that meet a defined standard such as WCAG and work with real assistive technology — text alternatives, captions, keyboard operability, accessible documents — and verifying them through both automated and human testing rather than checklist alone.</p>
+
+    <h3>Accommodation-process stewardship</h3>
+    <p>Designing and maintaining an individual accommodation pathway that is low-friction, privacy-protecting, and timely — treated as a necessary complement to inclusive design. This includes recognising when a need is genuinely particular and cannot be met by proactive design alone.</p>
+
+    <h3>Legal and policy fluency</h3>
+    <p>Working knowledge of the applicable floor — in the Canadian context, the Accessible Canada Act, the Accessible British Columbia Act, and the duty to accommodate to undue hardship — and the ability to articulate how proactive design both satisfies and exceeds it, including to decision-makers who control whether the shift happens.</p>
+
+    <h3>Co-design with disabled people</h3>
+    <p>Structuring genuine participation by those most affected — in barrier identification, review, and testing — in a way that is respectful of their time and expertise. This operationalises the principle of leadership from those most impacted and consistently improves the result.</p>
+
+    <h3>Cultural responsiveness</h3>
+    <p>Anticipating that disability intersects with race, language, and class, so that proactive design accounts for cultural and linguistic barriers alongside disability-related ones — and does not, in designing for one default learner, quietly exclude another.</p>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 5: OUTCOMES
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="impact">
+    <span class="section-marker">Section 5</span>
+    <h2>Outcomes</h2>
+
+    <p>Moving from accommodation to proactive inclusive design creates change at two horizons. The shorter-term outcomes are tangible and often measurable. The longer-term shift changes how access is understood and sustained across an organization.</p>
+
+    <h3 id="short-term">Shorter-term outcomes: what becomes visible and actionable</h3>
+
+    <table class="impact-table" aria-label="Shorter-term outcomes of proactive inclusive design">
+      <thead>
+        <tr>
+          <th scope="col">Outcome</th>
+          <th scope="col">What this looks like in practice</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Barriers are removed before they are encountered</strong>Predictable barriers are designed out in advance.</td>
+          <td>Access no longer depends on each person noticing, naming, and requesting a remedy after the fact.</td>
+        </tr>
+        <tr>
+          <td><strong>The disclosure burden falls</strong>Fewer people must identify themselves to obtain access that is built in.</td>
+          <td>The stigma, anxiety, and non-participation the literature associates with disclosure are reduced.</td>
+        </tr>
+        <tr>
+          <td><strong>Individual requests become rarer and lighter</strong>The accommodation pathway remains but is invoked less often.</td>
+          <td>Delay and administrative load fall for everyone involved, and requests that do arise are narrower.</td>
+        </tr>
+        <tr>
+          <td><strong>Compliance is met as a by-product</strong>Designing above the legal floor satisfies the duty more reliably than reactive remediation.</td>
+          <td>The legal exposure that the reactive model carries is correspondingly reduced.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 id="long-term">Longer-term change: what becomes embedded in practice</h3>
+
+    <table class="impact-table" aria-label="Longer-term outcomes of sustained proactive inclusive design practice">
+      <thead>
+        <tr>
+          <th scope="col">Outcome</th>
+          <th scope="col">What this looks like in practice</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Access becomes ordinary rather than exceptional</strong>Built-in access stops being a special arrangement for a marked individual.</td>
+          <td>Access becomes a routine property of the environment — the equity the social model points toward.</td>
+        </tr>
+        <tr>
+          <td><strong>Cost shifts from recurring to one-time</strong>Paying for access once, in design, replaces paying for it repeatedly through retrofits.</td>
+          <td>Cost over the life of a program becomes more predictable and generally lower.</td>
+        </tr>
+        <tr>
+          <td><strong>Design benefits a wider range than intended</strong>Features built for disabled users routinely benefit many others.</td>
+          <td>A single curb cut serves far more people than it was designed for — the documented spillover of inclusive design.</td>
+        </tr>
+        <tr>
+          <td><strong>Disabled people's leadership is embedded</strong>Those most affected help shape design decisions.</td>
+          <td>The organization develops durable capability rather than dependence on remediation after complaints.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <span class="callout-label">On what proactive design does not replace</span>
+      <p>Designing access in reduces reliance on individual accommodation; it does not abolish it. Some needs are particular and unforeseeable, and the legal duty to accommodate applies regardless of how good the proactive design is. The mark of mature practice is not the absence of requests but their rarity — and a pathway that remains dignified and timely for the cases that do arise.</p>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 6: REFLECTION
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="reflection">
+    <span class="section-marker">Section 6</span>
+    <h2>Practice Reflection</h2>
+
+    <p>The questions below are intended to help surface useful considerations about your organization's or program's current posture toward access. They are not a formal assessment. Take your time with them — the most useful answers are honest ones, not aspirational ones. Working through these with colleagues who hold different roles, and with disabled people whose experience is most directly affected, tends to be more productive than working through them alone.</p>
+
+    <div class="reflection-group">
+      <h3>On your default posture</h3>
+      <ul>
+        <li><span class="q-icon">→</span> Is access in your context primarily anticipated and built in, or provided in response to individual requests after disclosure?</li>
+        <li><span class="q-icon">→</span> Which barriers generate the most individual requests — and which of those could be designed out once, for everyone?</li>
+      </ul>
+    </div>
+
+    <div class="reflection-group">
+      <h3>On where access enters and what it requires</h3>
+      <ul>
+        <li><span class="q-icon">→</span> At what point in your design or development process does accessibility currently get considered, and what happens as a result?</li>
+        <li><span class="q-icon">→</span> How much of the access in your context depends on a person disclosing a need in order to obtain it?</li>
+        <li><span class="q-icon">→</span> Where does access tend to get dropped — at the point of production, during review, or in the handoff between teams?</li>
+      </ul>
+    </div>
+
+    <div class="reflection-group">
+      <h3>On participation and leadership</h3>
+      <ul>
+        <li><span class="q-icon">→</span> How are disabled people involved in the decisions that shape access — and at what stage does that involvement begin?</li>
+        <li><span class="q-icon">→</span> Whose experience of your programs or environments do you know relatively little about, and what would it take to understand it better?</li>
+      </ul>
+    </div>
+
+    <div class="reflection-group">
+      <h3>On the accommodation pathway and the legal floor</h3>
+      <ul>
+        <li><span class="q-icon">→</span> If individual requests are still made, how would you describe the experience of making one — in terms of documentation, privacy, and time?</li>
+        <li><span class="q-icon">→</span> How would you articulate the way your proactive design both meets and exceeds the duty to accommodate, to someone with the authority to resource the shift?</li>
+        <li><span class="q-icon">→</span> What would a realistic next step look like — given current resources, constraints, and the people who can move things forward?</li>
+      </ul>
+    </div>
+
+    <p>The shift from accommodation to proactive design tends to advance furthest where there is honest discussion of where access currently depends on disclosure — and a clear, shared view of which barriers can be designed out once, for everyone.</p>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 7: CITATIONS
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="citations">
+    <span class="section-marker">Section 7</span>
+    <h2>Citations</h2>
+
+    <p>The knowledge claims, frameworks, and evidence in this resource draw on established scholarship, legislation, and professional practice. Sources are grouped by the area of the resource they primarily support, and all are independently verifiable.</p>
+
+    <div class="citation-group">
+      <div class="citation-group-label">The Social Model &amp; Critical Disability Studies</div>
+      <div class="citation-entry">
+        <span class="cite-label">Foundational statement</span>
+        <p><strong>Union of the Physically Impaired Against Segregation (UPIAS).</strong> Fundamental Principles of Disability. London: UPIAS, 1976. First articulation distinguishing impairment from disability.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Foundational theory</span>
+        <p><strong>Oliver, M.</strong> The Politics of Disablement. Macmillan, 1990. Developed the social model as a framework locating disability in social and environmental barriers.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Critical extension</span>
+        <p><strong>Shakespeare, T.</strong> Disability Rights and Wrongs. Routledge, 2006. A critical engagement with, and refinement of, the social model.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Universal Design</div>
+      <div class="citation-entry">
+        <span class="cite-label">The seven principles</span>
+        <p><strong>Connell, B. R., Jones, M., Mace, R., Mueller, J., Mullick, A., Ostroff, E., Sanford, J., Steinfeld, E., Story, M., &amp; Vanderheiden, G.</strong> The Principles of Universal Design, Version 2.0. Center for Universal Design, North Carolina State University, 1997.</p>
+        <a href="https://design.ncsu.edu/research/center-for-universal-design/" target="_blank" rel="noopener">design.ncsu.edu/research/center-for-universal-design</a>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Disability Justice</div>
+      <div class="citation-entry">
+        <span class="cite-label">The ten principles</span>
+        <p><strong>Berne, P., &amp; Sins Invalid.</strong> Skin, Tooth, and Bone: The Basis of Movement Is Our People. 2nd ed. Sins Invalid, 2019. Source for the ten principles of disability justice, including the leadership of those most impacted.</p>
+        <a href="https://www.sinsinvalid.org/" target="_blank" rel="noopener">sinsinvalid.org</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Intersectionality</span>
+        <p><strong>Crenshaw, K.</strong> "Demarginalizing the Intersection of Race and Sex." University of Chicago Legal Forum, 1989. Foundational source for intersectionality.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Assistive Technology &amp; Accessibility Standards</div>
+      <div class="citation-entry">
+        <span class="cite-label">Primary technical standard</span>
+        <p><strong>World Wide Web Consortium (W3C).</strong> Web Content Accessibility Guidelines (WCAG) 2.2. W3C Recommendation, October 2023.</p>
+        <a href="https://www.w3.org/TR/WCAG22/" target="_blank" rel="noopener">w3.org/TR/WCAG22/</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Business case</span>
+        <p><strong>W3C Web Accessibility Initiative (WAI).</strong> The Business Case for Digital Accessibility. Evidence on the cost and value of building accessibility in.</p>
+        <a href="https://www.w3.org/WAI/business-case/" target="_blank" rel="noopener">w3.org/WAI/business-case</a>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Universal Design for Learning</div>
+      <div class="citation-entry">
+        <span class="cite-label">Operational framework</span>
+        <p><strong>CAST.</strong> Universal Design for Learning Guidelines, Version 3.0. CAST, 2024. The translation of proactive design into instruction through multiple means of engagement, representation, and action and expression.</p>
+        <a href="https://udlguidelines.cast.org/" target="_blank" rel="noopener">udlguidelines.cast.org</a>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Accommodation Law &amp; Policy (Canada)</div>
+      <div class="citation-entry">
+        <span class="cite-label">Federal legislation</span>
+        <p><strong>Parliament of Canada.</strong> Accessible Canada Act, S.C. 2019, c. 10. Establishes a proactive, systemic approach to identifying, removing, and preventing barriers, with the goal of a barrier-free Canada by January 1, 2040.</p>
+        <a href="https://laws-lois.justice.gc.ca/eng/acts/a-0.6/" target="_blank" rel="noopener">laws-lois.justice.gc.ca/eng/acts/a-0.6</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Provincial legislation</span>
+        <p><strong>Legislative Assembly of British Columbia.</strong> Accessible British Columbia Act, S.B.C. 2021, c. 19.</p>
+        <a href="https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/21019" target="_blank" rel="noopener">bclaws.gov.bc.ca — statreg/21019</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Leading jurisprudence</span>
+        <p><strong>Supreme Court of Canada.</strong> British Columbia (Public Service Employee Relations Commission) v. BCGSEU, [1999] 3 S.C.R. 3 ("Meiorin"). Established the unified test and the duty to accommodate to the point of undue hardship, and directed attention to redesigning discriminatory standards rather than only adjusting around them.</p>
+        <a href="https://www.canlii.org/en/ca/scc/doc/1999/1999canlii652/1999canlii652.html" target="_blank" rel="noopener">canlii.org — 1999 CanLII 652 (SCC)</a>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Disclosure Burden &amp; Stigma</div>
+      <div class="citation-entry">
+        <span class="cite-label">Stigma and disclosure</span>
+        <p><strong>Corrigan, P. W., &amp; Watson, A. C.</strong> "Understanding the Impact of Stigma on People with Mental Illness." World Psychiatry, 1(1), 16–20, 2002. On anticipated stigma and its effect on help-seeking and disclosure.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Accommodation and stigma</span>
+        <p><strong>Solovieva, T. I., Dowler, D. L., &amp; Walls, R. T.</strong> "Employer Benefits from Making Workplace Accommodations." Disability and Health Journal, 4(1), 39–45, 2011. On the costs and perceptions surrounding individual workplace accommodations.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Design Process &amp; Barrier Analysis</div>
+      <div class="citation-entry">
+        <span class="cite-label">Backward design</span>
+        <p><strong>Wiggins, G., &amp; McTighe, J.</strong> Understanding by Design. 2nd ed. ASCD, 2005. Source for goal-first design and constructive alignment, where access is either designed in early or bolted on late.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Construct-irrelevant barriers</span>
+        <p><strong>Messick, S.</strong> "Validity." In R. L. Linn (Ed.), Educational Measurement, 3rd ed., 13–103. American Council on Education / Macmillan, 1989. Source for construct-irrelevant variance — the formal account of barriers unrelated to what is being measured.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Organizational Change &amp; Economics</div>
+      <div class="citation-entry">
+        <span class="cite-label">The curb-cut effect</span>
+        <p><strong>Blackwell, A. G.</strong> "The Curb-Cut Effect." Stanford Social Innovation Review, Winter 2017. On how design intended for disabled people benefits a far wider population.</p>
+        <a href="https://ssir.org/articles/entry/the_curb_cut_effect" target="_blank" rel="noopener">ssir.org — the_curb_cut_effect</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Change leadership</span>
+        <p><strong>Kotter, J. P.</strong> Leading Change. Harvard Business Review Press, 1996. Framework for the organizational change the reactive-to-proactive shift requires.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Individual change</span>
+        <p><strong>Hiatt, J. M.</strong> ADKAR: A Model for Change in Business, Government and Our Community. Prosci Learning Center Publications, 2006.</p>
+      </div>
+    </div>
+  </section>
+
+  <a href="#toc" class="back-to-top">&#8593; Back to contents</a>
+
+  <div class="page-credit">
+    This resource draws on established scholarship in disability studies, universal design, accessibility law and standards, and organizational change. It does not constitute legal or professional consulting advice. An <a href="from-accommodation-to-proactive-inclusive-design.html">interactive version with tabs and expandable sections</a> is also available.
+  </div>
+
+</main>
+
+<footer>
+  From Accommodation to Proactive Inclusive Design — Knowledge Resource
+</footer>
+
+</body>
+</html>
