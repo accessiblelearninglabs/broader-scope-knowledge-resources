@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Designing Knowledge Mobilization Evaluation — Knowledge Resource</title>
+  <link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f6f7;
+      --surface-alt: #eaecee;
+      --ink: #303e44;
+      --ink-mid: #4f6068;
+      --ink-light: #7a9098;
+      --accent: #475f6a;
+      --accent-light: #e4eaed;
+      --accent-mid: #7a9aa8;
+      --border: #d5dde1;
+      --border-strong: #b5c5cc;
+      --font: 'Asap', system-ui, sans-serif;
+      --max: 740px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font); background: var(--bg); color: var(--ink); font-size: 16px; line-height: 1.7; }
+
+    /* Skip links */
+    .skip-link { position: absolute; top: -100px; left: 1rem; background: var(--accent); color: #fff; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-size: 0.85rem; z-index: 999; }
+    .skip-link:focus { top: 1rem; }
+
+    /* Header */
+    header { background: var(--bg); border-bottom: 1px solid var(--border); padding: 0 2rem; }
+    .header-inner { max-width: var(--max); margin: 0 auto; padding: 2.25rem 0 2rem; }
+    .site-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+    header h1 { font-size: 1.9rem; font-weight: 700; line-height: 1.2; color: var(--ink); }
+    .header-sub { font-size: 0.95rem; color: var(--ink-mid); margin-top: 0.6rem; line-height: 1.6; }
+    .version-note { background: var(--accent-light); border-left: 3px solid var(--accent); margin-top: 1.25rem; padding: 0.7rem 1rem; font-size: 0.84rem; color: var(--ink-mid); border-radius: 0 4px 4px 0; line-height: 1.6; }
+    .version-note a { color: var(--accent); }
+
+    /* Main layout */
+    main { max-width: var(--max); margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+    /* Table of contents */
+    #toc { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem 1.75rem; margin-bottom: 3rem; }
+    #toc h2 { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 1rem; }
+    #toc ol { padding-left: 1.25rem; }
+    #toc > ol > li { margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 600; color: var(--ink); }
+    #toc > ol > li > a { color: var(--ink); text-decoration: none; }
+    #toc > ol > li > a:hover { text-decoration: underline; color: var(--accent); }
+    #toc ul { padding-left: 1.1rem; margin-top: 0.3rem; list-style: disc; }
+    #toc ul li { margin-bottom: 0.2rem; font-size: 0.85rem; font-weight: 400; }
+    #toc ul li a { color: var(--ink-mid); text-decoration: none; }
+    #toc ul li a:hover { text-decoration: underline; color: var(--accent); }
+
+    /* Section markers */
+    .section-marker { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-light); display: block; margin-bottom: 0.5rem; }
+
+    /* Headings */
+    h2 { font-size: 1.55rem; font-weight: 700; color: var(--ink); margin-bottom: 0.65rem; line-height: 1.25; }
+    h3 { font-size: 1.1rem; font-weight: 600; color: var(--ink); margin: 2rem 0 0.5rem; }
+    h4 { font-size: 0.95rem; font-weight: 600; color: var(--ink); margin: 1.5rem 0 0.4rem; }
+
+    /* Section block */
+    .section-block { border-top: 2px solid var(--border); padding-top: 2.5rem; margin-top: 3rem; }
+    .section-block:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+
+    /* Stage header */
+    .stage-header { display: flex; align-items: baseline; gap: 0.75rem; margin: 2rem 0 0.5rem; padding-bottom: 0.65rem; border-bottom: 1px solid var(--border); }
+    .stage-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); background: var(--accent-light); padding: 0.2rem 0.6rem; border-radius: 999px; flex-shrink: 0; }
+    .stage-header h3 { margin: 0; font-size: 1rem; }
+    .stage-sub { font-size: 0.82rem; color: var(--ink-light); margin-top: 0.2rem; }
+
+    /* Body text */
+    p { font-size: 0.925rem; color: var(--ink-mid); line-height: 1.75; margin-bottom: 0.85rem; }
+    p strong { color: var(--ink); }
+    p:last-child { margin-bottom: 0; }
+
+    /* Lists */
+    ul, ol { padding-left: 1.3rem; margin: 0.6rem 0 1rem; }
+    li { font-size: 0.925rem; color: var(--ink-mid); line-height: 1.65; margin-bottom: 0.3rem; }
+    li strong { color: var(--ink); }
+
+    /* Produces box */
+    .produces { background: var(--surface); border-radius: 6px; padding: 1rem 1.2rem; margin: 1rem 0; }
+    .produces-label { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink-light); display: block; margin-bottom: 0.5rem; }
+    .produces ul { margin: 0; }
+
+    /* Note */
+    .note { font-size: 0.84rem; font-style: italic; color: var(--ink-light); margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+
+    /* Callout */
+    .callout { background: var(--accent-light); border-left: 3px solid var(--accent); padding: 1rem 1.2rem; margin: 1.5rem 0; border-radius: 0 6px 6px 0; }
+    .callout-label { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 0.4rem; }
+    .callout p { font-size: 0.9rem; margin-bottom: 0; }
+
+    /* Decision subsection */
+    .decision-group { margin: 1.75rem 0; }
+    .decision-group h3 { font-size: 0.9rem; font-weight: 700; color: var(--ink); margin: 0 0 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+    .decision-item { margin-bottom: 1rem; }
+    .decision-item h4 { font-size: 0.88rem; font-weight: 600; color: var(--ink); margin: 0 0 0.2rem; }
+    .decision-item p { font-size: 0.875rem; margin-bottom: 0; }
+
+    /* Impact table */
+    .impact-table { width: 100%; border-collapse: collapse; margin: 1.25rem 0; font-size: 0.875rem; }
+    .impact-table th { text-align: left; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-light); padding: 0.6rem 0.85rem; background: var(--surface); border: 1px solid var(--border); }
+    .impact-table td { padding: 0.85rem; border: 1px solid var(--border); vertical-align: top; color: var(--ink-mid); line-height: 1.6; }
+    .impact-table td strong { color: var(--ink); display: block; margin-bottom: 0.2rem; }
+    .impact-table tr:nth-child(even) td { background: var(--surface); }
+
+    /* Reflection questions */
+    .reflection-group { margin: 1.75rem 0; }
+    .reflection-group h3 { font-size: 0.9rem; font-weight: 700; color: var(--ink); margin: 0 0 0.65rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+    .reflection-group ul { list-style: none; padding: 0; margin: 0; }
+    .reflection-group ul li { font-size: 0.9rem; color: var(--ink-mid); line-height: 1.65; padding: 0.6rem 0; border-bottom: 1px dashed var(--border); display: flex; gap: 0.6rem; align-items: flex-start; }
+    .reflection-group ul li:last-child { border-bottom: none; }
+    .reflection-group ul li .q-icon { flex-shrink: 0; font-size: 1rem; margin-top: 0.05rem; }
+
+    /* Citations */
+    .citation-group { margin-bottom: 1.75rem; }
+    .citation-group-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 0.65rem; padding-bottom: 0.35rem; border-bottom: 1px solid var(--border); }
+    .citation-entry { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0.8rem 1rem; margin-bottom: 0.45rem; }
+    .citation-entry .cite-label { font-size: 0.67rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.2rem; display: block; }
+    .citation-entry p { font-size: 0.84rem; margin-bottom: 0; }
+    .citation-entry a { color: var(--accent); text-decoration: none; font-size: 0.81rem; display: block; margin-top: 0.25rem; word-break: break-all; }
+    .citation-entry a:hover { text-decoration: underline; }
+
+    /* Back to top */
+    .back-to-top { display: inline-block; margin-top: 2.5rem; font-size: 0.85rem; color: var(--accent); text-decoration: none; }
+    .back-to-top:hover { text-decoration: underline; }
+
+    /* Footer credit */
+    .page-credit { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.83rem; color: var(--ink-light); line-height: 1.65; }
+    .page-credit a { color: var(--accent); text-decoration: none; }
+    .page-credit a:hover { text-decoration: underline; }
+
+    footer { border-top: 1px solid var(--border); background: var(--surface); padding: 1.5rem 2rem; text-align: center; font-size: 0.78rem; color: var(--ink-light); }
+
+    @media (max-width: 640px) {
+      main { padding: 1.5rem 1rem 4rem; }
+      header { padding: 0 1rem; }
+      header h1 { font-size: 1.5rem; }
+      .impact-table { font-size: 0.82rem; }
+      .impact-table td, .impact-table th { padding: 0.65rem; }
+    }
+  </style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<a href="#toc" class="skip-link" style="left: 12rem;">Skip to table of contents</a>
+
+<header>
+  <div class="header-inner">
+    <div class="site-label">Knowledge Mobilization — Knowledge Resource</div>
+    <h1>Designing Knowledge Mobilization Evaluation</h1>
+    <p class="header-sub">A guide to the knowledge foundations, design process, key decisions, and professional practice involved in evaluating whether research evidence actually changed practice, policy, or outcomes.</p>
+    <p class="version-note"><strong>Screen reader and keyboard-optimised version.</strong> This is a fully linear, plain-structure version of this resource. All content is presented in reading order with no tabs, accordions, or JavaScript. An <a href="knowledge-mobilization-evaluation-design.html">interactive version with tabs and expandable sections</a> is also available.</p>
+  </div>
+</header>
+
+<main id="main-content">
+
+  <!-- TABLE OF CONTENTS -->
+  <nav id="toc" aria-label="Table of contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#foundations">Knowledge Foundations</a>
+        <ul>
+          <li><a href="#six-foundations">The six knowledge foundations</a></li>
+          <li><a href="#distinct-discipline">Why KMb evaluation is a distinct discipline</a></li>
+          <li><a href="#beyond-bibliometrics">Beyond bibliometrics</a></li>
+        </ul>
+      </li>
+      <li><a href="#process">Design Process</a>
+        <ul>
+          <li><a href="#stage-1">Stage 1: Clarify purpose, audience, and scope</a></li>
+          <li><a href="#stage-2">Stage 2: Map the impact pathway</a></li>
+          <li><a href="#stage-3">Stage 3: Define evaluation questions and indicators</a></li>
+          <li><a href="#stage-4">Stage 4: Select methods and causal strategy</a></li>
+          <li><a href="#stage-5">Stage 5: Establish infrastructure and baselines</a></li>
+          <li><a href="#stage-6">Stage 6: Collect and synthesise evidence</a></li>
+          <li><a href="#stage-7">Stage 7: Build the contribution claim, report, and learn</a></li>
+        </ul>
+      </li>
+      <li><a href="#decisions">Key Decisions That Shape an Evaluation</a></li>
+      <li><a href="#competencies">Core Competencies</a></li>
+      <li><a href="#impact">Outcomes</a>
+        <ul>
+          <li><a href="#short-term">Shorter-term outcomes</a></li>
+          <li><a href="#long-term">Longer-term change</a></li>
+        </ul>
+      </li>
+      <li><a href="#reflection">Organisational Reflection</a></li>
+      <li><a href="#citations">Citations</a></li>
+    </ol>
+  </nav>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 1: FOUNDATIONS
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="foundations">
+    <span class="section-marker">Section 1</span>
+    <h2>Knowledge Foundations</h2>
+
+    <p>Evaluating knowledge mobilization is not the same as evaluating a training programme or a single intervention. It asks whether evidence travelled, was taken up, and changed something downstream — across long time horizons, multiple actors, and conditions that rarely permit a controlled experiment. The strongest evaluation design holds the foundations below in view simultaneously.</p>
+
+    <h3 id="six-foundations">The six knowledge foundations</h3>
+
+    <h4>1. The Impact Pathway — distinguishing the levels of effect</h4>
+    <p>Knowledge mobilization moves through interconnected stages — problem identification, research, output generation, knowledge transfer, and application — each a candidate for measurement. Distinguishing reach from uptake, uptake from practice change, and practice change from population-level outcome is the conceptual spine of any credible KMb evaluation.</p>
+
+    <h4>2. Knowledge-to-Action and Implementation Frameworks — locating where uptake stalls</h4>
+    <p>Process frameworks define what is worth measuring and where uptake tends to stall. The Knowledge-to-Action cycle distinguishes knowledge creation from a surrounding action cycle; the Consolidated Framework for Implementation Research (CFIR) and PARIHS locate the contextual factors — barriers and facilitators — that determine whether evidence is adopted.</p>
+
+    <h4>3. Theory-Based, Contribution-Oriented Evaluation — reasoning about cause</h4>
+    <p>Evidence-to-practice causation is rarely amenable to randomised trials. Theory-based approaches — contribution analysis, realist evaluation, theories of change — build a credible account of whether and how an initiative plausibly contributed to an outcome, given the other factors at work. This reframes the question from attribution to contribution.</p>
+
+    <h4>4. Indicators and Measurement — making effect observable</h4>
+    <p>A defensible evaluation rests on indicators that are relevant, usable, measurable, and logically defensible — spanning reach, usefulness, use, partnership, and practice change. Mature practice draws on validated instruments with known psychometric properties, while acknowledging that many existing tools are context-specific and inconsistently reported.</p>
+
+    <h4>5. Research–Practice Partnership Health — the relational carrier of evidence</h4>
+    <p>Much of knowledge mobilization is relational, carried through partnerships between researchers and knowledge users. Partnership synergy, trust, equitable participation, and shared agenda-setting are themselves evaluable — and their erosion is a leading explanation for why otherwise sound initiatives fail to move evidence into use.</p>
+
+    <h4>6. Equity and Context Responsiveness — whose outcomes are counted</h4>
+    <p>Whose outcomes are counted, and on whose terms, is a design decision. Community-level indicators track change across populations rather than individuals; equity-centred and community-led measurement asks not only whether evidence was used, but whether its benefits were shared. Realist questioning — what works, for whom, in what circumstances — keeps context in the frame.</p>
+
+    <div class="callout">
+      <span class="callout-label" id="practical-hierarchy">A practical hierarchy</span>
+      <p>Use the impact pathway to decide what to measure and at what level. Use implementation frameworks to locate where uptake is likely to stall. Use theory-based methods to build a credible causal claim where experiments are not feasible. Use validated indicators and instruments to measure rigorously, and partnership and equity lenses to ensure the evaluation captures what actually matters. Rigorous practice holds all of these in view at once.</p>
+    </div>
+
+    <h3 id="distinct-discipline">Why KMb evaluation is a distinct discipline</h3>
+
+    <p>Most accountability pressure in knowledge mobilization now centres on a single question: did the investment change practice or policy, or did an activity merely take place? Answering it well requires designing measurement into the initiative from the outset, not appending it at the end. Evaluation that is bolted on after launch can rarely establish a baseline, observe the conditions that shaped uptake, or assemble the evidence needed to reason credibly about contribution.</p>
+
+    <p><strong>The attribution problem</strong> sits at the centre of the field. The pathway from evidence to outcome is long, indirect, and shaped by many actors and forces beyond any single initiative. Long time lags between dissemination and application — often years — mean that the effects an evaluation cares about most may not be visible within its reporting window. Treating this as a reason to measure only what is immediately countable produces evaluations that are precise about activity and silent about impact.</p>
+
+    <p>The discipline's response is to substitute <strong>credible contribution claims</strong> for spurious certainty. Rather than asserting that an initiative caused an outcome, sound practice assembles a contribution story: an explicit theory of how change was expected to happen, evidence gathered against that theory, honest attention to alternative explanations, and a reasoned judgement about plausibility. Realist evaluation complements this by asking which mechanisms produced results in which contexts, so that findings travel to new settings rather than staying trapped in the original one.</p>
+
+    <h3 id="beyond-bibliometrics">Beyond bibliometrics</h3>
+
+    <p>Traditional bibliometric indicators — citation counts, journal impact factor, the h-index — measure influence within academia, not use beyond it. Alternative metrics that track mentions in policy documents, practice guidance, news, and social channels extend the view toward societal engagement, but they are time-dependent, vary with collection method, and do not by themselves demonstrate that anything changed. The field's direction of travel is toward mixed measures of genuine use, interpreted through theory rather than read off a dashboard, and toward the responsible-metrics principles that caution against allowing a convenient number to stand in for the outcome it only approximates.</p>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 2: PROCESS
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="process">
+    <span class="section-marker">Section 2</span>
+    <h2>Design Process</h2>
+
+    <p>Effective KMb evaluation is structured, theory-driven, and designed in from the start. The stages below represent a comprehensive approach; in practice, scope and depth are calibrated to each initiative's purpose, time horizon, and resources. Understanding the full sequence clarifies what is gained or lost when particular stages are abbreviated.</p>
+
+    <!-- Stage 1 -->
+    <div id="stage-1">
+      <div class="stage-header">
+        <span class="stage-label">Stage 1</span>
+        <h3>Clarify Purpose, Audience, and Scope</h3>
+      </div>
+      <p class="stage-sub">Deciding what the evaluation is for before deciding how to do it</p>
+      <p>An evaluation serves a purpose and an audience. Formative evaluation improves an initiative while it is still taking shape; summative evaluation judges its results; developmental evaluation supports adaptation in complex, fast-moving conditions. Funders, programme teams, partners, and the communities affected each need different things from the evidence.</p>
+      <p>Clarifying purpose early prevents the common failure of designing a measurement system that answers no one's actual question. A core principle of KMb evaluation is to define goals and expected outcomes before strategies are built, so that what is measured aligns with what success was meant to look like.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>A stated evaluation purpose — formative, summative, developmental, or a deliberate blend</li>
+          <li>A map of audiences and the decisions the evidence is meant to inform</li>
+          <li>Agreed scope, boundaries, and time horizon</li>
+        </ul>
+      </div>
+      <p class="note">Initiatives that skip this step frequently produce data that satisfies a reporting template but cannot answer whether the work mattered.</p>
+    </div>
+
+    <!-- Stage 2 -->
+    <div id="stage-2">
+      <div class="stage-header">
+        <span class="stage-label">Stage 2</span>
+        <h3>Map the Impact Pathway</h3>
+      </div>
+      <p class="stage-sub">Making explicit how evidence is supposed to become change</p>
+      <p>A theory of change, expressed as a logic model, sets out the chain from inputs and activities through outputs to outcomes and impact — and, crucially, the assumptions linking each step. For knowledge mobilization this means naming how reach is expected to lead to uptake, uptake to practice change, and practice change to a downstream effect.</p>
+      <p>The pathway is what makes any later measurement interpretable: an indicator only means something in relation to the causal story it is meant to evidence. Building the pathway collaboratively with partners surfaces divergent assumptions about how change happens, which is itself a finding.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>An explicit theory of change or logic model for the initiative</li>
+          <li>Named assumptions linking each stage to the next</li>
+          <li>Identification of the stages at which measurement will focus</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Stage 3 -->
+    <div id="stage-3">
+      <div class="stage-header">
+        <span class="stage-label">Stage 3</span>
+        <h3>Define Evaluation Questions and Indicators</h3>
+      </div>
+      <p class="stage-sub">Choosing what counts as evidence at each level of the pathway</p>
+      <p>Evaluation questions translate the theory of change into things that can be investigated. Indicators then operationalise them across levels — reach, usefulness, use, partnership and collaboration, and practice change — distinguishing outputs such as downloads or citations from outcomes such as changed practice from impact such as population benefit.</p>
+      <p>Sound indicators are relevant to the question, usable in practice, statistically measurable, and logically defensible. Where validated instruments exist, using them improves comparability and credibility; where they do not, indicators are constructed transparently and their limitations stated rather than hidden.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>A small set of answerable evaluation questions tied to the pathway</li>
+          <li>Indicators mapped to output, outcome, and impact levels</li>
+          <li>A rationale for each indicator and an honest note of its limits</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Stage 4 -->
+    <div id="stage-4">
+      <div class="stage-header">
+        <span class="stage-label">Stage 4</span>
+        <h3>Select Methods and Causal Strategy</h3>
+      </div>
+      <p class="stage-sub">Matching the approach to the question and the conditions</p>
+      <p>Method follows question. A mixed-method design is the field's default, because qualitative methods capture the social dimensions of how knowledge moves while quantitative methods measure uptake and its relationship to intended outcomes. The causal strategy is chosen deliberately: where a controlled comparison is neither feasible nor ethical, contribution analysis and realist evaluation provide rigorous, theory-driven alternatives.</p>
+      <p>For outcomes that cannot be specified in advance — as in advocacy, policy influence, or systems change — outcome harvesting and outcome mapping work backwards from observed change to assess an initiative's contribution. The aim throughout is a design proportionate to the stakes and honest about what it can and cannot establish.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>A method mix matched to each evaluation question</li>
+          <li>An explicit causal strategy suited to the conditions</li>
+          <li>Selected instruments and data-collection approaches</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Stage 5 -->
+    <div id="stage-5">
+      <div class="stage-header">
+        <span class="stage-label">Stage 5</span>
+        <h3>Establish Infrastructure and Baselines</h3>
+      </div>
+      <p class="stage-sub">Putting measurement in place before the initiative runs</p>
+      <p>Outcome- and impact-level evaluation depends on data structures and baselines established before the initiative launches. Without a baseline, change cannot be demonstrated; without agreed data sources and collection routines, later analysis is reconstructed from whatever happens to have been recorded.</p>
+      <p>This stage also sets the cadence for relational measurement — how partnership health and stakeholder experience will be tracked over time — and resolves the practical questions of who collects what, when, and under what data-governance and consent arrangements.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>Baseline measures captured before activity begins</li>
+          <li>Data sources, collection routines, and governance arrangements</li>
+          <li>A schedule for repeated and longer-horizon measurement</li>
+        </ul>
+      </div>
+      <p class="note">Because key outcomes may appear only after long time lags, infrastructure should be designed to keep observing after the funded period, or to hand off measurement to those who remain.</p>
+    </div>
+
+    <!-- Stage 6 -->
+    <div id="stage-6">
+      <div class="stage-header">
+        <span class="stage-label">Stage 6</span>
+        <h3>Collect and Synthesise Evidence</h3>
+      </div>
+      <p class="stage-sub">Gathering and integrating data across methods</p>
+      <p>Data collection in KMb evaluation typically combines interviews and focus groups, observation and journaling, surveys and validated scales, and administrative or platform data. Qualitative analysis codes and categorises experience to ensure trustworthiness; quantitative analysis measures uptake and its relationship to intended outcomes.</p>
+      <p>Synthesis integrates these strands against the theory of change, so that numbers and narratives illuminate rather than contradict one another. Attention to partnership functioning and to alternative explanations for what is observed is part of the analysis, not an afterthought.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>Integrated qualitative and quantitative evidence</li>
+          <li>Analysis of partnership functioning and contextual factors</li>
+          <li>An assessment of rival explanations for observed change</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Stage 7 -->
+    <div id="stage-7">
+      <div class="stage-header">
+        <span class="stage-label">Stage 7</span>
+        <h3>Build the Contribution Claim, Report, and Learn</h3>
+      </div>
+      <p class="stage-sub">Reasoning to a credible conclusion and feeding it back</p>
+      <p>The final stage assembles the evidence into a reasoned account of whether, how, and how much the initiative contributed to the outcomes observed — acknowledging the other influences at work rather than claiming sole credit. Reporting then translates that account for each audience, communicating use and contribution in terms decision-makers and funders can act on, without overstating certainty.</p>
+      <p>In a developmental posture, evaluation does not end at the report. Findings feed back into the design of the next cycle, closing the loop between what is learned and what is done — which is what turns evaluation from an accountability exercise into a source of genuine improvement.</p>
+      <div class="produces">
+        <span class="produces-label">This stage produces</span>
+        <ul>
+          <li>A credible contribution story, with limits stated plainly</li>
+          <li>Audience-appropriate reporting of use and impact</li>
+          <li>Lessons fed back into the next design cycle</li>
+        </ul>
+      </div>
+      <p class="note">Most KMb activity is reported only at the level of outputs and reach. Reasoning credibly to practice change and outcome requires the theory, the baselines, and the analytical discipline established in the earlier stages.</p>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 3: KEY DECISIONS
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="decisions">
+    <span class="section-marker">Section 3</span>
+    <h2>Key Decisions That Shape an Evaluation</h2>
+
+    <p>No two evaluations are identical. Decisions about purpose, causal strategy, time horizon, indicator depth, partnership, and equity determine what kind of evaluation is appropriate — and what it can credibly conclude. These choices are made deliberately and collaboratively with those who commission and use the work.</p>
+
+    <div class="decision-group">
+      <h3>Purpose: is this evaluation to improve, to judge, or to adapt?</h3>
+      <p>Formative, summative, and developmental purposes call for different designs. Conflating them — for example, applying a summative frame to an initiative still being shaped — produces evidence that misleads. Naming the purpose first prevents the most common design error in the field.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Causal strategy: can a controlled comparison be made — and should it?</h3>
+      <p>Where experimental designs are infeasible or unethical, the question shifts from attribution to contribution. Contribution analysis and realist evaluation build credible causal claims without a counterfactual, by reasoning explicitly through theory and rival explanations.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Time horizon: how long until the outcomes that matter become visible?</h3>
+      <p>Long time lags between dissemination and application mean the most important effects may fall outside the reporting window. Choosing the horizon, and being explicit about what cannot yet be observed, is more honest than measuring only what is immediately countable.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Indicator depth: outputs, outcomes, or impact — and at what cost?</h3>
+      <p>Reach and usage are inexpensive to capture but weak evidence of change. Practice-change and population-level indicators demand infrastructure and baselines established in advance. The depth chosen should match the claim the evaluation will be asked to support.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Partnership measurement: will the health of the partnership itself be evaluated?</h3>
+      <p>Because knowledge mobilization is carried through relationships, partnership synergy, trust, and equitable participation are often the leading indicators of whether evidence will move. Assessing them early surfaces problems while they can still be addressed.</p>
+    </div>
+
+    <div class="decision-group">
+      <h3>Equity lens: whose outcomes count, and on whose terms?</h3>
+      <p>Community-level indicators and community-led measurement determine whether an evaluation captures distributional effects or only aggregate ones. Designing the equity lens in from the start is a methodological choice, not a reporting afterthought.</p>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">On rigour without a counterfactual</span>
+      <p>The absence of a randomised design is not an absence of rigour. A well-specified theory of change, evidence gathered against it, serious attention to alternative explanations, and a reasoned judgement of plausibility constitute a defensible method in their own right. The risk is not the lack of an experiment; it is the unexamined causal claim.</p>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 4: COMPETENCIES
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="competencies">
+    <span class="section-marker">Section 4</span>
+    <h2>Core Competencies</h2>
+
+    <p>The following competencies form the professional foundation of knowledge mobilization evaluation work. They are not sequential — practitioners draw on several at once depending on role and context. One pattern is worth naming: the relational and causal-reasoning competencies are the ones most often underweighted, yet they most determine whether an evaluation's conclusions are believed.</p>
+
+    <h3>Theory of change and logic modelling</h3>
+    <p>Making explicit how an initiative is expected to move evidence into use — the chain from activities to outputs, outcomes, and impact, and the assumptions linking them. This is the analytical backbone that makes every subsequent measurement interpretable.</p>
+
+    <h3>Indicator design and the impact pathway</h3>
+    <p>Constructing indicators that distinguish reach, uptake, practice change, and population-level outcome — relevant, usable, measurable, and defensible. This includes knowing which validated instruments exist and where their psychometric properties are robust enough to rely on.</p>
+
+    <h3>Mixed-methods measurement</h3>
+    <p>Combining qualitative and quantitative methods so that the social dynamics of knowledge movement and the measurable signals of uptake illuminate one another. This requires fluency in survey and scale design as well as interview, observation, and qualitative analysis.</p>
+
+    <h3>Contribution and realist analysis</h3>
+    <p>Building credible causal claims where experiments are not possible — assembling a contribution story, testing it against rival explanations, and identifying the mechanisms that produced results in particular contexts. This is the competency that distinguishes KMb evaluation from generic programme evaluation.</p>
+
+    <h3>Partnership and relational evaluation</h3>
+    <p>Assessing the synergy, trust, and equitable participation of research–practice partnerships — using validated partnership tools where available — and recognising relational health as a leading indicator of whether evidence will ultimately move.</p>
+
+    <h3>Developmental and utilisation-focused evaluation</h3>
+    <p>Using evaluation as a real-time learning tool in complex, adaptive initiatives, and ensuring findings are designed to be used — by the people positioned to act on them — rather than filed. This closes the loop between what is learned and what is done next.</p>
+
+    <h3>Equity-centred and community-led measurement</h3>
+    <p>Designing community-level indicators and measurement approaches that ask whose outcomes are counted and whether benefits are shared — including principled, non-tokenistic involvement of the communities whose knowledge and interests are at stake.</p>
+
+    <h3>Communicating impact to decision-makers</h3>
+    <p>Translating evidence of use and contribution into terms funders, leaders, and partners can act on — conveying meaningful measures of use rather than bibliometric proxies, and stating the limits of a claim plainly rather than overstating certainty.</p>
+
+    <h3>Implementation-framework fluency</h3>
+    <p>Reading an initiative through frameworks such as the Knowledge-to-Action cycle, CFIR, and PARIHS to locate where uptake is likely to stall — and designing evaluation that measures those barriers and facilitators rather than only the final outcome.</p>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 5: OUTCOMES
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="impact">
+    <span class="section-marker">Section 5</span>
+    <h2>Outcomes</h2>
+
+    <p>Rigorous evaluation design creates value at two horizons. The shorter-term outcomes are tangible and visible within a project cycle. The longer-term shift affects how an organisation understands, demonstrates, and improves its mobilization of evidence over time.</p>
+
+    <h3 id="short-term">Shorter-term outcomes: what becomes visible and actionable</h3>
+
+    <table class="impact-table" aria-label="Shorter-term outcomes of a well-designed knowledge mobilization evaluation">
+      <thead>
+        <tr>
+          <th scope="col">Outcome</th>
+          <th scope="col">What this looks like in practice</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Evaluation is designed in, not bolted on</strong>Baselines, indicators, and a theory of change are in place before launch.</td>
+          <td>The initiative can demonstrate change rather than reconstruct a story afterwards.</td>
+        </tr>
+        <tr>
+          <td><strong>Levels of effect are distinguished</strong>Reach, uptake, practice change, and outcome are measured as distinct things.</td>
+          <td>The conflation of activity with impact that weakens most KMb reporting is ended.</td>
+        </tr>
+        <tr>
+          <td><strong>Credible claims without an experiment</strong>Contribution analysis and realist reasoning produce defensible conclusions where randomised designs are infeasible.</td>
+          <td>Findings carry weight with funders and peers, and state their limits honestly.</td>
+        </tr>
+        <tr>
+          <td><strong>Partnership health becomes visible</strong>Relational strain is surfaced while it can still be addressed.</td>
+          <td>Problems are diagnosed in time to act, not only in hindsight as the reason an initiative stalled.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 id="long-term">Longer-term change: what becomes embedded in practice</h3>
+
+    <table class="impact-table" aria-label="Longer-term outcomes of sustained knowledge mobilization evaluation practice">
+      <thead>
+        <tr>
+          <th scope="col">Outcome</th>
+          <th scope="col">What this looks like in practice</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Measurement infrastructure persists</strong>The data structures and routines built for one initiative become a standing capability.</td>
+          <td>Evaluation no longer starts from zero each time.</td>
+        </tr>
+        <tr>
+          <td><strong>Evidence use becomes accountable on evidence</strong>Value is demonstrated to funders and leaders through credible measures of use.</td>
+          <td>The case for mobilization work rests on evidence rather than advocacy or activity counts.</td>
+        </tr>
+        <tr>
+          <td><strong>Metrics move beyond bibliometrics</strong>Meaningful measures of use, interpreted through theory, replace citation counts as the default account.</td>
+          <td>Whether research mattered beyond academia can actually be addressed.</td>
+        </tr>
+        <tr>
+          <td><strong>Equity is embedded in what counts</strong>Distributional questions become a routine part of how impact is defined.</td>
+          <td>Whose outcomes improved, and on whose terms, is asked as a matter of course rather than as an addendum.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <span class="callout-label">On time, attribution, and honesty</span>
+      <p>The effects that matter most in knowledge mobilization often appear only after long delays and through pathways shaped by many hands. A well-designed evaluation does not resolve this by manufacturing certainty; it resolves it by reasoning transparently about contribution, observing for long enough, and being candid about what cannot yet be known. Honesty about the limits of a claim is part of its credibility.</p>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 6: REFLECTION
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="reflection">
+    <span class="section-marker">Section 6</span>
+    <h2>Organisational Reflection</h2>
+
+    <p>The questions below are intended to help surface useful considerations about how your organisation currently evaluates knowledge mobilization. They are not a formal assessment. Take your time with them — the most useful answers are honest ones, not aspirational ones. Working through these with colleagues who hold different roles tends to be more productive than working through them alone.</p>
+
+    <div class="reflection-group">
+      <h3>On when evaluation is considered</h3>
+      <ul>
+        <li><span class="q-icon">→</span> When does evaluation currently enter your knowledge mobilization work — at the design stage, or when a report falls due?</li>
+        <li><span class="q-icon">→</span> For your most recent initiative, was a baseline captured before activity began — and if not, what could later be demonstrated without one?</li>
+        <li><span class="q-icon">→</span> Is it clear, before you begin, who the evaluation is for and what decision it is meant to inform?</li>
+      </ul>
+    </div>
+
+    <div class="reflection-group">
+      <h3>On distinguishing levels of effect</h3>
+      <ul>
+        <li><span class="q-icon">→</span> Does your measurement separate reach from uptake, and uptake from practice change and outcome — or does it report activity as though it were impact?</li>
+        <li><span class="q-icon">→</span> Where do your current indicators sit on the pathway, and what would it take to add even one credible outcome-level measure?</li>
+        <li><span class="q-icon">→</span> Which of your routinely reported numbers actually evidence use, and which mainly evidence effort?</li>
+      </ul>
+    </div>
+
+    <div class="reflection-group">
+      <h3>On establishing contribution</h3>
+      <ul>
+        <li><span class="q-icon">→</span> Where a controlled comparison is not possible, how do you currently establish that your initiative contributed to an outcome?</li>
+        <li><span class="q-icon">→</span> When you describe impact, do you systematically consider the other factors that could explain what you observed?</li>
+        <li><span class="q-icon">→</span> How plainly are the limits of your causal claims stated in what you report — and to whom?</li>
+      </ul>
+    </div>
+
+    <div class="reflection-group">
+      <h3>On partnership health and equity</h3>
+      <ul>
+        <li><span class="q-icon">→</span> Is the health of your research–practice partnerships treated as something to be evaluated, or only noticed when it falters?</li>
+        <li><span class="q-icon">→</span> Whose outcomes does your evaluation count — and are there communities whose benefit, or lack of it, is currently invisible in your measures?</li>
+        <li><span class="q-icon">→</span> Where outcomes may appear only after long delays, what arrangement, if any, keeps measurement going beyond the funded period?</li>
+      </ul>
+    </div>
+
+    <p>The organisations that make meaningful progress on evidence use tend to be those that create space for honest conversations about what their measurement can and cannot yet show — rather than what they would like it to show.</p>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 7: CITATIONS
+  ═══════════════════════════════════════════ -->
+  <section class="section-block" id="citations">
+    <span class="section-marker">Section 7</span>
+    <h2>Citations</h2>
+
+    <p>The frameworks, methods, and evidence in this resource draw on established scholarship and professional practice. Sources are grouped by the area of the resource they primarily support, and each is given in full so that it can be independently verified.</p>
+
+    <div class="citation-group">
+      <div class="citation-group-label">01 · Impact Pathways and Knowledge-to-Action</div>
+      <div class="citation-entry">
+        <span class="cite-label">Knowledge-to-action framework</span>
+        <p><strong>Graham, I. D., Logan, J., Harrison, M. B., Straus, S. E., Tetroe, J., Caswell, W., &amp; Robinson, N.</strong> "Lost in Knowledge Translation: Time for a Map?" Journal of Continuing Education in the Health Professions, 26(1), 13–24, 2006. Source for the knowledge creation funnel and the seven-step action cycle.</p>
+        <a href="https://doi.org/10.1002/chp.47" target="_blank" rel="noopener">doi.org/10.1002/chp.47</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Diffusion of innovations</span>
+        <p><strong>Rogers, E. M.</strong> Diffusion of Innovations. New York: Free Press of Glencoe, 1962 (5th ed., Free Press, 2003). Source for adopter categories, perceived attributes of innovations, and the role of change agents.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">02 · Implementation Frameworks</div>
+      <div class="citation-entry">
+        <span class="cite-label">Determinant framework (CFIR)</span>
+        <p><strong>Damschroder, L. J., Aron, D. C., Keith, R. E., Kirsh, S. R., Alexander, J. A., &amp; Lowery, J. C.</strong> "Fostering Implementation of Health Services Research Findings into Practice: A Consolidated Framework for Advancing Implementation Science." Implementation Science, 4, 50, 2009.</p>
+        <a href="https://doi.org/10.1186/1748-5908-4-50" target="_blank" rel="noopener">doi.org/10.1186/1748-5908-4-50</a>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">03 · Theory-Based and Contribution-Oriented Evaluation</div>
+      <div class="citation-entry">
+        <span class="cite-label">Contribution analysis</span>
+        <p><strong>Mayne, J.</strong> "Addressing Attribution through Contribution Analysis: Using Performance Measures Sensibly." Canadian Journal of Program Evaluation, 16(1), 1–24, 2001; elaborated in Contribution Analysis: An Approach to Exploring Cause and Effect (ILAC Brief 16), 2008.</p>
+        <a href="https://doi.org/10.3138/cjpe.016.001" target="_blank" rel="noopener">doi.org/10.3138/cjpe.016.001</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Realist evaluation</span>
+        <p><strong>Pawson, R., &amp; Tilley, N.</strong> Realistic Evaluation. London: Sage, 1997. Source for Context–Mechanism–Outcome configurations and the question of what works, for whom, in what circumstances.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Theory of change and logic models</span>
+        <p><strong>Funnell, S. C., &amp; Rogers, P. J.</strong> Purposeful Program Theory: Effective Use of Theories of Change and Logic Models. San Francisco: Jossey-Bass, 2011. With the foundational statement by Weiss (1995) and the W. K. Kellogg Foundation Logic Model Development Guide (2004).</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">04 · Outcome-Oriented Methods</div>
+      <div class="citation-entry">
+        <span class="cite-label">Outcome mapping</span>
+        <p><strong>Earl, S., Carden, F., &amp; Smutylo, T.</strong> Outcome Mapping: Building Learning and Reflection into Development Programs. Ottawa: International Development Research Centre (IDRC), 2001.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Outcome harvesting</span>
+        <p><strong>Wilson-Grau, R., &amp; Britt, H.</strong> Outcome Harvesting. Cairo: Ford Foundation MENA Office / Outcome Mapping Learning Community, 2012. For identifying outcomes after the fact and working backward to assess contribution.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Most Significant Change</span>
+        <p><strong>Davies, R., &amp; Dart, J.</strong> The "Most Significant Change" (MSC) Technique: A Guide to Its Use. 2005. A participatory method for capturing and interpreting unanticipated change.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">05 · Levels-of-Impact and Process Evaluation</div>
+      <div class="citation-entry">
+        <span class="cite-label">Four-level evaluation</span>
+        <p><strong>Kirkpatrick, D. L., &amp; Kirkpatrick, J. D.</strong> Evaluating Training Programs: The Four Levels. 3rd ed. San Francisco: Berrett-Koehler, 2006 (model first published by Kirkpatrick, 1959). Phillips (1997) adds a fifth, return-on-investment level.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Process evaluation</span>
+        <p><strong>Moore, G. F., Audrey, S., Barker, M., Bond, L., Bonell, C., Hardeman, W., et al.</strong> "Process Evaluation of Complex Interventions: Medical Research Council Guidance." BMJ, 350, h1258, 2015.</p>
+        <a href="https://doi.org/10.1136/bmj.h1258" target="_blank" rel="noopener">doi.org/10.1136/bmj.h1258</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Developmental evaluation</span>
+        <p><strong>Patton, M. Q.</strong> Developmental Evaluation: Applying Complexity Concepts to Enhance Innovation and Use. New York: Guilford Press, 2011.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">06 · Research Impact and Responsible Metrics</div>
+      <div class="citation-entry">
+        <span class="cite-label">Responsible metrics</span>
+        <p><strong>Hicks, D., Wouters, P., Waltman, L., de Rijcke, S., &amp; Rafols, I.</strong> "Bibliometrics: The Leiden Manifesto for Research Metrics." Nature, 520, 429–431, 2015. Ten principles for the responsible use of quantitative indicators.</p>
+        <a href="https://doi.org/10.1038/520429a" target="_blank" rel="noopener">doi.org/10.1038/520429a</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Synthesis-to-use</span>
+        <p><strong>Grimshaw, J. M., Eccles, M. P., Lavis, J. N., Hill, S. J., &amp; Squires, J. E.</strong> "Knowledge Translation of Research Findings." Implementation Science, 7, 50, 2012. On moving synthesised evidence into use.</p>
+        <a href="https://doi.org/10.1186/1748-5908-7-50" target="_blank" rel="noopener">doi.org/10.1186/1748-5908-7-50</a>
+      </div>
+    </div>
+  </section>
+
+  <a href="#toc" class="back-to-top">&#8593; Back to contents</a>
+
+  <div class="page-credit">
+    This resource draws on established scholarship in knowledge mobilization, implementation science, and evaluation. It does not constitute professional consulting advice. An <a href="knowledge-mobilization-evaluation-design.html">interactive version with tabs and expandable sections</a> is also available.
+  </div>
+
+</main>
+
+<footer>
+  Knowledge Mobilization Evaluation Design — Knowledge Resource
+</footer>
+
+</body>
+</html>
