@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Designing Knowledge Mobilization Evaluation — Knowledge Resource</title>
+  <link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f6f7;
+      --surface-alt: #eaecee;
+      --ink: #303e44;
+      --ink-mid: #4f6068;
+      --ink-light: #7a9098;
+      --accent: #475f6a;
+      --accent-light: #e4eaed;
+      --accent-mid: #7a9aa8;
+      --border: #d5dde1;
+      --border-strong: #b5c5cc;
+      --radius: 10px;
+      --radius-sm: 6px;
+      --font: 'Asap', system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font); background: var(--bg); color: var(--ink); min-height: 100vh; font-size: 15px; line-height: 1.65; }
+    .skip-link { position: absolute; top: -100px; left: 1rem; background: var(--accent); color: #fff; padding: 0.5rem 1rem; border-radius: var(--radius-sm); text-decoration: none; font-size: 0.85rem; z-index: 999; transition: top 0.2s; }
+    .skip-link:focus { top: 1rem; }
+    header { background: var(--bg); border-bottom: 1px solid var(--border); padding: 0 2rem; }
+    .header-inner { max-width: 960px; margin: 0 auto; padding: 2rem 0 1.75rem; }
+    .site-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+    header h1 { font-size: 1.85rem; font-weight: 700; line-height: 1.2; color: var(--ink); max-width: 680px; }
+    .header-sub { font-size: 0.9rem; color: var(--ink-mid); margin-top: 0.5rem; max-width: 640px; line-height: 1.6; }
+    .info-banner { background: var(--accent-light); border-left: 3px solid var(--accent); margin-top: 1.25rem; padding: 0.65rem 1rem; font-size: 0.83rem; color: var(--ink-mid); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; display: flex; align-items: flex-start; gap: 0.5rem; }
+    .tab-nav { background: var(--bg); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; }
+    .tab-nav-inner { max-width: 960px; margin: 0 auto; padding: 0 2rem; display: flex; overflow-x: auto; scrollbar-width: none; }
+    .tab-nav-inner::-webkit-scrollbar { display: none; }
+    .tab-btn { background: none; border: none; border-bottom: 2px solid transparent; padding: 0.85rem 1rem; font-family: var(--font); font-size: 0.82rem; font-weight: 500; color: var(--ink-light); cursor: pointer; white-space: nowrap; transition: color 0.15s, border-color 0.15s; margin-bottom: -1px; }
+    .tab-btn:hover { color: var(--ink); }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+    main { max-width: 960px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeIn 0.2s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+    .panel-title { font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-bottom: 0.35rem; }
+    .panel-lead { font-size: 0.9rem; color: var(--ink-mid); max-width: 720px; margin-bottom: 2rem; line-height: 1.65; }
+    .foundations-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(275px, 1fr)); gap: 1rem; margin-bottom: 1.75rem; }
+    .foundation-card { background: var(--bg); border: 1px solid var(--border); border-top: 3px solid var(--accent); border-radius: var(--radius); padding: 1.25rem 1.35rem; }
+    .foundation-card.v2 { border-top-color: #5e8090; }
+    .foundation-card.v3 { border-top-color: #3d5c67; }
+    .foundation-card.v4 { border-top-color: #6a8a96; }
+    .foundation-icon { font-size: 1.4rem; margin-bottom: 0.6rem; display: block; }
+    .foundation-card h3 { font-size: 0.95rem; font-weight: 600; color: var(--ink); margin-bottom: 0.45rem; }
+    .foundation-card p { font-size: 0.84rem; color: var(--ink-mid); line-height: 1.65; }
+    .callout { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.1rem 1.25rem; margin: 1.5rem 0; font-size: 0.86rem; color: var(--ink-mid); line-height: 1.65; }
+    .callout strong { color: var(--ink); }
+    .callout.note { border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; background: var(--accent-light); }
+    .callout .label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 0.4rem; }
+    .prose h3 { font-size: 1rem; font-weight: 600; margin: 1.75rem 0 0.45rem; color: var(--ink); }
+    .prose p { font-size: 0.875rem; color: var(--ink-mid); line-height: 1.7; margin-bottom: 0.7rem; }
+    .prose p strong { color: var(--ink); }
+    .section-divider { height: 1px; background: var(--border); margin: 2rem 0; }
+    .stages-list { margin: 1.5rem 0; }
+    .stage-item { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 0.45rem; overflow: hidden; }
+    .stage-trigger { width: 100%; background: none; border: none; display: flex; align-items: center; gap: 0.9rem; padding: 0.95rem 1.15rem; cursor: pointer; text-align: left; font-family: var(--font); transition: background 0.15s; }
+    .stage-trigger:hover, .stage-trigger[aria-expanded="true"] { background: var(--surface); }
+    .stage-num { background: var(--accent); color: #fff; font-size: 0.68rem; font-weight: 700; border-radius: 999px; width: 1.65rem; height: 1.65rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .stage-meta { flex: 1; }
+    .stage-title { font-size: 0.88rem; font-weight: 600; color: var(--ink); display: block; }
+    .stage-subtitle { font-size: 0.77rem; color: var(--ink-light); margin-top: 0.1rem; }
+    .stage-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+    .stage-tag { font-size: 0.67rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 999px; background: var(--accent-light); color: var(--accent); }
+    .stage-tag.alt { background: var(--surface-alt); color: var(--ink-mid); }
+    .stage-chevron { font-size: 0.72rem; color: var(--ink-light); transition: transform 0.2s; flex-shrink: 0; }
+    .stage-trigger[aria-expanded="true"] .stage-chevron { transform: rotate(180deg); }
+    .stage-body { display: none; padding: 0 1.15rem 1.15rem 3.55rem; }
+    .stage-body.open { display: block; }
+    .stage-body p { font-size: 0.86rem; color: var(--ink-mid); line-height: 1.7; margin-bottom: 0.65rem; }
+    .stage-produces { background: var(--surface); border-radius: var(--radius-sm); padding: 0.85rem 1rem; margin-top: 0.6rem; }
+    .stage-produces-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 0.45rem; }
+    .stage-produces ul { padding-left: 1.1rem; margin: 0; }
+    .stage-produces li { font-size: 0.82rem; color: var(--ink-mid); margin-bottom: 0.25rem; line-height: 1.5; }
+    .stage-note { font-size: 0.8rem; font-style: italic; color: var(--ink-light); margin-top: 0.65rem; padding-top: 0.65rem; border-top: 1px solid var(--border); }
+    .decisions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(265px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+    .decision-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.15rem 1.25rem; }
+    .decision-icon { font-size: 1.3rem; margin-bottom: 0.5rem; display: block; }
+    .decision-card h3 { font-size: 0.9rem; font-weight: 600; color: var(--ink); margin-bottom: 0.2rem; }
+    .decision-card .decision-q { font-size: 0.78rem; font-style: italic; color: var(--accent); margin-bottom: 0.55rem; display: block; }
+    .decision-card p { font-size: 0.83rem; color: var(--ink-mid); line-height: 1.6; }
+    .impact-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+    .impact-col-header { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); padding-bottom: 0.6rem; border-bottom: 2px solid var(--border); margin-bottom: 1rem; }
+    .impact-col-header span { display: block; font-size: 1rem; font-weight: 700; letter-spacing: 0; text-transform: none; color: var(--ink); margin-top: 0.2rem; }
+    .impact-item { display: flex; gap: 0.7rem; margin-bottom: 0.85rem; align-items: flex-start; }
+    .impact-check { width: 1.35rem; height: 1.35rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700; flex-shrink: 0; margin-top: 0.05rem; background: var(--accent-light); color: var(--accent); }
+    .impact-check.arrow { background: var(--surface-alt); color: var(--ink-mid); }
+    .impact-item-text h4 { font-size: 0.875rem; font-weight: 600; color: var(--ink); margin-bottom: 0.2rem; }
+    .impact-item-text p { font-size: 0.82rem; color: var(--ink-mid); line-height: 1.6; }
+    .competency-item { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.05rem 1.25rem; margin-bottom: 0.55rem; display: flex; gap: 0.9rem; align-items: flex-start; }
+    .comp-accent { width: 3px; border-radius: 999px; background: var(--accent); align-self: stretch; flex-shrink: 0; min-height: 1.5rem; }
+    .comp-accent.v2 { background: #5e8090; }
+    .comp-accent.v3 { background: #3d5c67; }
+    .comp-accent.v4 { background: #6a8a96; }
+    .comp-content h3 { font-size: 0.88rem; font-weight: 600; color: var(--ink); margin-bottom: 0.25rem; }
+    .comp-content p { font-size: 0.84rem; color: var(--ink-mid); line-height: 1.65; }
+    .reflection-q { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.15rem 1.25rem; margin-bottom: 0.65rem; }
+    .reflection-q-num { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 0.3rem; }
+    .reflection-q-label { font-size: 0.875rem; font-weight: 500; color: var(--ink); margin-bottom: 0.7rem; display: block; }
+    .options-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 0.4rem; }
+    .option-btn { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 0.55rem 0.8rem; font-family: var(--font); font-size: 0.8rem; color: var(--ink-mid); cursor: pointer; text-align: left; line-height: 1.45; transition: all 0.15s; }
+    .option-btn:hover { border-color: var(--accent-mid); color: var(--ink); }
+    .option-btn.selected { background: var(--accent-light); border-color: var(--accent); color: var(--accent); font-weight: 500; }
+    .reflection-actions { display: flex; gap: 0.65rem; margin-top: 1rem; flex-wrap: wrap; }
+    .btn-primary { background: var(--accent); color: #fff; border: none; border-radius: var(--radius-sm); padding: 0.6rem 1.25rem; font-family: var(--font); font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+    .btn-primary:hover { background: #3a4f58; }
+    .btn-secondary { background: none; color: var(--ink-mid); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.6rem 1.25rem; font-family: var(--font); font-size: 0.85rem; cursor: pointer; transition: all 0.15s; }
+    .btn-secondary:hover { border-color: var(--ink-light); color: var(--ink); }
+    .error-msg { font-size: 0.81rem; color: #8a3a10; margin-top: 0.4rem; display: none; }
+    .reflection-result { display: none; background: var(--accent-light); border: 1px solid var(--border-strong); border-radius: var(--radius); padding: 1.4rem; margin-top: 1rem; }
+    .reflection-result.visible { display: block; animation: fadeIn 0.3s ease; }
+    .result-title { font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: 0.65rem; }
+    .result-body { font-size: 0.875rem; color: var(--ink-mid); line-height: 1.7; }
+    .result-points { margin: 0.75rem 0 0; padding-left: 1.2rem; }
+    .result-points li { font-size: 0.865rem; color: var(--ink-mid); margin-bottom: 0.4rem; line-height: 1.55; }
+    .citation-group { margin-bottom: 1.75rem; }
+    .citation-group-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 0.65rem; padding-bottom: 0.35rem; border-bottom: 1px solid var(--border); }
+    .citation-entry { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.8rem 1rem; margin-bottom: 0.45rem; }
+    .citation-entry .cite-label { font-size: 0.67rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.2rem; display: block; }
+    .citation-entry p { font-size: 0.82rem; color: var(--ink-mid); line-height: 1.55; }
+    .citation-entry a { color: var(--accent); text-decoration: none; font-size: 0.79rem; display: block; margin-top: 0.2rem; word-break: break-all; }
+    .citation-entry a:hover { text-decoration: underline; }
+    footer { border-top: 1px solid var(--border); background: var(--surface); padding: 1.5rem 2rem; text-align: center; font-size: 0.78rem; color: var(--ink-light); line-height: 1.65; }
+    @media (max-width: 640px) {
+      main { padding: 1.5rem 1rem 4rem; }
+      header { padding: 0 1rem; }
+      .tab-nav-inner { padding: 0 1rem; }
+      header h1 { font-size: 1.45rem; }
+      .foundations-grid, .decisions-grid { grid-template-columns: 1fr; }
+      .impact-cols { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header>
+  <div class="header-inner">
+    <div class="site-label">Knowledge Mobilization — Knowledge Resource</div>
+    <h1>Designing Knowledge Mobilization Evaluation</h1>
+    <p class="header-sub">A guide to the knowledge foundations, design process, key decisions, and professional practice involved in evaluating whether research evidence actually changed practice, policy, or outcomes.</p>
+    <div class="info-banner">
+      <span>ℹ️</span>
+      <span>This resource is for knowledge mobilization practitioners, research-impact specialists, programme designers, and the funders and leaders who commission their work. Use the tabs to explore at whatever depth is useful.</span>
+    </div>
+  </div>
+</header>
+
+<nav class="tab-nav" aria-label="Resource sections">
+  <div class="tab-nav-inner">
+    <button class="tab-btn active" data-tab="foundations">Foundations</button>
+    <button class="tab-btn" data-tab="process">Design Process</button>
+    <button class="tab-btn" data-tab="decisions">Key Decisions</button>
+    <button class="tab-btn" data-tab="competencies">Competencies</button>
+    <button class="tab-btn" data-tab="impact">Outcomes</button>
+    <button class="tab-btn" data-tab="reflection">Reflection Tool</button>
+    <button class="tab-btn" data-tab="citations">Citations</button>
+  </div>
+</nav>
+
+<main id="main-content">
+
+  <!-- FOUNDATIONS -->
+  <section class="tab-panel active" id="tab-foundations" role="tabpanel">
+    <h2 class="panel-title">Six Knowledge Foundations</h2>
+    <p class="panel-lead">Evaluating knowledge mobilization is not the same as evaluating a training programme or a single intervention. It asks whether evidence travelled, was taken up, and changed something downstream — across long time horizons, multiple actors, and conditions that rarely permit a controlled experiment. The strongest evaluation design holds these interconnected foundations in view simultaneously.</p>
+
+    <div class="foundations-grid">
+      <div class="foundation-card">
+        <span class="foundation-icon">🧭</span>
+        <h3>The Impact Pathway</h3>
+        <p>Knowledge mobilization moves through interconnected stages — problem identification, research, output generation, knowledge transfer, and application — each a candidate for measurement. Distinguishing reach from uptake, uptake from practice change, and practice change from population-level outcome is the conceptual spine of any credible KMb evaluation.</p>
+      </div>
+      <div class="foundation-card v2">
+        <span class="foundation-icon">🗺️</span>
+        <h3>Knowledge-to-Action &amp; Implementation Frameworks</h3>
+        <p>Process frameworks define what is worth measuring and where uptake tends to stall. The Knowledge-to-Action cycle distinguishes knowledge creation from a surrounding action cycle; the Consolidated Framework for Implementation Research (CFIR) and PARIHS locate the contextual factors — barriers and facilitators — that determine whether evidence is adopted.</p>
+      </div>
+      <div class="foundation-card v3">
+        <span class="foundation-icon">🔗</span>
+        <h3>Theory-Based, Contribution-Oriented Evaluation</h3>
+        <p>Evidence-to-practice causation is rarely amenable to randomised trials. Theory-based approaches — contribution analysis, realist evaluation, theories of change — build a credible account of whether and how an initiative plausibly contributed to an outcome, given the other factors at work. This reframes the question from attribution to contribution.</p>
+      </div>
+      <div class="foundation-card v4">
+        <span class="foundation-icon">📊</span>
+        <h3>Indicators &amp; Measurement</h3>
+        <p>A defensible evaluation rests on indicators that are relevant, usable, measurable, and logically defensible — spanning reach, usefulness, use, partnership, and practice change. Mature practice draws on validated instruments with known psychometric properties, while acknowledging that many existing tools are context-specific and inconsistently reported.</p>
+      </div>
+      <div class="foundation-card">
+        <span class="foundation-icon">🤝</span>
+        <h3>Research–Practice Partnership Health</h3>
+        <p>Much of knowledge mobilization is relational, carried through partnerships between researchers and knowledge users. Partnership synergy, trust, equitable participation, and shared agenda-setting are themselves evaluable — and their erosion is a leading explanation for why otherwise sound initiatives fail to move evidence into use.</p>
+      </div>
+      <div class="foundation-card v2">
+        <span class="foundation-icon">🌍</span>
+        <h3>Equity &amp; Context Responsiveness</h3>
+        <p>Whose outcomes are counted, and on whose terms, is a design decision. Community-level indicators track change across populations rather than individuals; equity-centred and community-led measurement asks not only whether evidence was used, but whether its benefits were shared. Realist questioning — what works, for whom, in what circumstances — keeps context in the frame.</p>
+      </div>
+    </div>
+
+    <div class="callout note">
+      <span class="label">A Practical Hierarchy</span>
+      Use the impact pathway to decide what to measure and at what level. Use implementation frameworks to locate where uptake is likely to stall. Use theory-based methods to build a credible causal claim where experiments are not feasible. Use validated indicators and instruments to measure rigorously, and partnership and equity lenses to ensure the evaluation captures what actually matters. Rigorous practice holds all of these in view at once.
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="prose">
+      <h3>Why KMb Evaluation Is a Distinct Discipline</h3>
+      <p>Most accountability pressure in knowledge mobilization now centres on a single question: did the investment change practice or policy, or did an activity merely take place? Answering it well requires designing measurement into the initiative from the outset, not appending it at the end. Evaluation that is bolted on after launch can rarely establish a baseline, observe the conditions that shaped uptake, or assemble the evidence needed to reason credibly about contribution.</p>
+      <p><strong>The attribution problem</strong> sits at the centre of the field. The pathway from evidence to outcome is long, indirect, and shaped by many actors and forces beyond any single initiative. Long time lags between dissemination and application — often years — mean that the effects an evaluation cares about most may not be visible within its reporting window. Treating this as a reason to measure only what is immediately countable produces evaluations that are precise about activity and silent about impact.</p>
+      <p>The discipline's response is to substitute <strong>credible contribution claims</strong> for spurious certainty. Rather than asserting that an initiative caused an outcome, sound practice assembles a contribution story: an explicit theory of how change was expected to happen, evidence gathered against that theory, honest attention to alternative explanations, and a reasoned judgement about plausibility. Realist evaluation complements this by asking which mechanisms produced results in which contexts, so that findings travel to new settings rather than staying trapped in the original one.</p>
+      <h3>Beyond Bibliometrics</h3>
+      <p>Traditional bibliometric indicators — citation counts, journal impact factor, the h-index — measure influence within academia, not use beyond it. Alternative metrics that track mentions in policy documents, practice guidance, news, and social channels extend the view toward societal engagement, but they are time-dependent, vary with collection method, and do not by themselves demonstrate that anything changed. The field's direction of travel is toward mixed measures of genuine use, interpreted through theory rather than read off a dashboard, and toward the responsible-metrics principles that caution against allowing a convenient number to stand in for the outcome it only approximates.</p>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="tab-panel" id="tab-process" role="tabpanel">
+    <h2 class="panel-title">How a Rigorous Evaluation Design Works</h2>
+    <p class="panel-lead">Effective KMb evaluation is structured, theory-driven, and designed in from the start. The stages below represent a comprehensive approach; in practice, scope and depth are calibrated to each initiative's purpose, time horizon, and resources. Understanding the full sequence clarifies what is gained or lost when particular stages are abbreviated.</p>
+
+    <div class="stages-list">
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false">
+          <div class="stage-num">1</div>
+          <div class="stage-meta">
+            <span class="stage-title">Clarify Purpose, Audience &amp; Scope</span>
+            <span class="stage-subtitle">Deciding what the evaluation is for before deciding how to do it</span>
+          </div>
+          <div class="stage-tags"><span class="stage-tag">Foundational</span><span class="stage-tag alt">Collaborative</span></div>
+          <span class="stage-chevron">▼</span>
+        </button>
+        <div class="stage-body">
+          <p>An evaluation serves a purpose and an audience. Formative evaluation improves an initiative while it is still taking shape; summative evaluation judges its results; developmental evaluation supports adaptation in complex, fast-moving conditions. Funders, programme teams, partners, and the communities affected each need different things from the evidence.</p>
+          <p>Clarifying purpose early prevents the common failure of designing a measurement system that answers no one's actual question. A core principle of KMb evaluation is to define goals and expected outcomes before strategies are built, so that what is measured aligns with what success was meant to look like.</p>
+          <div class="stage-produces">
+            <div class="stage-produces-label">This stage produces</div>
+            <ul>
+              <li>A stated evaluation purpose (formative, summative, developmental, or a deliberate blend)</li>
+              <li>A map of audiences and the decisions the evidence is meant to inform</li>
+              <li>Agreed scope, boundaries, and time horizon</li>
+            </ul>
+          </div>
+          <div class="stage-note">Initiatives that skip this step frequently produce data that satisfies a reporting template but cannot answer whether the work mattered.</div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false">
+          <div class="stage-num">2</div>
+          <div class="stage-meta">
+            <span class="stage-title">Map the Impact Pathway</span>
+            <span class="stage-subtitle">Making explicit how evidence is supposed to become change</span>
+          </div>
+          <div class="stage-tags"><span class="stage-tag">Theory-based</span><span class="stage-tag alt">Foundational</span></div>
+          <span class="stage-chevron">▼</span>
+        </button>
+        <div class="stage-body">
+          <p>A theory of change, expressed as a logic model, sets out the chain from inputs and activities through outputs to outcomes and impact — and, crucially, the assumptions linking each step. For knowledge mobilization this means naming how reach is expected to lead to uptake, uptake to practice change, and practice change to a downstream effect.</p>
+          <p>The pathway is what makes any later measurement interpretable: an indicator only means something in relation to the causal story it is meant to evidence. Building the pathway collaboratively with partners surfaces divergent assumptions about how change happens, which is itself a finding.</p>
+          <div class="stage-produces">
+            <div class="stage-produces-label">This stage produces</div>
+            <ul>
+              <li>An explicit theory of change or logic model for the initiative</li>
+              <li>Named assumptions linking each stage to the next</li>
+              <li>Identification of the stages at which measurement will focus</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false">
+          <div class="stage-num">3</div>
+          <div class="stage-meta">
+            <span class="stage-title">Define Evaluation Questions &amp; Indicators</span>
+            <span class="stage-subtitle">Choosing what counts as evidence at each level of the pathway</span>
+          </div>
+          <div class="stage-tags"><span class="stage-tag">Design</span><span class="stage-tag alt">Evidence-based</span></div>
+          <span class="stage-chevron">▼</span>
+        </button>
+        <div class="stage-body">
+          <p>Evaluation questions translate the theory of change into things that can be investigated. Indicators then operationalise them across levels — reach, usefulness, use, partnership and collaboration, and practice change — distinguishing outputs (such as downloads or citations) from outcomes (such as changed practice) from impact (such as population benefit).</p>
+          <p>Sound indicators are relevant to the question, usable in practice, statistically measurable, and logically defensible. Where validated instruments exist, using them improves comparability and credibility; where they do not, indicators are constructed transparently and their limitations stated rather than hidden.</p>
+          <div class="stage-produces">
+            <div class="stage-produces-label">This stage produces</div>
+            <ul>
+              <li>A small set of answerable evaluation questions tied to the pathway</li>
+              <li>Indicators mapped to output, outcome, and impact levels</li>
+              <li>A rationale for each indicator and an honest note of its limits</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false">
+          <div class="stage-num">4</div>
+          <div class="stage-meta">
+            <span class="stage-title">Select Methods &amp; Causal Strategy</span>
+            <span class="stage-subtitle">Matching the approach to the question and the conditions</span>
+          </div>
+          <div class="stage-tags"><span class="stage-tag">Design</span><span class="stage-tag alt">Mixed-method</span></div>
+          <span class="stage-chevron">▼</span>
+        </button>
+        <div class="stage-body">
+          <p>Method follows question. A mixed-method design is the field's default, because qualitative methods capture the social dimensions of how knowledge moves while quantitative methods measure uptake and its relationship to intended outcomes. The causal strategy is chosen deliberately: where a controlled comparison is neither feasible nor ethical, contribution analysis and realist evaluation provide rigorous, theory-driven alternatives.</p>
+          <p>For outcomes that cannot be specified in advance — as in advocacy, policy influence, or systems change — outcome harvesting and outcome mapping work backwards from observed change to assess an initiative's contribution. The aim throughout is a design proportionate to the stakes and honest about what it can and cannot establish.</p>
+          <div class="stage-produces">
+            <div class="stage-produces-label">This stage produces</div>
+            <ul>
+              <li>A method mix matched to each evaluation question</li>
+              <li>An explicit causal strategy suited to the conditions</li>
+              <li>Selected instruments and data-collection approaches</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false">
+          <div class="stage-num">5</div>
+          <div class="stage-meta">
+            <span class="stage-title">Establish Infrastructure &amp; Baselines</span>
+            <span class="stage-subtitle">Putting measurement in place before the initiative runs</span>
+          </div>
+          <div class="stage-tags"><span class="stage-tag">Infrastructure</span><span class="stage-tag alt">Pre-launch</span></div>
+          <span class="stage-chevron">▼</span>
+        </button>
+        <div class="stage-body">
+          <p>Outcome- and impact-level evaluation depends on data structures and baselines established before the initiative launches. Without a baseline, change cannot be demonstrated; without agreed data sources and collection routines, later analysis is reconstructed from whatever happens to have been recorded.</p>
+          <p>This stage also sets the cadence for relational measurement — how partnership health and stakeholder experience will be tracked over time — and resolves the practical questions of who collects what, when, and under what data-governance and consent arrangements.</p>
+          <div class="stage-produces">
+            <div class="stage-produces-label">This stage produces</div>
+            <ul>
+              <li>Baseline measures captured before activity begins</li>
+              <li>Data sources, collection routines, and governance arrangements</li>
+              <li>A schedule for repeated and longer-horizon measurement</li>
+            </ul>
+          </div>
+          <div class="stage-note">Because key outcomes may appear only after long time lags, infrastructure should be designed to keep observing after the funded period, or to hand off measurement to those who remain.</div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false">
+          <div class="stage-num">6</div>
+          <div class="stage-meta">
+            <span class="stage-title">Collect &amp; Synthesise Evidence</span>
+            <span class="stage-subtitle">Gathering and integrating data across methods</span>
+          </div>
+          <div class="stage-tags"><span class="stage-tag">Analytical</span><span class="stage-tag alt">Mixed-method</span></div>
+          <span class="stage-chevron">▼</span>
+        </button>
+        <div class="stage-body">
+          <p>Data collection in KMb evaluation typically combines interviews and focus groups, observation and journaling, surveys and validated scales, and administrative or platform data. Qualitative analysis codes and categorises experience to ensure trustworthiness; quantitative analysis measures uptake and its relationship to intended outcomes.</p>
+          <p>Synthesis integrates these strands against the theory of change, so that numbers and narratives illuminate rather than contradict one another. Attention to partnership functioning and to alternative explanations for what is observed is part of the analysis, not an afterthought.</p>
+          <div class="stage-produces">
+            <div class="stage-produces-label">This stage produces</div>
+            <ul>
+              <li>Integrated qualitative and quantitative evidence</li>
+              <li>Analysis of partnership functioning and contextual factors</li>
+              <li>An assessment of rival explanations for observed change</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-item">
+        <button class="stage-trigger" aria-expanded="false">
+          <div class="stage-num">7</div>
+          <div class="stage-meta">
+            <span class="stage-title">Build the Contribution Claim, Report &amp; Learn</span>
+            <span class="stage-subtitle">Reasoning to a credible conclusion and feeding it back</span>
+          </div>
+          <div class="stage-tags"><span class="stage-tag">Evaluation</span><span class="stage-tag alt">Data-informed</span></div>
+          <span class="stage-chevron">▼</span>
+        </button>
+        <div class="stage-body">
+          <p>The final stage assembles the evidence into a reasoned account of whether, how, and how much the initiative contributed to the outcomes observed — acknowledging the other influences at work rather than claiming sole credit. Reporting then translates that account for each audience, communicating use and contribution in terms decision-makers and funders can act on, without overstating certainty.</p>
+          <p>In a developmental posture, evaluation does not end at the report. Findings feed back into the design of the next cycle, closing the loop between what is learned and what is done — which is what turns evaluation from an accountability exercise into a source of genuine improvement.</p>
+          <div class="stage-produces">
+            <div class="stage-produces-label">This stage produces</div>
+            <ul>
+              <li>A credible contribution story, with limits stated plainly</li>
+              <li>Audience-appropriate reporting of use and impact</li>
+              <li>Lessons fed back into the next design cycle</li>
+            </ul>
+          </div>
+          <div class="stage-note">Most KMb activity is reported only at the level of outputs and reach. Reasoning credibly to practice change and outcome requires the theory, the baselines, and the analytical discipline established in the earlier stages.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- KEY DECISIONS -->
+  <section class="tab-panel" id="tab-decisions" role="tabpanel">
+    <h2 class="panel-title">What Shapes a KMb Evaluation</h2>
+    <p class="panel-lead">No two evaluations are identical. Decisions about purpose, causal strategy, time horizon, indicator depth, partnership, and equity determine what kind of evaluation is appropriate — and what it can credibly conclude. These choices are made deliberately and collaboratively with those who commission and use the work.</p>
+
+    <div class="decisions-grid">
+      <div class="decision-card">
+        <span class="decision-icon">🎯</span>
+        <h3>Purpose</h3>
+        <span class="decision-q">Is this evaluation to improve, to judge, or to adapt?</span>
+        <p>Formative, summative, and developmental purposes call for different designs. Conflating them — for example, using a summative frame on an initiative still being shaped — produces evidence that misleads. Naming the purpose first prevents the most common design error in the field.</p>
+      </div>
+      <div class="decision-card">
+        <span class="decision-icon">🔗</span>
+        <h3>Causal Strategy</h3>
+        <span class="decision-q">Can a controlled comparison be made — and should it?</span>
+        <p>Where experimental designs are infeasible or unethical, the question shifts from attribution to contribution. Contribution analysis and realist evaluation build credible causal claims without a counterfactual, by reasoning explicitly through theory and rival explanations.</p>
+      </div>
+      <div class="decision-card">
+        <span class="decision-icon">⏳</span>
+        <h3>Time Horizon</h3>
+        <span class="decision-q">How long until the outcomes that matter become visible?</span>
+        <p>Long time lags between dissemination and application mean the most important effects may fall outside the reporting window. Choosing the horizon, and being explicit about what cannot yet be observed, is more honest than measuring only what is immediately countable.</p>
+      </div>
+      <div class="decision-card">
+        <span class="decision-icon">📊</span>
+        <h3>Indicator Depth</h3>
+        <span class="decision-q">Outputs, outcomes, or impact — and at what cost?</span>
+        <p>Reach and usage are inexpensive to capture but weak evidence of change. Practice-change and population-level indicators demand infrastructure and baselines established in advance. The depth chosen should match the claim the evaluation will be asked to support.</p>
+      </div>
+      <div class="decision-card">
+        <span class="decision-icon">🤝</span>
+        <h3>Partnership Measurement</h3>
+        <span class="decision-q">Will the health of the partnership itself be evaluated?</span>
+        <p>Because knowledge mobilization is carried through relationships, partnership synergy, trust, and equitable participation are often the leading indicators of whether evidence will move. Assessing them early surfaces problems while they can still be addressed.</p>
+      </div>
+      <div class="decision-card">
+        <span class="decision-icon">🌍</span>
+        <h3>Equity Lens</h3>
+        <span class="decision-q">Whose outcomes count, and on whose terms?</span>
+        <p>Community-level indicators and community-led measurement determine whether an evaluation captures distributional effects or only aggregate ones. Designing the equity lens in from the start is a methodological choice, not a reporting afterthought.</p>
+      </div>
+    </div>
+
+    <div class="callout note">
+      <span class="label">On Rigour Without a Counterfactual</span>
+      The absence of a randomised design is not an absence of rigour. A well-specified theory of change, evidence gathered against it, serious attention to alternative explanations, and a reasoned judgement of plausibility constitute a defensible method in their own right. The risk is not the lack of an experiment; it is the unexamined causal claim.
+    </div>
+  </section>
+
+  <!-- COMPETENCIES -->
+  <section class="tab-panel" id="tab-competencies" role="tabpanel">
+    <h2 class="panel-title">Core Competencies in KMb Evaluation Design</h2>
+    <p class="panel-lead">The following competencies form the professional foundation of knowledge mobilization evaluation work — spanning theory, measurement, causal reasoning, relational assessment, and the communication of impact across healthcare, research, public sector, and higher education contexts.</p>
+
+    <div style="margin: 1.5rem 0;">
+      <div class="competency-item">
+        <div class="comp-accent"></div>
+        <div class="comp-content">
+          <h3>Theory of Change &amp; Logic Modelling</h3>
+          <p>Making explicit how an initiative is expected to move evidence into use — the chain from activities to outputs, outcomes, and impact, and the assumptions linking them. This is the analytical backbone that makes every subsequent measurement interpretable.</p>
+        </div>
+      </div>
+      <div class="competency-item">
+        <div class="comp-accent v2"></div>
+        <div class="comp-content">
+          <h3>Indicator Design &amp; the Impact Pathway</h3>
+          <p>Constructing indicators that distinguish reach, uptake, practice change, and population-level outcome — relevant, usable, measurable, and defensible. This includes knowing which validated instruments exist and where their psychometric properties are robust enough to rely on.</p>
+        </div>
+      </div>
+      <div class="competency-item">
+        <div class="comp-accent v3"></div>
+        <div class="comp-content">
+          <h3>Mixed-Methods Measurement</h3>
+          <p>Combining qualitative and quantitative methods so that the social dynamics of knowledge movement and the measurable signals of uptake illuminate one another. This requires fluency in survey and scale design as well as interview, observation, and qualitative analysis.</p>
+        </div>
+      </div>
+      <div class="competency-item">
+        <div class="comp-accent v4"></div>
+        <div class="comp-content">
+          <h3>Contribution &amp; Realist Analysis</h3>
+          <p>Building credible causal claims where experiments are not possible — assembling a contribution story, testing it against rival explanations, and identifying the mechanisms that produced results in particular contexts. This is the competency that distinguishes KMb evaluation from generic programme evaluation.</p>
+        </div>
+      </div>
+      <div class="competency-item">
+        <div class="comp-accent"></div>
+        <div class="comp-content">
+          <h3>Partnership &amp; Relational Evaluation</h3>
+          <p>Assessing the synergy, trust, and equitable participation of research–practice partnerships — using validated partnership tools where available — and recognising relational health as a leading indicator of whether evidence will ultimately move.</p>
+        </div>
+      </div>
+      <div class="competency-item">
+        <div class="comp-accent v2"></div>
+        <div class="comp-content">
+          <h3>Developmental &amp; Utilisation-Focused Evaluation</h3>
+          <p>Using evaluation as a real-time learning tool in complex, adaptive initiatives, and ensuring findings are designed to be used — by the people positioned to act on them — rather than filed. This closes the loop between what is learned and what is done next.</p>
+        </div>
+      </div>
+      <div class="competency-item">
+        <div class="comp-accent v3"></div>
+        <div class="comp-content">
+          <h3>Equity-Centred &amp; Community-Led Measurement</h3>
+          <p>Designing community-level indicators and measurement approaches that ask whose outcomes are counted and whether benefits are shared — including principled, non-tokenistic involvement of the communities whose knowledge and interests are at stake.</p>
+        </div>
+      </div>
+      <div class="competency-item">
+        <div class="comp-accent v4"></div>
+        <div class="comp-content">
+          <h3>Communicating Impact to Decision-Makers</h3>
+          <p>Translating evidence of use and contribution into terms funders, leaders, and partners can act on — conveying meaningful measures of use rather than bibliometric proxies, and stating the limits of a claim plainly rather than overstating certainty.</p>
+        </div>
+      </div>
+      <div class="competency-item">
+        <div class="comp-accent"></div>
+        <div class="comp-content">
+          <h3>Implementation-Framework Fluency</h3>
+          <p>Reading an initiative through frameworks such as the Knowledge-to-Action cycle, CFIR, and PARIHS to locate where uptake is likely to stall — and designing evaluation that measures those barriers and facilitators rather than only the final outcome.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPACT -->
+  <section class="tab-panel" id="tab-impact" role="tabpanel">
+    <h2 class="panel-title">What Well-Designed KMb Evaluation Produces</h2>
+    <p class="panel-lead">Rigorous evaluation design creates value at two horizons. The shorter-term outcomes are tangible and visible within a project cycle. The longer-term shift affects how an organisation understands, demonstrates, and improves its mobilization of evidence over time.</p>
+
+    <div class="impact-cols">
+      <div>
+        <div class="impact-col-header">Shorter Term<span>What becomes visible and actionable</span></div>
+        <div class="impact-item">
+          <div class="impact-check">✓</div>
+          <div class="impact-item-text">
+            <h4>Evaluation is designed in, not bolted on</h4>
+            <p>Baselines, indicators, and a theory of change are in place before launch, so the initiative can actually demonstrate change rather than reconstruct a story afterwards.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-check">✓</div>
+          <div class="impact-item-text">
+            <h4>Levels of effect are distinguished</h4>
+            <p>Reach, uptake, practice change, and outcome are measured as distinct things — ending the conflation of activity with impact that weakens most KMb reporting.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-check">✓</div>
+          <div class="impact-item-text">
+            <h4>Credible claims without an experiment</h4>
+            <p>Contribution analysis and realist reasoning produce defensible conclusions where randomised designs are infeasible — and state their limits honestly.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-check">✓</div>
+          <div class="impact-item-text">
+            <h4>Partnership health becomes visible</h4>
+            <p>Relational strain is surfaced while it can still be addressed, rather than diagnosed only in hindsight as the reason an initiative stalled.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="impact-col-header">Longer Term<span>What becomes embedded in practice</span></div>
+        <div class="impact-item">
+          <div class="impact-check arrow">→</div>
+          <div class="impact-item-text">
+            <h4>Measurement infrastructure persists</h4>
+            <p>The data structures and routines built for one initiative become a standing capability, so evaluation no longer starts from zero each time.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-check arrow">→</div>
+          <div class="impact-item-text">
+            <h4>Evidence use becomes accountable on evidence</h4>
+            <p>Organisations can demonstrate the value of mobilization work to funders and leaders on the basis of credible measures of use — not advocacy or activity counts.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-check arrow">→</div>
+          <div class="impact-item-text">
+            <h4>Metrics move beyond bibliometrics</h4>
+            <p>Meaningful measures of use, interpreted through theory, replace citation counts as the default account of whether research mattered beyond academia.</p>
+          </div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-check arrow">→</div>
+          <div class="impact-item-text">
+            <h4>Equity is embedded in what counts</h4>
+            <p>Distributional questions — whose outcomes improved, and on whose terms — become a routine part of how impact is defined rather than an optional addendum.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="callout note">
+      <span class="label">On Time, Attribution, and Honesty</span>
+      The effects that matter most in knowledge mobilization often appear only after long delays and through pathways shaped by many hands. A well-designed evaluation does not resolve this by manufacturing certainty; it resolves it by reasoning transparently about contribution, observing for long enough, and being candid about what cannot yet be known. Honesty about the limits of a claim is part of its credibility.
+    </div>
+  </section>
+
+  <!-- REFLECTION -->
+  <section class="tab-panel" id="tab-reflection" role="tabpanel">
+    <h2 class="panel-title">Where Is Your Initiative in This Work?</h2>
+    <p class="panel-lead">This reflection is intended to surface useful questions about how your organisation currently evaluates knowledge mobilization. There are no right or wrong answers — choose the response that most honestly reflects your situation.</p>
+
+    <div id="reflection-form">
+      <div class="reflection-q">
+        <span class="reflection-q-num">Question 1 of 4</span>
+        <span class="reflection-q-label">When is evaluation considered in your knowledge mobilization work?</span>
+        <div class="options-grid" data-q="q1">
+          <button class="option-btn" data-val="1">Evaluation is considered near the end, when a report is required.</button>
+          <button class="option-btn" data-val="2">We plan some measurement, but usually after the activity is already designed.</button>
+          <button class="option-btn" data-val="3">Evaluation is planned alongside the initiative, though baselines are inconsistent.</button>
+          <button class="option-btn" data-val="4">A theory of change, indicators, and baselines are established before launch.</button>
+        </div>
+      </div>
+      <div class="reflection-q">
+        <span class="reflection-q-num">Question 2 of 4</span>
+        <span class="reflection-q-label">How does your evaluation distinguish between levels of effect?</span>
+        <div class="options-grid" data-q="q2">
+          <button class="option-btn" data-val="1">We mainly report activity — events held, materials produced, downloads.</button>
+          <button class="option-btn" data-val="2">We track reach and engagement, but rarely uptake or practice change.</button>
+          <button class="option-btn" data-val="3">We measure uptake and some practice change, though impact is inferred informally.</button>
+          <button class="option-btn" data-val="4">We distinguish reach, uptake, practice change, and outcome as separate indicators.</button>
+        </div>
+      </div>
+      <div class="reflection-q">
+        <span class="reflection-q-num">Question 3 of 4</span>
+        <span class="reflection-q-label">How does your work establish that an initiative contributed to an outcome?</span>
+        <div class="options-grid" data-q="q3">
+          <button class="option-btn" data-val="1">We tend to assert impact without a clear causal account.</button>
+          <button class="option-btn" data-val="2">We describe outcomes, but do not systematically consider other explanations.</button>
+          <button class="option-btn" data-val="3">We use a theory of change, though contribution is argued informally.</button>
+          <button class="option-btn" data-val="4">We build explicit contribution claims that test the theory against rival explanations.</button>
+        </div>
+      </div>
+      <div class="reflection-q">
+        <span class="reflection-q-num">Question 4 of 4</span>
+        <span class="reflection-q-label">How are partnership health and equity treated in your evaluation?</span>
+        <div class="options-grid" data-q="q4">
+          <button class="option-btn" data-val="1">Neither is part of how we evaluate.</button>
+          <button class="option-btn" data-val="2">We attend to them informally, but not as measured dimensions.</button>
+          <button class="option-btn" data-val="3">We assess one of partnership health or distributional outcomes, but not both.</button>
+          <button class="option-btn" data-val="4">Partnership health and equity are designed-in dimensions of the evaluation.</button>
+        </div>
+      </div>
+      <div class="reflection-actions">
+        <button class="btn-primary" onclick="showReflection()">See reflection</button>
+        <button class="btn-secondary" onclick="resetReflection()">Start again</button>
+      </div>
+      <div class="error-msg" id="reflection-error">Please answer all four questions to see your reflection.</div>
+    </div>
+
+    <div class="reflection-result" id="reflection-result">
+      <div class="result-title" id="result-title"></div>
+      <div class="result-body" id="result-body"></div>
+      <ul class="result-points" id="result-points"></ul>
+    </div>
+  </section>
+
+  <!-- CITATIONS -->
+  <section class="tab-panel" id="tab-citations" role="tabpanel">
+    <h2 class="panel-title">Academic &amp; Professional Citations</h2>
+    <p class="panel-lead">The frameworks, methods, and evidence in this resource draw on established scholarship and professional practice. Sources are grouped by the area of the resource they primarily support, and each is independently verifiable.</p>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Impact Pathways &amp; Knowledge-to-Action</div>
+      <div class="citation-entry">
+        <span class="cite-label">Knowledge-to-action framework</span>
+        <p><strong>Graham, I. D., Logan, J., Harrison, M. B., Straus, S. E., Tetroe, J., Caswell, W., &amp; Robinson, N.</strong> "Lost in Knowledge Translation: Time for a Map?" Journal of Continuing Education in the Health Professions, 26(1), 13–24, 2006. Source for the knowledge creation funnel and the seven-step action cycle.</p>
+        <a href="https://doi.org/10.1002/chp.47" target="_blank" rel="noopener">doi.org/10.1002/chp.47</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Diffusion of innovations</span>
+        <p><strong>Rogers, E. M.</strong> Diffusion of Innovations. Free Press of Glencoe, 1962 (5th ed., Free Press, 2003). Source for adopter categories, perceived attributes of innovations, and the role of change agents.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Implementation Frameworks</div>
+      <div class="citation-entry">
+        <span class="cite-label">Contextual determinants</span>
+        <p><strong>Damschroder, L. J., Aron, D. C., Keith, R. E., Kirsh, S. R., Alexander, J. A., &amp; Lowery, J. C.</strong> "Fostering Implementation of Health Services Research Findings into Practice: A Consolidated Framework for Advancing Implementation Science." Implementation Science, 4, 50, 2009. The CFIR framework of barriers and facilitators.</p>
+        <a href="https://doi.org/10.1186/1748-5908-4-50" target="_blank" rel="noopener">doi.org/10.1186/1748-5908-4-50</a>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Theory-Based &amp; Contribution-Oriented Evaluation</div>
+      <div class="citation-entry">
+        <span class="cite-label">Contribution analysis</span>
+        <p><strong>Mayne, J.</strong> "Addressing Attribution through Contribution Analysis: Using Performance Measures Sensibly." Canadian Journal of Program Evaluation, 16(1), 1–24, 2001; elaborated in Contribution Analysis: An Approach to Exploring Cause and Effect (ILAC Brief 16), 2008.</p>
+        <a href="https://doi.org/10.3138/cjpe.016.001" target="_blank" rel="noopener">doi.org/10.3138/cjpe.016.001</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Realist evaluation</span>
+        <p><strong>Pawson, R., &amp; Tilley, N.</strong> Realistic Evaluation. Sage, 1997. Source for Context–Mechanism–Outcome configurations and the question of what works, for whom, in what circumstances.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Theory of change &amp; logic models</span>
+        <p><strong>Funnell, S. C., &amp; Rogers, P. J.</strong> Purposeful Program Theory: Effective Use of Theories of Change and Logic Models. Jossey-Bass, 2011. With foundational statements by Weiss (1995) and the W. K. Kellogg Foundation Logic Model Development Guide (2004).</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Outcome-Oriented Methods</div>
+      <div class="citation-entry">
+        <span class="cite-label">Outcome mapping</span>
+        <p><strong>Earl, S., Carden, F., &amp; Smutylo, T.</strong> Outcome Mapping: Building Learning and Reflection into Development Programs. International Development Research Centre (IDRC), 2001.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Outcome harvesting</span>
+        <p><strong>Wilson-Grau, R., &amp; Britt, H.</strong> Outcome Harvesting. Ford Foundation MENA Office / Outcome Mapping Learning Community, 2012. For identifying outcomes after the fact and working backward to assess contribution.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Most Significant Change</span>
+        <p><strong>Davies, R., &amp; Dart, J.</strong> The "Most Significant Change" (MSC) Technique: A Guide to Its Use. 2005. A participatory method for capturing and interpreting unanticipated change.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Levels-of-Impact &amp; Process Evaluation</div>
+      <div class="citation-entry">
+        <span class="cite-label">Four-level evaluation</span>
+        <p><strong>Kirkpatrick, D. L., &amp; Kirkpatrick, J. D.</strong> Evaluating Training Programs: The Four Levels. 3rd ed. Berrett-Koehler, 2006 (model first published by Kirkpatrick, 1959). Phillips (1997) adds a fifth, return-on-investment level.</p>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Process evaluation</span>
+        <p><strong>Moore, G. F., Audrey, S., Barker, M., Bond, L., Bonell, C., Hardeman, W., et al.</strong> "Process Evaluation of Complex Interventions: Medical Research Council Guidance." BMJ, 350, h1258, 2015.</p>
+        <a href="https://doi.org/10.1136/bmj.h1258" target="_blank" rel="noopener">doi.org/10.1136/bmj.h1258</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Developmental evaluation</span>
+        <p><strong>Patton, M. Q.</strong> Developmental Evaluation: Applying Complexity Concepts to Enhance Innovation and Use. Guilford Press, 2011.</p>
+      </div>
+    </div>
+
+    <div class="citation-group">
+      <div class="citation-group-label">Research Impact &amp; Responsible Metrics</div>
+      <div class="citation-entry">
+        <span class="cite-label">Responsible metrics</span>
+        <p><strong>Hicks, D., Wouters, P., Waltman, L., de Rijcke, S., &amp; Rafols, I.</strong> "Bibliometrics: The Leiden Manifesto for Research Metrics." Nature, 520, 429–431, 2015. Ten principles for the responsible use of quantitative indicators.</p>
+        <a href="https://doi.org/10.1038/520429a" target="_blank" rel="noopener">doi.org/10.1038/520429a</a>
+      </div>
+      <div class="citation-entry">
+        <span class="cite-label">Synthesis-to-use</span>
+        <p><strong>Grimshaw, J. M., Eccles, M. P., Lavis, J. N., Hill, S. J., &amp; Squires, J. E.</strong> "Knowledge Translation of Research Findings." Implementation Science, 7, 50, 2012. On moving synthesised evidence into use.</p>
+        <a href="https://doi.org/10.1186/1748-5908-7-50" target="_blank" rel="noopener">doi.org/10.1186/1748-5908-7-50</a>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  Knowledge Mobilization Evaluation Design — Knowledge Resource
+</footer>
+
+<script>
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + target).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+
+  document.querySelectorAll('.stage-trigger').forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const expanded = trigger.getAttribute('aria-expanded') === 'true';
+      trigger.setAttribute('aria-expanded', String(!expanded));
+      trigger.nextElementSibling.classList.toggle('open', !expanded);
+    });
+  });
+
+  document.querySelectorAll('.options-grid').forEach(grid => {
+    grid.querySelectorAll('.option-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        grid.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+      });
+    });
+  });
+
+  function showReflection() {
+    const qs = ['q1','q2','q3','q4'];
+    const answers = {};
+    let allAnswered = true;
+    qs.forEach(q => {
+      const sel = document.querySelector('.options-grid[data-q="' + q + '"] .option-btn.selected');
+      if (!sel) allAnswered = false;
+      else answers[q] = parseInt(sel.dataset.val);
+    });
+    const errEl = document.getElementById('reflection-error');
+    if (!allAnswered) { errEl.style.display = 'block'; return; }
+    errEl.style.display = 'none';
+
+    const avg = (answers.q1 + answers.q2 + answers.q3 + answers.q4) / 4;
+    let title, body, points;
+
+    if (avg <= 1.5) {
+      title = "Early Stage: Establishing the Basics";
+      body = "Evaluation is currently treated as an end-of-project reporting task rather than a design discipline. The most productive investment at this stage is in planning measurement before activity begins — even at a modest scale.";
+      points = [
+        "Sketch a simple theory of change for one initiative before it launches.",
+        "Capture at least one baseline measure so that change can later be demonstrated.",
+        "Separate activity reporting from any claim about uptake or outcome.",
+        "Identify who the evaluation is actually for, and what decision it should inform."
+      ];
+    } else if (avg <= 2.5) {
+      title = "Developing Practice: Strengthening the Design";
+      body = "Some measurement is in place, but it is often added after the initiative is designed and stays close to reach and engagement. The work at this stage is to move evaluation upstream and deepen what it measures.";
+      points = [
+        "Build the theory of change and indicators during design, not after launch.",
+        "Add indicators that distinguish uptake and practice change from reach.",
+        "Begin documenting alternative explanations for the outcomes you observe.",
+        "Choose a deliberate time horizon and state what cannot yet be seen within it."
+      ];
+    } else if (avg <= 3.5) {
+      title = "Established Practice: Deepening Credibility";
+      body = "Evaluation is planned alongside the initiative and distinguishes levels of effect. The opportunity is to move from competent measurement to credible causal reasoning and a fuller account of partnership and equity.";
+      points = [
+        "Develop an explicit contribution claim that tests your theory against rival explanations.",
+        "Establish baselines consistently, before each initiative rather than for some.",
+        "Add a measured dimension for partnership health or distributional outcomes.",
+        "Interpret metrics through your theory of change rather than reporting them alone."
+      ];
+    } else {
+      title = "Strategic Practice: Leading the Field";
+      body = "Evaluation is designed in from the start, distinguishes levels of effect, reasons credibly about contribution, and attends to partnership and equity. The work at this stage is to sustain rigour and share what is working.";
+      points = [
+        "Turn project-by-project measurement into standing infrastructure that persists.",
+        "Keep observing beyond the funded period, where outcomes appear after long lags.",
+        "Document and share your contribution methods with the wider professional community.",
+        "Review whether your evaluation findings are actually changing decisions — and act on the answer."
+      ];
+    }
+
+    document.getElementById('result-title').textContent = title;
+    document.getElementById('result-body').textContent = body;
+    const ul = document.getElementById('result-points');
+    ul.innerHTML = '';
+    points.forEach(p => { const li = document.createElement('li'); li.textContent = p; ul.appendChild(li); });
+
+    const result = document.getElementById('reflection-result');
+    result.classList.add('visible');
+    result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function resetReflection() {
+    document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+    const result = document.getElementById('reflection-result');
+    result.classList.remove('visible');
+    document.getElementById('reflection-error').style.display = 'none';
+  }
+</script>
+</body>
+</html>
